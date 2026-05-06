@@ -1,0 +1,18 @@
+{
+  "name": "lucianaromero-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev:astro": "npm run dev --workspace=astro-app",
+    "dev:payload": "npm run dev --workspace=payload-cms",
+    "build:astro": "npm run build --workspace=astro-app",
+    "build:payload": "npm run build --workspace=payload-cms",
+    "dev": "npm run dev:astro & npm run dev:payload"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
