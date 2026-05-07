@@ -1,377 +1,47 @@
 ---
-import '../styles/global.css';
+import Layout from '../layouts/Layout.astro';
+import FluidCanvas from '../components/FluidCanvas.astro';
+import Hero from '../components/Hero.astro';
+import Bio from '../components/Bio.astro';
+import Clients from '../components/Clients.astro';
+import BentoGrid from '../components/BentoGrid.astro';
+import Contact from '../components/Contact.astro';
 ---
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<title>LU.ROMERO</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap" rel="stylesheet">
-	</head>
-	<body class="m-0 bg-black font-sans">
-		<!-- Canvas fullscreen como fondo -->
-		<canvas id="canvas" class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"></canvas>
+<Layout title="LU.ROMERO">
+		<!-- Canvas fluido como fondo -->
+		<FluidCanvas 
+			colorMin={0.50}
+			colorMax={0.52}
+			intensity={1.15}
+			gamma={2.5}
+			baseRadius={0.12}
+			trailLength={12}
+			smoothness={3.5}
+			deformation={0.1}
+			sizeVariationAmplitude={0.4}
+			sizeVariationFrequency={0.43}
+			sizeVariationBase={0.9}
+			organicOffsetAmplitude={0.18}
+			organicOffsetFrequencyX={1.2}
+			organicOffsetFrequencyY={0.5}
+			surfaceNoiseScale={3.0}
+			trailDecay={0.7}
+			mouseAttractionStrength={0.15}
+			mouseInfluence={0.4}
+			scrollSpeed={1.2}
+			animationSpeed={1.0}
+		/>
 
-		<!-- Hero Section - 2 viewports de alto -->
-		<section class="relative z-10 h-[200vh] flex items-start justify-start pt-[80px]">
-			<div class="container mx-auto px-8 pt-32">
-				<h1 id="hero-title" class="text-[18vw] font-black leading-[0.85] tracking-tight text-white overflow-hidden" style="font-family: 'Inter', sans-serif; font-weight: 900;">
-					<span class="inline-block opacity-0" data-letter>L</span><span class="inline-block opacity-0" data-letter>U</span><span class="inline-block opacity-0" data-letter>.</span><br><span class="inline-block opacity-0" data-letter>R</span><span class="inline-block opacity-0" data-letter>O</span><span class="inline-block opacity-0" data-letter>M</span><span class="inline-block opacity-0" data-letter>E</span><span class="inline-block opacity-0" data-letter>R</span><span class="inline-block opacity-0" data-letter>O</span>
-				</h1>
-			</div>
-		</section>
+		<!-- Hero Section -->
+		<Hero />
 
-	<!-- Sección blanca con marquee -->
-	<section class="relative z-10 bg-white text-black min-h-screen">
-		<!-- Marquee -->
-		<div class="h-[50px] border-b-2 border-black overflow-hidden flex items-center">
-			<div class="marquee-content whitespace-nowrap text-2xl font-black">
-				MAKEUPARTIST COMERCIAL CURSOS NOVIAS MAKEUPARTIST COMERCIAL CURSOS NOVIAS MAKEUPARTIST COMERCIAL CURSOS NOVIAS MAKEUPARTIST COMERCIAL CURSOS NOVIAS MAKEUPARTIST COMERCIAL CURSOS NOVIAS MAKEUPARTIST COMERCIAL CURSOS NOVIAS
-			</div>
-		</div>
-		</div>
+	<Bio />
 
-		<!-- Contenido de la sección -->
-		<div class="container mx-auto px-8 py-32 max-w-4xl">
-			<h2 class="text-5xl uppercase font-bold mb-12">Sobre mí</h2>
-			<div class="space-y-8">
-				<p class="text-xl leading-relaxed">
-					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-				</p>
-				<p class="text-xl leading-relaxed">
-					Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-				</p>
-				<p class="text-xl leading-relaxed">
-					Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-				</p>
-			</div>
-		</div>
-	</section>
+	<Clients />
 
 	<!-- Más contenido -->
-	<div class="relative z-10 bg-black text-white">
-		<div class="container mx-auto px-8 py-32 max-w-4xl">
-			<h2 class="text-5xl font-bold mb-12">Proyectos</h2>
-			<div class="space-y-8">
-				<p class="text-xl leading-relaxed">
-					Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.
-				</p>
-				<p class="text-xl leading-relaxed">
-						Totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
-					</p>
-				</div>
-			</div>
+	<BentoGrid />
 
-			<div class="container mx-auto px-8 py-32 max-w-4xl">
-				<h2 class="text-5xl font-bold mb-12">Contacto</h2>
-				<div class="space-y-8">
-					<p class="text-xl leading-relaxed">
-						Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores.
-					</p>
-				</div>
-			</div>
-		</div>
+	<Contact />
+</Layout>
 
-	<script>
-		import * as THREE from 'three';
-		import gsap from 'gsap';
-
-		// Vertex Shader
-		const vertexShader = `
-			attribute vec3 position;
-			varying vec2 vTexCoord;
-
-			void main() {
-				vTexCoord = position.xy * 0.5 + 0.5;
-				gl_Position = vec4(position, 1.0);
-			}
-		`;
-
-		// Fragment Shader with Ray Marching
-		const fragmentShader = `
-			precision highp float;
-
-			const float EPS = 1e-4;
-			const int ITR = 48; // Reducido de 64 para optimizar
-			const int TRAIL_LENGTH = 20;
-
-			uniform float uTime;
-			uniform vec2 uResolution;
-			uniform vec2 uScrollTrail[TRAIL_LENGTH];
-
-			varying vec2 vTexCoord;
-
-			// Camera Params
-			vec3 origin = vec3(0.0, 0.0, 1.0);
-			vec3 lookAt = vec3(0.0, 0.0, 0.0);
-			vec3 cDir = normalize(lookAt - origin);
-			vec3 cUp = vec3(0.0, 1.0, 0.0);
-			vec3 cSide = cross(cDir, cUp);
-
-			vec3 translate(vec3 p, vec3 t) {
-				return p - t;
-			}
-
-			float sdSphere(vec3 p, float s) {
-				return length(p) - s;
-			}
-
-			// Smooth minimum for metaball effect
-			float smoothMin(float d1, float d2, float k) {
-				float h = exp(-k * d1) + exp(-k * d2);
-				return -log(h) / k;
-			}
-
-			// 3D Value Noise
-			float rnd3D(vec3 p) {
-				return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
-			}
-
-			float noise3D(vec3 p) {
-				vec3 i = floor(p);
-				vec3 f = fract(p);
-
-				float a000 = rnd3D(i);
-				float a100 = rnd3D(i + vec3(1.0, 0.0, 0.0));
-				float a010 = rnd3D(i + vec3(0.0, 1.0, 0.0));
-				float a110 = rnd3D(i + vec3(1.0, 1.0, 0.0));
-				float a001 = rnd3D(i + vec3(0.0, 0.0, 1.0));
-				float a101 = rnd3D(i + vec3(1.0, 0.0, 1.0));
-				float a011 = rnd3D(i + vec3(0.0, 1.0, 1.0));
-				float a111 = rnd3D(i + vec3(1.0, 1.0, 1.0));
-
-				vec3 u = f * f * (3.0 - 2.0 * f);
-
-				float k0 = a000;
-				float k1 = a100 - a000;
-				float k2 = a010 - a000;
-				float k3 = a001 - a000;
-				float k4 = a000 - a100 - a010 + a110;
-				float k5 = a000 - a010 - a001 + a011;
-				float k6 = a000 - a100 - a001 + a101;
-				float k7 = -a000 + a100 + a010 - a110 + a001 - a101 - a011 + a111;
-
-				return k0 + k1 * u.x + k2 * u.y + k3 * u.z + k4 * u.x * u.y + k5 * u.y * u.z + k6 * u.z * u.x + k7 * u.x * u.y * u.z;
-			}
-
-			// Scene distance function with metaballs
-			float map(vec3 p) {
-				float baseRadius = 0.25;
-				float radius = baseRadius * float(TRAIL_LENGTH);
-				float k = 6.5;
-				float d = 1e5;
-
-				// Scroll trail metaballs con formas variadas
-				for (int i = 0; i < TRAIL_LENGTH; i++) {
-					float fi = float(i);
-					vec2 scrollTrail = uScrollTrail[i] * uResolution / min(uResolution.x, uResolution.y);
-
-					// Variación simple basada en índice y tiempo
-					float sizeVariation = sin(fi * 0.5 + uTime * 0.3) * 0.3 + 0.85;
-					
-					// Offset basado en funciones trigonométricas
-					float offsetX = sin(fi * 0.8 + uTime * 0.4) * 0.2;
-					float offsetY = cos(fi * 0.6 + uTime * 0.3) * 0.2;
-					
-					vec2 position = scrollTrail + vec2(offsetX, offsetY);
-
-					// Deformación simplificada (una sola operación sin)
-					vec3 surfacePos = translate(p, vec3(position, 0.0));
-					float surfaceNoise = sin(surfacePos.x * 2.5 + surfacePos.y * 2.5 + uTime) * 0.12;
-
-					float sphere = sdSphere(
-						surfacePos,
-						(radius - baseRadius * fi * 0.8) * sizeVariation
-					) + surfaceNoise;
-
-					d = smoothMin(d, sphere, k);
-				}
-
-				return d;
-			}
-
-			// Calculate surface normal
-			vec3 generateNormal(vec3 p) {
-				return normalize(vec3(
-					map(p + vec3(EPS, 0.0, 0.0)) - map(p + vec3(-EPS, 0.0, 0.0)),
-					map(p + vec3(0.0, EPS, 0.0)) - map(p + vec3(0.0, -EPS, 0.0)),
-					map(p + vec3(0.0, 0.0, EPS)) - map(p + vec3(0.0, 0.0, -EPS))
-				));
-			}
-
-			// Droplet/metallic color
-			vec3 dropletColor(vec3 normal, vec3 rayDir) {
-				vec3 reflectDir = reflect(rayDir, normal);
-
-				float noisePosTime = noise3D(reflectDir * 2.0 + uTime * 0.3);
-				float noiseNegTime = noise3D(reflectDir * 2.0 - uTime * 0.3);
-
-				// Metallic silver colors
-				vec3 color0 = vec3(0.48, 0.48, 0.51) * noisePosTime;
-				vec3 color1 = vec3(0.60, 0.60, 0.64) * noiseNegTime;
-
-				float intensity = 1.25;
-				vec3 color = (color0 + color1) * intensity;
-
-				return color;
-			}
-
-			void main() {
-				vec2 p = (gl_FragCoord.xy * 2.0 - uResolution) / min(uResolution.x, uResolution.y);
-
-				// Orthographic Camera
-				vec3 ray = origin + cSide * p.x + cUp * p.y;
-				vec3 rayDirection = cDir;
-
-				float dist = 0.0;
-
-				// Ray marching loop
-				for (int i = 0; i < ITR; ++i) {
-					dist = map(ray);
-					ray += rayDirection * dist;
-					if (dist < EPS) break;
-				}
-
-				vec3 color = vec3(0.0);
-
-				if (dist < EPS) {
-					vec3 normal = generateNormal(ray);
-					color = dropletColor(normal, rayDirection);
-				}
-
-				// Post-processing
-				vec3 finalColor = pow(color, vec3(3.2));
-
-				gl_FragColor = vec4(finalColor, 1.0);
-			}
-		`;
-
-		// Scene setup
-		const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-		const canvasWidth = window.innerWidth;
-		const canvasHeight = window.innerHeight;
-
-		const scene = new THREE.Scene();
-		const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-		const renderer = new THREE.WebGLRenderer({ 
-			canvas,
-			antialias: true,
-			alpha: true
-		});
-		
-		renderer.setSize(canvasWidth, canvasHeight);
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Limitado para mejor performance
-
-		// Scroll trail
-		const trailLength = 20;
-		const scrollTrail: THREE.Vector2[] = Array.from({ length: trailLength }, () => new THREE.Vector2(0.5, 0.5));
-
-		// Uniforms
-		const uniforms = {
-			uTime: { value: 0 },
-			uResolution: { value: new THREE.Vector2(canvasWidth, canvasHeight) },
-			uScrollTrail: { value: scrollTrail }
-		};
-
-		// Create fullscreen plane with custom shader
-		const planeGeometry = new THREE.PlaneGeometry(2, 2);
-		const planeMaterial = new THREE.RawShaderMaterial({
-			vertexShader,
-			fragmentShader,
-			uniforms,
-			transparent: true
-		});
-		const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-		scene.add(plane);
-
-		// Scroll tracking
-		let scrollY = 0;
-		let targetScrollY = 0;
-		let previousScrollY = 0;
-
-		window.addEventListener('scroll', () => {
-			targetScrollY = window.scrollY;
-		});
-
-		// Update scroll trail
-		function updateScrollTrail() {
-			scrollY += (targetScrollY - scrollY) * 0.15;
-			const scrollDelta = (scrollY - previousScrollY) * 0.002;
-			previousScrollY = scrollY;
-
-			const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-			const normalizedScroll = maxScroll > 0 ? (scrollY / maxScroll) : 0;
-
-			const time = Date.now() * 0.001;
-			
-			for (let i = trailLength - 1; i > 0; i--) {
-				scrollTrail[i].copy(scrollTrail[i - 1]);
-			}
-
-			const xPos = 0.6;
-			const yPos = (normalizedScroll * 2.0 - 1.0) * 1.5 + Math.sin(time * 2.0 + normalizedScroll * 10.0) * 0.3 + scrollDelta * 5.0;
-			
-			scrollTrail[0].set(xPos, yPos);
-		}
-
-		// Animation loop
-		let time = 0;
-		function animate() {
-			requestAnimationFrame(animate);
-
-			time += 0.016;
-			uniforms.uTime.value = time;
-
-			updateScrollTrail();
-
-			renderer.render(scene, camera);
-		}
-
-		// Handle window resize
-		window.addEventListener('resize', () => {
-			const newWidth = window.innerWidth;
-			const newHeight = window.innerHeight;
-			renderer.setSize(newWidth, newHeight);
-			uniforms.uResolution.value.set(newWidth, newHeight);
-		});
-
-		animate();
-
-		// Marquee animation
-		const marqueeContent = document.querySelector('.marquee-content');
-		if (marqueeContent) {
-			let position = 0;
-			function animateMarquee() {
-				position -= 1;
-				if (position <= -(marqueeContent.scrollWidth / 3)) {
-					position = 0;
-				}
-				marqueeContent.style.transform = `translateX(${position}px)`;
-				requestAnimationFrame(animateMarquee);
-			}
-			animateMarquee();
-		}
-
-		// Animación de entrada letra por letra
-		const letters = document.querySelectorAll('[data-letter]');
-		letters.forEach((letter, index) => {
-			gsap.fromTo(letter,
-				{
-					opacity: 0,
-					y: 100
-				},
-				{
-					opacity: 1,
-					y: 0,
-					duration: 0.8,
-					delay: index * 0.1,
-					ease: 'power3.out'
-				}
-			);
-		});
-	</script>
-</body>
-</html>

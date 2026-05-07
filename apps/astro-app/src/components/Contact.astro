@@ -1,0 +1,178 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const socials = [
+    {
+        name:  'Instagram',
+        handle: '@luromeromakeup',
+        icon:  'lucide:instagram',
+        url:   'https://www.instagram.com/luromeromakeup/',
+    },
+    {
+        name:  'Facebook',
+        handle: 'Luciana Romero MUA',
+        icon:  'lucide:facebook',
+        url:   'https://www.facebook.com/people/Luciana-Romero-Make-Up-Artist/100063943687534/',
+    },
+    {
+        name:  'LinkedIn',
+        handle: 'lucianaromeromakeup',
+        icon:  'lucide:linkedin',
+        url:   'https://www.linkedin.com/in/lucianaromeromakeup/',
+    },
+    {
+        name:  'YouTube',
+        handle: '@lucianaromero9645',
+        icon:  'lucide:youtube',
+        url:   'https://www.youtube.com/@lucianaromero9645',
+    },
+    {
+        name:  'Email',
+        handle: 'luromeroestudio@gmail.com',
+        icon:  'lucide:mail',
+        url:   'mailto:luromeroestudio@gmail.com',
+    },
+];
+---
+
+<section id="contact" class="relative z-10 bg-canvas border-t-4 border-ink px-6 md:px-12 py-16 md:py-24 transition-colors duration-300">
+
+    <!-- Section header -->
+    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between border-b-4 border-ink pb-4 mb-16 transition-colors duration-300">
+        <span class="font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">CONTACTO</span>
+        <span class="font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink mt-2 md:mt-0">— HABLEMOS</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12">
+
+        <!-- Left: Social links -->
+        <div class="border-2 border-ink mb-8 lg:mb-0">
+            <!-- Block header -->
+            <div class="border-b-2 border-ink px-6 py-4">
+                <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">REDES & CONTACTO</span>
+            </div>
+            <ul>
+                {socials.map((s, i) => (
+                    <li class:list={['border-b-2 border-ink', i === socials.length - 1 && 'border-b-0']}>
+                        <a
+                            href={s.url}
+                            rel={s.url.startsWith('mailto') ? undefined : 'nofollow noopener noreferrer'}
+                            target={s.url.startsWith('mailto') ? undefined : '_blank'}
+                            class="social-link group flex items-center justify-between px-6 py-5 text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                        >
+                            <div class="flex items-center gap-4">
+                                <Icon name={s.icon} class="w-5 h-5 flex-shrink-0" />
+                                <div>
+                                    <p class="font-boldonse uppercase text-sm tracking-widest leading-none">{s.name}</p>
+                                    <p class="font-aleo text-xs opacity-50 mt-1 group-hover:opacity-70 transition-opacity">{s.handle}</p>
+                                </div>
+                            </div>
+                            <Icon name="lucide:arrow-right" class="w-4 h-4 opacity-30 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-150" />
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
+        <!-- Right: Contact form -->
+        <div class="border-2 border-ink contact-form-card">
+            <!-- Block header -->
+            <div class="border-b-2 border-ink px-6 py-4">
+                <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">ENVÍA UN MENSAJE</span>
+            </div>
+            <form
+                name="contact"
+                method="POST"
+                action="#contact"
+                class="p-6 md:p-8 flex flex-col gap-5"
+                novalidate
+            >
+                <!-- Name -->
+                <div class="flex flex-col gap-1">
+                    <label for="contact-name" class="font-boldonse uppercase text-xs tracking-[0.2em] text-ink opacity-60">Nombre</label>
+                    <input
+                        id="contact-name"
+                        type="text"
+                        name="name"
+                        required
+                        autocomplete="name"
+                        placeholder="Tu nombre"
+                        class="contact-input bg-canvas border-2 border-ink px-4 py-3 font-aleo text-base text-ink placeholder:opacity-30 focus:outline-none transition-colors duration-150"
+                    />
+                </div>
+
+                <!-- Email -->
+                <div class="flex flex-col gap-1">
+                    <label for="contact-email" class="font-boldonse uppercase text-xs tracking-[0.2em] text-ink opacity-60">Email</label>
+                    <input
+                        id="contact-email"
+                        type="email"
+                        name="email"
+                        required
+                        autocomplete="email"
+                        placeholder="tu@email.com"
+                        class="contact-input bg-canvas border-2 border-ink px-4 py-3 font-aleo text-base text-ink placeholder:opacity-30 focus:outline-none transition-colors duration-150"
+                    />
+                </div>
+
+                <!-- Subject -->
+                <div class="flex flex-col gap-1">
+                    <label for="contact-subject" class="font-boldonse uppercase text-xs tracking-[0.2em] text-ink opacity-60">Asunto</label>
+                    <input
+                        id="contact-subject"
+                        type="text"
+                        name="subject"
+                        placeholder="¿En qué puedo ayudarte?"
+                        class="contact-input bg-canvas border-2 border-ink px-4 py-3 font-aleo text-base text-ink placeholder:opacity-30 focus:outline-none transition-colors duration-150"
+                    />
+                </div>
+
+                <!-- Message -->
+                <div class="flex flex-col gap-1">
+                    <label for="contact-message" class="font-boldonse uppercase text-xs tracking-[0.2em] text-ink opacity-60">Mensaje</label>
+                    <textarea
+                        id="contact-message"
+                        name="message"
+                        required
+                        rows="5"
+                        placeholder="Cuéntame tu proyecto..."
+                        class="contact-input bg-canvas border-2 border-ink px-4 py-3 font-aleo text-base text-ink placeholder:opacity-30 focus:outline-none resize-none transition-colors duration-150"
+                    ></textarea>
+                </div>
+
+                <!-- Submit -->
+                <button
+                    type="submit"
+                    class="submit-btn mt-2 w-full font-boldonse uppercase tracking-[0.2em] text-sm px-6 py-4 bg-ink text-canvas border-2 border-ink hover:bg-canvas hover:text-ink transition-colors duration-150"
+                >
+                    Enviar mensaje →
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+    .contact-form-card {
+        box-shadow: 4px 4px 0 var(--color-ink);
+    }
+
+    .contact-input:focus {
+        box-shadow: 3px 3px 0 var(--color-ink);
+    }
+
+    .submit-btn {
+        box-shadow: 3px 3px 0 var(--color-ink);
+        transition: box-shadow 0.12s ease, transform 0.12s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .submit-btn:hover {
+        box-shadow: 1px 1px 0 var(--color-ink);
+        transform: translate(2px, 2px);
+    }
+    .submit-btn:active {
+        box-shadow: 0 0 0 var(--color-ink);
+        transform: translate(3px, 3px);
+    }
+</style>

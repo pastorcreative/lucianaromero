@@ -1,3 +1,23 @@
 @import "tailwindcss";
+@import "@fontsource/boldonse/latin-400.css";
+@import "@fontsource-variable/aleo/wght.css";
+@import "@fontsource-variable/aleo/wght-italic.css";
+
+/* Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --font-boldonse: 'Boldonse', serif;
+    --font-aleo: 'Aleo Variable', serif;
+    /* Semantic color tokens → bg-canvas, text-ink, border-ink, etc. */
+    --color-canvas: #ffffff;
+    --color-ink:    #000000;
+}
+
+/* Dark mode overrides (CSS variable swap) */
+.dark {
+    --color-canvas: #0f0f0f;
+    --color-ink:    #f0f0f0;
+}
 
 /* Custom styles can go here */

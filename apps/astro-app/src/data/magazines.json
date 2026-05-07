@@ -1,0 +1,7 @@
+[
+  { "name": "L'Officiel",   "logo": "Lofficiel_logo.svg",     "url": "https://www.lofficiel.com" },
+  { "name": "Cosmopolitan", "logo": "cosmo_logo.svg",         "url": "https://www.cosmopolitan.com/es" },
+  { "name": "Elle",         "logo": "elle_logo.svg",          "url": "https://www.elle.com/es" },
+  { "name": "Marie Claire", "logo": "marie_claire_logo.svg",  "url": "https://www.marieclaire.es" },
+  { "name": "Vogue",        "logo": "vogue_logo.svg",         "url": "https://www.vogue.es" }
+]

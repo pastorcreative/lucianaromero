@@ -1,0 +1,459 @@
+---
+export interface Props {
+	// Propiedades de brillo
+	colorMin?: number; // 0-1, color base más oscuro
+	colorMax?: number; // 0-1, color highlight más claro
+	intensity?: number; // multiplicador de intensidad
+	gamma?: number; // post-processing gamma
+	
+	// Propiedades de forma básicas
+	baseRadius?: number; // tamaño base de las metaballs
+	trailLength?: number; // cantidad de metaballs
+	smoothness?: number; // suavidad de fusión (k)
+	deformation?: number; // cantidad de deformación de superficie
+	
+	// Propiedades de forma avanzadas
+	sizeVariationAmplitude?: number; // amplitud de variación de tamaño
+	sizeVariationFrequency?: number; // frecuencia de variación de tamaño
+	sizeVariationBase?: number; // tamaño base de variación (0-1)
+	organicOffsetAmplitude?: number; // amplitud del movimiento orgánico
+	organicOffsetFrequencyX?: number; // frecuencia X del movimiento orgánico
+	organicOffsetFrequencyY?: number; // frecuencia Y del movimiento orgánico
+	surfaceNoiseScale?: number; // escala del ruido de superficie
+	trailDecay?: number; // decaimiento del tamaño por posición en trail
+	mouseAttractionStrength?: number; // fuerza de atracción al mouse
+	
+	// Propiedades de movimiento
+	mouseInfluence?: number; // 0-1, influencia del mouse
+	scrollSpeed?: number; // velocidad de respuesta al scroll
+	animationSpeed?: number; // velocidad de animación temporal
+}
+
+const {
+	colorMin = 0.42,
+	colorMax = 0.52,
+	intensity = 1.15,
+	gamma = 3.5,
+	baseRadius = 0.18,
+	trailLength = 20,
+	smoothness = 6.5,
+	deformation = 0.12,
+	sizeVariationAmplitude = 0.3,
+	sizeVariationFrequency = 0.5,
+	sizeVariationBase = 0.85,
+	organicOffsetAmplitude = 0.2,
+	organicOffsetFrequencyX = 0.8,
+	organicOffsetFrequencyY = 0.6,
+	surfaceNoiseScale = 2.5,
+	trailDecay = 0.8,
+	mouseAttractionStrength = 0.1,
+	mouseInfluence = 0.4,
+	scrollSpeed = 1.2,
+	animationSpeed = 1.0,
+} = Astro.props;
+---
+
+<canvas 
+	id="fluid-canvas" 
+	class="fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+	data-color-min={colorMin}
+	data-color-max={colorMax}
+	data-intensity={intensity}
+	data-gamma={gamma}
+	data-base-radius={baseRadius}
+	data-trail-length={trailLength}
+	data-smoothness={smoothness}
+	data-deformation={deformation}
+	data-size-variation-amplitude={sizeVariationAmplitude}
+	data-size-variation-frequency={sizeVariationFrequency}
+	data-size-variation-base={sizeVariationBase}
+	data-organic-offset-amplitude={organicOffsetAmplitude}
+	data-organic-offset-frequency-x={organicOffsetFrequencyX}
+	data-organic-offset-frequency-y={organicOffsetFrequencyY}
+	data-surface-noise-scale={surfaceNoiseScale}
+	data-trail-decay={trailDecay}
+	data-mouse-attraction-strength={mouseAttractionStrength}
+	data-mouse-influence={mouseInfluence}
+	data-scroll-speed={scrollSpeed}
+	data-animation-speed={animationSpeed}
+></canvas>
+
+<script>
+	import * as THREE from 'three';
+	
+	// Get canvas and read props from data attributes
+	const canvas = document.getElementById('fluid-canvas') as HTMLCanvasElement;
+	
+	const colorMin = parseFloat(canvas.dataset.colorMin || '0.42');
+	const colorMax = parseFloat(canvas.dataset.colorMax || '0.52');
+	const intensity = parseFloat(canvas.dataset.intensity || '1.15');
+	const gamma = parseFloat(canvas.dataset.gamma || '3.5');
+	const baseRadius = parseFloat(canvas.dataset.baseRadius || '0.18');
+	const trailLength = parseInt(canvas.dataset.trailLength || '20', 10);
+	const smoothness = parseFloat(canvas.dataset.smoothness || '6.5');
+	const deformation = parseFloat(canvas.dataset.deformation || '0.12');
+	const sizeVariationAmplitude = parseFloat(canvas.dataset.sizeVariationAmplitude || '0.3');
+	const sizeVariationFrequency = parseFloat(canvas.dataset.sizeVariationFrequency || '0.5');
+	const sizeVariationBase = parseFloat(canvas.dataset.sizeVariationBase || '0.85');
+	const organicOffsetAmplitude = parseFloat(canvas.dataset.organicOffsetAmplitude || '0.2');
+	const organicOffsetFrequencyX = parseFloat(canvas.dataset.organicOffsetFrequencyX || '0.8');
+	const organicOffsetFrequencyY = parseFloat(canvas.dataset.organicOffsetFrequencyY || '0.6');
+	const surfaceNoiseScale = parseFloat(canvas.dataset.surfaceNoiseScale || '2.5');
+	const trailDecay = parseFloat(canvas.dataset.trailDecay || '0.8');
+	const mouseAttractionStrength = parseFloat(canvas.dataset.mouseAttractionStrength || '0.1');
+	const mouseInfluence = parseFloat(canvas.dataset.mouseInfluence || '0.4');
+	const scrollSpeed = parseFloat(canvas.dataset.scrollSpeed || '1.2');
+	const animationSpeed = parseFloat(canvas.dataset.animationSpeed || '1.0');
+
+	// Debug: Log props to verify they're being read correctly
+	console.log('🎨 FluidCanvas Props:', {
+		colorMin,
+		colorMax,
+		intensity,
+		gamma,
+		baseRadius,
+		trailLength,
+		smoothness,
+		deformation,
+		sizeVariationAmplitude,
+		sizeVariationFrequency,
+		sizeVariationBase,
+		organicOffsetAmplitude,
+		organicOffsetFrequencyX,
+		organicOffsetFrequencyY,
+		surfaceNoiseScale,
+		trailDecay,
+		mouseAttractionStrength,
+		mouseInfluence,
+		scrollSpeed,
+		animationSpeed
+	});
+
+	// Vertex Shader
+	const vertexShader = `
+		attribute vec3 position;
+		varying vec2 vTexCoord;
+
+		void main() {
+			vTexCoord = position.xy * 0.5 + 0.5;
+			gl_Position = vec4(position, 1.0);
+		}
+	`;
+
+	// Fragment Shader with Ray Marching
+	const fragmentShader = `
+		precision highp float;
+
+		const float EPS = 1e-4;
+		const int ITR = 48;
+		const int TRAIL_LENGTH = ${trailLength};
+
+		uniform float uTime;
+		uniform vec2 uResolution;
+		uniform vec2 uScrollTrail[TRAIL_LENGTH];
+		uniform vec2 uMouse;
+		
+		// Parametros configurables - Brillo
+		uniform float uColorMin;
+		uniform float uColorMax;
+		uniform float uIntensity;
+		uniform float uGamma;
+		
+		// Parametros configurables - Forma básica
+		uniform float uBaseRadius;
+		uniform float uSmoothness;
+		uniform float uDeformation;
+		
+		// Parametros configurables - Forma avanzada
+		uniform float uSizeVariationAmplitude;
+		uniform float uSizeVariationFrequency;
+		uniform float uSizeVariationBase;
+		uniform float uOrganicOffsetAmplitude;
+		uniform float uOrganicOffsetFrequencyX;
+		uniform float uOrganicOffsetFrequencyY;
+		uniform float uSurfaceNoiseScale;
+		uniform float uTrailDecay;
+		uniform float uMouseAttractionStrength;
+		
+		// Parametros configurables - Movimiento
+		uniform float uMouseInfluence;
+
+		varying vec2 vTexCoord;
+
+		// Camera Params - constantes para evitar warnings
+		const vec3 origin = vec3(0.0, 0.0, 1.0);
+		const vec3 lookAt = vec3(0.0, 0.0, 0.0);
+
+		vec3 translate(vec3 p, vec3 t) {
+			return p - t;
+		}
+
+		float sdSphere(vec3 p, float s) {
+			return length(p) - s;
+		}
+
+		// Smooth minimum for metaball effect
+		float smoothMin(float d1, float d2, float k) {
+			float h = exp(-k * d1) + exp(-k * d2);
+			return -log(h) / k;
+		}
+
+		// 3D Value Noise
+		float rnd3D(vec3 p) {
+			return fract(sin(dot(p, vec3(12.9898, 78.233, 37.719))) * 43758.5453123);
+		}
+
+		float noise3D(vec3 p) {
+			vec3 i = floor(p);
+			vec3 f = fract(p);
+
+			float a000 = rnd3D(i);
+			float a100 = rnd3D(i + vec3(1.0, 0.0, 0.0));
+			float a010 = rnd3D(i + vec3(0.0, 1.0, 0.0));
+			float a110 = rnd3D(i + vec3(1.0, 1.0, 0.0));
+			float a001 = rnd3D(i + vec3(0.0, 0.0, 1.0));
+			float a101 = rnd3D(i + vec3(1.0, 0.0, 1.0));
+			float a011 = rnd3D(i + vec3(0.0, 1.0, 1.0));
+			float a111 = rnd3D(i + vec3(1.0, 1.0, 1.0));
+
+			vec3 u = f * f * (3.0 - 2.0 * f);
+
+			float k0 = a000;
+			float k1 = a100 - a000;
+			float k2 = a010 - a000;
+			float k3 = a001 - a000;
+			float k4 = a000 - a100 - a010 + a110;
+			float k5 = a000 - a010 - a001 + a011;
+			float k6 = a000 - a100 - a001 + a101;
+			float k7 = -a000 + a100 + a010 - a110 + a001 - a101 - a011 + a111;
+
+			return k0 + k1 * u.x + k2 * u.y + k3 * u.z + k4 * u.x * u.y + k5 * u.y * u.z + k6 * u.z * u.x + k7 * u.x * u.y * u.z;
+		}
+
+		// Scene distance function with metaballs
+		float map(vec3 p) {
+			float radius = uBaseRadius * float(TRAIL_LENGTH);
+			float d = 1e5;
+
+			vec2 mousePos = uMouse * uResolution / min(uResolution.x, uResolution.y);
+
+			for (int i = 0; i < TRAIL_LENGTH; i++) {
+				float fi = float(i);
+				vec2 scrollTrail = uScrollTrail[i] * uResolution / min(uResolution.x, uResolution.y);
+
+				vec2 diff = scrollTrail - mousePos;
+				float distToMouse = length(diff);
+				float mouseInf = 1.0 - clamp(distToMouse / 2.0, 0.0, 1.0);
+				
+				// Size variation with configurable parameters
+				float sizeVariation = sin(fi * uSizeVariationFrequency + uTime * 0.3) * uSizeVariationAmplitude + uSizeVariationBase;
+				sizeVariation = sizeVariation + mouseInf * uMouseInfluence;
+				
+				// Organic offset with configurable parameters
+				float offsetX = sin(fi * uOrganicOffsetFrequencyX + uTime * 0.4) * uOrganicOffsetAmplitude;
+				float offsetY = cos(fi * uOrganicOffsetFrequencyY + uTime * 0.3) * uOrganicOffsetAmplitude;
+				
+				// Mouse attraction with configurable strength
+				float mouseEffect = mouseInf * 0.25;
+				offsetX = offsetX + diff.x * mouseEffect * uMouseAttractionStrength;
+				offsetY = offsetY + diff.y * mouseEffect * uMouseAttractionStrength;
+				
+				vec2 position = scrollTrail + vec2(offsetX, offsetY);
+
+				// Surface noise with configurable scale
+				vec3 surfacePos = translate(p, vec3(position, 0.0));
+				float surfaceNoise = sin(surfacePos.x * uSurfaceNoiseScale + surfacePos.y * uSurfaceNoiseScale + uTime) * uDeformation;
+
+				// Trail decay with configurable parameter
+				float sphere = sdSphere(
+					surfacePos,
+					(radius - uBaseRadius * fi * uTrailDecay) * sizeVariation
+				) + surfaceNoise;
+
+				d = smoothMin(d, sphere, uSmoothness);
+			}
+
+			return d;
+		}
+
+		// Calculate surface normal
+		vec3 generateNormal(vec3 p) {
+			return normalize(vec3(
+				map(p + vec3(EPS, 0.0, 0.0)) - map(p + vec3(-EPS, 0.0, 0.0)),
+				map(p + vec3(0.0, EPS, 0.0)) - map(p + vec3(0.0, -EPS, 0.0)),
+				map(p + vec3(0.0, 0.0, EPS)) - map(p + vec3(0.0, 0.0, -EPS))
+			));
+		}
+
+		// Droplet/metallic color
+		vec3 dropletColor(vec3 normal, vec3 rayDir) {
+			vec3 reflectDir = reflect(rayDir, normal);
+
+			float noisePosTime = noise3D(reflectDir * 2.0 + uTime * 0.3);
+			float noiseNegTime = noise3D(reflectDir * 2.0 - uTime * 0.3);
+
+			vec3 color0 = vec3(uColorMin, uColorMin, uColorMin + 0.03) * noisePosTime;
+			vec3 color1 = vec3(uColorMax, uColorMax, uColorMax + 0.04) * noiseNegTime;
+
+			vec3 color = (color0 + color1) * uIntensity;
+
+			return color;
+		}
+
+		void main() {
+			vec2 p = (gl_FragCoord.xy * 2.0 - uResolution) / min(uResolution.x, uResolution.y);
+
+			vec3 cDir = normalize(lookAt - origin);
+			vec3 cUp = vec3(0.0, 1.0, 0.0);
+			vec3 cSide = cross(cDir, cUp);
+			
+			vec3 ray = origin + cSide * p.x + cUp * p.y;
+			vec3 rayDirection = cDir;
+
+			float dist = 0.0;
+
+			for (int i = 0; i < ITR; ++i) {
+				dist = map(ray);
+				ray += rayDirection * dist;
+				if (dist < EPS) break;
+			}
+
+			vec3 color = vec3(0.0);
+
+			if (dist < EPS) {
+				vec3 normal = generateNormal(ray);
+				color = dropletColor(normal, rayDirection);
+			}
+
+			vec3 finalColor = pow(color, vec3(uGamma));
+
+			gl_FragColor = vec4(finalColor, 1.0);
+		}
+	`;
+
+	// Scene setup
+	const canvasWidth = window.innerWidth;
+	const canvasHeight = window.innerHeight;
+
+	const scene = new THREE.Scene();
+	const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+	const renderer = new THREE.WebGLRenderer({ 
+		canvas,
+		antialias: true,
+		alpha: true
+	});
+	
+	renderer.setSize(canvasWidth, canvasHeight);
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+	// Scroll trail
+	const scrollTrail: THREE.Vector2[] = Array.from({ length: trailLength }, () => new THREE.Vector2(0.5, 0.5));
+
+	// Uniforms
+	const uniforms = {
+		uTime: { value: 0 },
+		uResolution: { value: new THREE.Vector2(canvasWidth, canvasHeight) },
+		uScrollTrail: { value: scrollTrail },
+		uMouse: { value: new THREE.Vector2(0.6, 0) },
+		// Brillo
+		uColorMin: { value: colorMin },
+		uColorMax: { value: colorMax },
+		uIntensity: { value: intensity },
+		uGamma: { value: gamma },
+		// Forma básica
+		uBaseRadius: { value: baseRadius },
+		uSmoothness: { value: smoothness },
+		uDeformation: { value: deformation },
+		// Forma avanzada
+		uSizeVariationAmplitude: { value: sizeVariationAmplitude },
+		uSizeVariationFrequency: { value: sizeVariationFrequency },
+		uSizeVariationBase: { value: sizeVariationBase },
+		uOrganicOffsetAmplitude: { value: organicOffsetAmplitude },
+		uOrganicOffsetFrequencyX: { value: organicOffsetFrequencyX },
+		uOrganicOffsetFrequencyY: { value: organicOffsetFrequencyY },
+		uSurfaceNoiseScale: { value: surfaceNoiseScale },
+		uTrailDecay: { value: trailDecay },
+		uMouseAttractionStrength: { value: mouseAttractionStrength },
+		// Movimiento
+		uMouseInfluence: { value: mouseInfluence }
+	};
+
+	// Create fullscreen plane with custom shader
+	const planeGeometry = new THREE.PlaneGeometry(2, 2);
+	const planeMaterial = new THREE.RawShaderMaterial({
+		vertexShader,
+		fragmentShader,
+		uniforms,
+		transparent: true
+	});
+	const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+	scene.add(plane);
+
+	// Scroll tracking
+	let scrollY = 0;
+	let targetScrollY = 0;
+	let previousScrollY = 0;
+
+	// Mouse tracking
+	let mouseX = 0.6;
+	let mouseY = 0;
+	let targetMouseX = 0.6;
+	let targetMouseY = 0;
+
+	window.addEventListener('scroll', () => {
+		targetScrollY = window.scrollY;
+	});
+
+	window.addEventListener('mousemove', (e) => {
+		targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
+		targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+	});
+
+	// Update scroll trail
+	function updateScrollTrail() {
+		scrollY += (targetScrollY - scrollY) * 0.15;
+		const scrollDelta = (scrollY - previousScrollY) * 0.002;
+		previousScrollY = scrollY;
+
+		mouseX += (targetMouseX - mouseX) * 0.1;
+		mouseY += (targetMouseY - mouseY) * 0.1;
+
+		const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+		const normalizedScroll = maxScroll > 0 ? (scrollY / maxScroll) : 0;
+
+		const time = Date.now() * 0.001;
+		
+		for (let i = trailLength - 1; i > 0; i--) {
+			scrollTrail[i].copy(scrollTrail[i - 1]);
+		}
+
+		const xPos = mouseX * 0.3 + 0.5;
+		const yPos = mouseY * 0.4 + (normalizedScroll * 2.0 - 1.0) * scrollSpeed + Math.sin(time * 2.0 + normalizedScroll * 10.0) * 0.25 + scrollDelta * 4.0;
+		
+		scrollTrail[0].set(xPos, yPos);
+	}
+
+	// Animation loop
+	let time = 0;
+	function animate() {
+		requestAnimationFrame(animate);
+
+		time += 0.016 * animationSpeed;
+		uniforms.uTime.value = time;
+		uniforms.uMouse.value.set(mouseX, mouseY);
+
+		updateScrollTrail();
+
+		renderer.render(scene, camera);
+	}
+
+	// Handle window resize
+	window.addEventListener('resize', () => {
+		const newWidth = window.innerWidth;
+		const newHeight = window.innerHeight;
+		renderer.setSize(newWidth, newHeight);
+		uniforms.uResolution.value.set(newWidth, newHeight);
+	});
+
+	animate();
+</script>

@@ -1,0 +1,87 @@
+---
+interface LogoItem {
+    name: string;
+    src:  string;
+    url:  string;
+}
+
+interface Props {
+    label: string;
+    items: LogoItem[];
+}
+
+const { label, items } = Astro.props;
+---
+
+<div class="logo-block">
+
+    <!-- Label (derecha, discreto) -->
+    <div class="flex justify-end mb-6">
+        <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">{label}</span>
+    </div>
+
+    <!-- Logo grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+        {items.map(item => (
+            <a
+                href={item.url}
+                rel="nofollow noopener noreferrer"
+                target="_blank"
+                aria-label={item.name}
+                title={item.name}
+                class="logo-cell group flex items-center justify-center p-6 md:p-8 border-2 border-ink bg-canvas hover:bg-ink transition-colors duration-150"
+            >
+                <img
+                    src={item.src}
+                    alt={item.name}
+                    class="logo-img h-8 md:h-10 w-auto max-w-[70%] object-contain"
+                    loading="lazy"
+                    draggable="false"
+                />
+            </a>
+        ))}
+    </div>
+
+</div>
+
+<style>
+    /* ── Press effect (neobrutalista shadow) ── */
+    .logo-cell {
+        box-shadow: 3px 3px 0 var(--color-ink);
+        transition:
+            box-shadow    0.12s ease,
+            transform     0.12s ease,
+            background-color 0.15s ease;
+    }
+    .logo-cell:hover {
+        box-shadow: 1px 1px 0 var(--color-ink);
+        transform: translate(2px, 2px);
+    }
+    .logo-cell:active {
+        box-shadow: 0 0 0 var(--color-ink);
+        transform: translate(3px, 3px);
+    }
+
+    /* ── Logo color normalization ──
+       brightness(0)           → todo negro (light default)
+       brightness(0) invert(1) → todo blanco (dark default / light hover)
+       En dark + hover vuelve a negro (bg-ink = claro) ── */
+    .logo-img {
+        filter: brightness(0);
+        transition: filter 0.15s ease;
+        pointer-events: none;
+        user-select: none;
+    }
+    /* dark mode: logo blanco */
+    :where(.dark, .dark *) .logo-img {
+        filter: brightness(0) invert(1);
+    }
+    /* light hover: logo blanco sobre fondo negro */
+    .logo-cell:hover .logo-img {
+        filter: brightness(0) invert(1);
+    }
+    /* dark hover: logo negro sobre fondo blanco */
+    :where(.dark, .dark *) .logo-cell:hover .logo-img {
+        filter: brightness(0);
+    }
+</style>

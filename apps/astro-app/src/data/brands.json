@@ -1,0 +1,7 @@
+[
+  { "name": "Adidas",        "logo": "adidas_logo.svg",        "url": "https://www.adidas.es" },
+  { "name": "Converse",      "logo": "converse_logo.svg",      "url": "https://www.converse.com" },
+  { "name": "L'Oréal",       "logo": "loreal_logo.svg",        "url": "https://www.loreal.com" },
+  { "name": "Ralph Lauren",  "logo": "ralph_lauren_logo.svg",  "url": "https://www.ralphlauren.com" },
+  { "name": "Sephora",       "logo": "sephora_logo.svg",       "url": "https://www.sephora.es" }
+]

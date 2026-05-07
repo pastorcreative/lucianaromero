@@ -1,0 +1,44 @@
+---
+import logoSvg from '../assets/img/lu-romero-logo.svg';
+---
+
+<section class="relative z-10 h-[100dvh] flex items-start justify-start">
+    <div class="container mx-auto px-8 pt-48 flex flex-col gap-6">
+        <img
+            src={logoSvg.src}
+            alt="LU.ROMERO"
+            class="w-[60vw] max-w-[800px] h-auto logo-adaptive"
+        />
+        <h1 class="hero-subtitle font-boldonse uppercase text-white text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.25em] leading-none opacity-80">
+            MAKE UP &amp; HAIR ARTIST BASED IN BCN
+        </h1>
+    </div>
+</section>
+
+<script>
+    import gsap from 'gsap';
+
+    const logo = document.querySelector('img[alt="LU.ROMERO"]');
+    const subtitle = document.querySelector('.hero-subtitle');
+
+    if (logo) {
+        gsap.fromTo(logo,
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 1.2, delay: 0.3, ease: 'power3.out' }
+        );
+    }
+
+    if (subtitle) {
+        gsap.fromTo(subtitle,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.9, delay: 0.7, ease: 'power3.out' }
+        );
+    }
+</script>
+
+<style>
+    /* Logo siempre blanco: se muestra sobre el canvas oscuro */
+    .logo-adaptive {
+        filter: brightness(0) invert(1);
+    }
+</style>

@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const year = new Date().getFullYear();
+
+const links = [
+    { name: 'Bio',        href: '/bio' },
+    { name: 'Gallery',    href: '/gallery' },
+    { name: 'Commercial', href: '/commercial' },
+    { name: 'Novias',     href: '/novias' },
+    { name: 'Courses',    href: '/courses' },
+    { name: 'Contacto',   href: '/#contact' },
+];
+
+const socials = [
+    { name: 'Instagram', icon: 'lucide:instagram', url: 'https://www.instagram.com/luromeromakeup/' },
+    { name: 'Facebook',  icon: 'lucide:facebook',  url: 'https://www.facebook.com/people/Luciana-Romero-Make-Up-Artist/100063943687534/' },
+    { name: 'LinkedIn',  icon: 'lucide:linkedin',  url: 'https://www.linkedin.com/in/lucianaromeromakeup/' },
+    { name: 'YouTube',   icon: 'lucide:youtube',   url: 'https://www.youtube.com/@lucianaromero9645' },
+];
+---
+
+<footer class="relative z-10 bg-canvas border-t-4 border-ink transition-colors duration-300">
+
+    <!-- Main footer grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 border-b-2 border-ink">
+
+        <!-- Brand column -->
+        <div class="border-b-2 md:border-b-0 md:border-r-2 border-ink px-6 md:px-10 py-10 flex flex-col justify-between gap-8">
+            <div>
+                <p class="font-boldonse uppercase text-3xl md:text-4xl tracking-tight text-ink leading-none">
+                    LU.<br />ROMERO
+                </p>
+                <p class="font-aleo text-sm text-ink opacity-50 mt-3 leading-relaxed">
+                    Make Up & Hair Artist<br />Based in BCN
+                </p>
+            </div>
+            <!-- Social icons -->
+            <div class="flex items-center gap-3">
+                {socials.map(s => (
+                    <a
+                        href={s.url}
+                        rel="nofollow noopener noreferrer"
+                        target="_blank"
+                        aria-label={s.name}
+                        class="w-9 h-9 border-2 border-ink flex items-center justify-center text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                    >
+                        <Icon name={s.icon} class="w-4 h-4" />
+                    </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- Nav column -->
+        <div class="border-b-2 md:border-b-0 md:border-r-2 border-ink px-6 md:px-10 py-10">
+            <p class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink mb-6">NAVEGACIÓN</p>
+            <ul class="flex flex-col gap-0">
+                {links.map(l => (
+                    <li class="border-b border-ink last:border-b-0">
+                        <a
+                            href={l.href}
+                            class="flex items-center justify-between py-3 font-boldonse uppercase text-sm tracking-widest text-ink hover:bg-ink hover:text-canvas hover:px-3 transition-all duration-150"
+                        >
+                            {l.name}
+                            <Icon name="lucide:arrow-right" class="w-3 h-3 opacity-30" />
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
+        <!-- Contact column -->
+        <div class="px-6 md:px-10 py-10 flex flex-col gap-6">
+            <p class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">CONTACTO DIRECTO</p>
+            <a
+                href="mailto:luromeroestudio@gmail.com"
+                class="group flex items-start gap-3 text-ink hover:opacity-70 transition-opacity duration-150"
+            >
+                <Icon name="lucide:mail" class="w-4 h-4 mt-0.5 flex-shrink-0" />
+                <span class="font-aleo text-sm break-all">luromeroestudio@gmail.com</span>
+            </a>
+            <div class="mt-auto pt-6 border-t-2 border-ink">
+                <p class="font-boldonse uppercase text-xs tracking-[0.2em] opacity-30 text-ink">
+                    Barcelona, España
+                </p>
+                <p class="font-boldonse uppercase text-xs tracking-[0.2em] opacity-20 text-ink mt-1">
+                    Disponible para proyectos internacionales
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 px-6 md:px-10 py-5">
+        <span class="font-boldonse uppercase text-xs tracking-[0.2em] opacity-30 text-ink">
+            © {year} LUCIANA ROMERO. TODOS LOS DERECHOS RESERVADOS.
+        </span>
+        <span class="font-boldonse uppercase text-xs tracking-[0.2em] opacity-20 text-ink">
+            MUA & HAIR ARTIST
+        </span>
+    </div>
+
+</footer>

@@ -1,0 +1,17 @@
+---
+import LogoGrid from './LogoGrid.astro';
+import brandsData from '../data/brands.json';
+
+const logoModules = import.meta.glob<{ default: string }>(
+    '../assets/img/brands/*.svg',
+    { eager: true, query: '?url' }
+);
+
+const items = brandsData.map(b => ({
+    name: b.name,
+    url:  b.url,
+    src:  (logoModules[`../assets/img/brands/${b.logo}`] as any)?.default ?? '',
+}));
+---
+
+<LogoGrid label="BRANDS" items={items} />

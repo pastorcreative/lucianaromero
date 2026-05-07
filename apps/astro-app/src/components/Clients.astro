@@ -1,0 +1,22 @@
+---
+import Brands from './Brands.astro';
+import Magazines from './Magazines.astro';
+---
+
+<section class="relative z-10 bg-canvas border-t-4 border-ink px-6 md:px-12 py-16 md:py-24 transition-colors duration-300">
+
+    <!-- Section header -->
+    <div class="flex items-baseline justify-between border-b-4 border-ink pb-4 mb-16 transition-colors duration-300">
+        <span class="font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">CLIENTES</span>
+    </div>
+
+    <!-- Brands block -->
+    <Brands />
+
+    <!-- Separator between blocks (muy sutil) -->
+    <div class="my-12" />
+
+    <!-- Magazines block -->
+    <Magazines />
+
+</section>

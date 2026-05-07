@@ -1,0 +1,171 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const menuItems = [
+    { name: 'Home', href: '/' },
+    { name: 'Bio', href: '/bio' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Commercial', href: '/commercial' },
+    { name: 'Courses', href: '/courses' },
+    { name: 'Contact', href: '/contact' },
+];
+---
+<header class="fixed top-0 left-0 right-0 z-50 w-full h-16 bg-canvas border-b border-ink transition-colors duration-300">
+    <nav class="px-6 md:px-8 h-full flex items-center justify-between gap-4">
+
+        <!-- Logo -->
+        <div class="text-ink text-xl uppercase font-boldonse flex-shrink-0">LU.ROMERO</div>
+
+        <!-- Desktop menu (md+) -->
+        <ul class="hidden md:flex h-16 flex-1 justify-end">
+            {menuItems.map(item => (
+                <li class="border-l border-ink last:border-r flex items-center transition-colors duration-300">
+                    <a
+                        href={item.href}
+                        class="flex items-center justify-center px-3 lg:px-4 h-full uppercase font-boldonse text-sm lg:text-base xl:text-lg text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                    >
+                        {item.name}
+                    </a>
+                </li>
+            ))}
+        </ul>
+
+        <!-- Right controls -->
+        <div class="flex items-center gap-2">
+            <!-- Dark mode toggle -->
+            <button
+                id="theme-toggle"
+                aria-label="Cambiar tema"
+                class="w-10 h-10 flex items-center justify-center text-ink hover:text-canvas transition-colors duration-150"
+            >
+                <Icon id="icon-sun" name="lucide:sun" class="w-5 h-5 hidden dark:block" />
+                <Icon id="icon-moon" name="lucide:moon" class="w-5 h-5 block dark:hidden" />
+            </button>
+
+            <!-- Hamburger button (mobile only) -->
+            <button
+                id="menu-toggle"
+                aria-label="Abrir menú"
+                aria-expanded="false"
+                aria-controls="offcanvas-menu"
+                class="md:hidden w-10 h-10 border-2 border-ink flex items-center justify-center text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+            >
+                <Icon name="lucide:menu" class="w-5 h-5" />
+            </button>
+        </div>
+    </nav>
+</header>
+
+<!-- Overlay -->
+<div
+    id="offcanvas-overlay"
+    class="fixed inset-0 z-40 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
+    aria-hidden="true"
+></div>
+
+<!-- Off-canvas menu -->
+<aside
+    id="offcanvas-menu"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Menú de navegación"
+    class="fixed top-0 right-0 z-50 h-full w-[80vw] max-w-xs bg-canvas border-l-2 border-ink flex flex-col translate-x-full md:hidden transition-colors duration-300"
+>
+    <!-- Off-canvas header -->
+    <div class="flex items-center justify-between h-16 px-6 border-b-2 border-ink flex-shrink-0">
+        <span class="font-boldonse uppercase text-sm tracking-widest text-ink opacity-50">MENÚ</span>
+        <button
+            id="menu-close"
+            aria-label="Cerrar menú"
+            class="w-10 h-10 border-2 border-ink flex items-center justify-center text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+        >
+            <Icon name="lucide:x" class="w-5 h-5" />
+        </button>
+    </div>
+
+    <!-- Nav items -->
+    <ul class="flex flex-col flex-1 overflow-hidden">
+        {menuItems.map((item, i) => (
+            <li
+                class="offcanvas-item border-b-2 border-ink overflow-hidden transition-colors duration-300"
+                style={`--i: ${i};`}
+            >
+                <a
+                    href={item.href}
+                    class="offcanvas-link flex items-center justify-between px-6 py-5 font-boldonse uppercase text-3xl text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                >
+                    <span>{item.name}</span>
+                    <Icon name="lucide:arrow-right" class="w-5 h-5 opacity-40" />
+                </a>
+            </li>
+        ))}
+    </ul>
+
+    <!-- Footer tag -->
+    <div class="px-6 py-4 border-t-2 border-ink flex-shrink-0 transition-colors duration-300">
+        <span class="font-boldonse uppercase text-xs tracking-[0.3em] text-ink opacity-30">LU.ROMERO © 2026</span>
+    </div>
+</aside>
+
+<script>
+    // ── Off-canvas ──
+    const toggle   = document.getElementById('menu-toggle')!;
+    const close    = document.getElementById('menu-close')!;
+    const aside    = document.getElementById('offcanvas-menu')!;
+    const overlay  = document.getElementById('offcanvas-overlay')!;
+    const items    = aside.querySelectorAll<HTMLElement>('.offcanvas-item');
+
+    function openMenu() {
+        aside.classList.remove('translate-x-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100');
+        toggle.setAttribute('aria-expanded', 'true');
+        document.body.style.overflow = 'hidden';
+
+        items.forEach((el, i) => {
+            el.style.transition = 'none';
+            el.style.transform  = 'translateY(100%)';
+            el.style.opacity    = '0';
+            el.getBoundingClientRect();
+            el.style.transition = `transform 0.4s cubic-bezier(0.33,1,0.68,1) ${i * 60 + 80}ms, opacity 0.3s ease ${i * 60 + 80}ms`;
+            el.style.transform  = 'translateY(0)';
+            el.style.opacity    = '1';
+        });
+    }
+
+    function closeMenu() {
+        aside.classList.add('translate-x-full');
+        overlay.classList.remove('opacity-100');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        toggle.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
+    }
+
+    toggle.addEventListener('click', openMenu);
+    close.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeMenu(); });
+
+    // ── Theme toggle ──
+    const themeBtn = document.getElementById('theme-toggle')!;
+
+    function applyTheme(dark: boolean) {
+        document.documentElement.classList.toggle('dark', dark);
+        localStorage.setItem('theme', dark ? 'dark' : 'light');
+    }
+
+    themeBtn.addEventListener('click', () => {
+        const isDark = document.documentElement.classList.contains('dark');
+        applyTheme(!isDark);
+    });
+</script>
+
+<style>
+    #offcanvas-menu {
+        transition: transform 0.45s cubic-bezier(0.76, 0, 0.24, 1), background-color 0.3s, border-color 0.3s;
+    }
+    .offcanvas-item {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+</style>
