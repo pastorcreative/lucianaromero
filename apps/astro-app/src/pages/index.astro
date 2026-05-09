@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import FluidCanvas from '../components/FluidCanvas.astro';
 import Hero from '../components/Hero.astro';
+import BioPreview from '../components/BioPreview.astro';
 import Bio from '../components/Bio.astro';
 import Clients from '../components/Clients.astro';
 import BentoGrid from '../components/BentoGrid.astro';
@@ -35,12 +36,15 @@ import Contact from '../components/Contact.astro';
 		<!-- Hero Section -->
 		<Hero />
 
-	<Bio />
+		<!-- Bio preview con vídeo -->
+		<BioPreview />
 
+<!-- Más contenido -->
+	<BentoGrid />
+	
 	<Clients />
 
-	<!-- Más contenido -->
-	<BentoGrid />
+	
 
 	<Contact />
 </Layout>

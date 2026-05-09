@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import contactoImg from '../assets/img/contacto.avif';
 
 const socials = [
     {
@@ -43,7 +44,7 @@ const socials = [
         <span class="font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink mt-2 md:mt-0">— HABLEMOS</span>
     </div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-0 lg:gap-8">
 
         <!-- Left: Social links -->
         <div class="border-2 border-ink mb-8 lg:mb-0">
@@ -72,6 +73,23 @@ const socials = [
                     </li>
                 ))}
             </ul>
+        </div>
+
+        <!-- Centre: photo -->
+        <div class="relative overflow-hidden border-2 border-ink mb-8 lg:mb-0 min-h-[400px] lg:min-h-0">
+            <img
+                src={contactoImg.src}
+                alt="Luciana Romero"
+                width={contactoImg.width}
+                height={contactoImg.height}
+                class="absolute inset-0 w-full h-full object-cover object-top"
+                loading="lazy"
+            />
+            <!-- Overlay label -->
+            <div class="absolute bottom-0 left-0 right-0 bg-ink px-4 py-2 flex items-center justify-between">
+                <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.25em]">LU.ROMERO</span>
+                <span class="font-boldonse uppercase text-canvas text-xs opacity-40">BCN</span>
+            </div>
         </div>
 
         <!-- Right: Contact form -->

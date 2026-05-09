@@ -2,8 +2,8 @@
 import logoSvg from '../assets/img/lu-romero-logo.svg';
 ---
 
-<section class="relative z-10 h-[100dvh] flex items-start justify-start">
-    <div class="container mx-auto px-8 pt-48 flex flex-col gap-6">
+<section class="hero-section sticky top-0 z-10 h-[100dvh] flex items-start justify-start overflow-hidden">
+    <div class="hero-content container mx-auto px-8 pt-48 flex flex-col gap-6">
         <img
             src={logoSvg.src}
             alt="LU.ROMERO"
@@ -17,10 +17,15 @@ import logoSvg from '../assets/img/lu-romero-logo.svg';
 
 <script>
     import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
 
     const logo = document.querySelector('img[alt="LU.ROMERO"]');
     const subtitle = document.querySelector('.hero-subtitle');
+    const heroContent = document.querySelector('.hero-content');
 
+    // Entrance animations
     if (logo) {
         gsap.fromTo(logo,
             { opacity: 0, y: 50 },
@@ -33,6 +38,21 @@ import logoSvg from '../assets/img/lu-romero-logo.svg';
             { opacity: 0, y: 20 },
             { opacity: 1, y: 0, duration: 0.9, delay: 0.7, ease: 'power3.out' }
         );
+    }
+
+    // Pan effect: content drifts upward as user scrolls past the hero
+    if (heroContent) {
+        gsap.to(heroContent, {
+            y: -120,
+            opacity: 0.15,
+            ease: 'none',
+            scrollTrigger: {
+                trigger: '.hero-section',
+                start: 'top top',
+                end: 'bottom top',
+                scrub: 0.6,
+            },
+        });
     }
 </script>
 

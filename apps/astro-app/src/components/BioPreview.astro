@@ -1,0 +1,166 @@
+---
+import { Icon } from 'astro-icon/components';
+import videoSrc from '../assets/img/video-loop-home.mp4?url';
+
+const lines = [
+    { label: 'MUA & HAIR ARTIST' },
+    { label: '16 AÑOS DE CARRERA' },
+    { label: 'BARCELONA · ARGENTINA' },
+    { label: 'MODA · PUBLICIDAD · NOVIAS' },
+];
+---
+
+<section class="bio-preview relative z-10 bg-canvas border-t-4 border-ink min-h-[100dvh] grid grid-cols-1 lg:grid-cols-2 transition-colors duration-300">
+
+    <!-- Left: bio summary -->
+    <div class="flex flex-col justify-between px-6 md:px-12 py-16 md:py-24 border-b-4 lg:border-b-0 lg:border-r-4 border-ink">
+
+        <div>
+            <span class="bp-label font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">01 / PRESENTACIÓN</span>
+
+            <!-- Keyword list -->
+            <ul class="mt-10" role="list">
+                {lines.map((item, i) => (
+                    <li class="bp-line border-b-2 border-ink py-5 flex items-center justify-between">
+                        <span class="font-boldonse uppercase text-2xl md:text-3xl lg:text-4xl tracking-tight text-ink leading-none">
+                            {item.label}
+                        </span>
+                        <span class="font-boldonse text-xs text-ink opacity-20 tabular-nums">
+                            {String(i + 1).padStart(2, '0')}
+                        </span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+
+        <div class="mt-12 md:mt-16">
+            <p class="bp-body font-aleo text-base md:text-lg text-ink opacity-70 leading-relaxed max-w-md">
+                Luciana Romero nació en Argentina. Con más de 16 años de carrera,
+                fusiona la pasión artística con el trabajo profesional en moda,
+                publicidad y eventos. Actualmente basada en Barcelona.
+            </p>
+
+            <a
+                href="/bio"
+                class="bp-cta bio-cta inline-flex items-center gap-3 mt-8 font-boldonse uppercase text-sm tracking-widest text-ink border-2 border-ink px-6 py-4 hover:bg-ink hover:text-canvas transition-colors duration-150"
+            >
+                Ver Bio Completa
+                <Icon name="lucide:arrow-right" class="w-4 h-4" />
+            </a>
+        </div>
+
+    </div>
+
+    <!-- Right: video vertical -->
+    <div class="bp-video relative overflow-hidden min-h-[70vh] lg:min-h-0">
+        <video
+            class="absolute inset-0 w-full h-full object-cover object-center"
+            src={videoSrc}
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Luciana Romero – vídeo de presentación"
+        />
+        <!-- Bottom label strip -->
+        <div class="bp-video-label absolute bottom-0 left-0 right-0 bg-ink px-6 py-3 flex items-center justify-between z-10">
+            <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.25em]">LU.ROMERO STUDIO</span>
+            <Icon name="lucide:circle-play" class="w-4 h-4 text-canvas opacity-50" />
+        </div>
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const section = document.querySelector('.bio-preview') as HTMLElement;
+    if (!section) throw new Error('bio-preview not found');
+
+    // Shared ScrollTrigger config
+    const trigger: ScrollTrigger.Vars = {
+        trigger: section,
+        start: 'top 80%',
+        once: true,
+    };
+
+    // Label "01 / PRESENTACIÓN"
+    gsap.fromTo(
+        section.querySelector('.bp-label'),
+        { opacity: 0, y: 24 },
+        { opacity: 0.3, y: 0, duration: 0.6, ease: 'power3.out', scrollTrigger: trigger }
+    );
+
+    // Keyword lines — stagger
+    gsap.fromTo(
+        section.querySelectorAll('.bp-line'),
+        { opacity: 0, y: 48, clipPath: 'inset(100% 0% 0% 0%)' },
+        {
+            opacity: 1,
+            y: 0,
+            clipPath: 'inset(0% 0% 0% 0%)',
+            duration: 0.7,
+            ease: 'power3.out',
+            stagger: 0.1,
+            delay: 0.15,
+            scrollTrigger: trigger,
+        }
+    );
+
+    // Body text
+    gsap.fromTo(
+        section.querySelector('.bp-body'),
+        { opacity: 0, y: 30 },
+        { opacity: 0.7, y: 0, duration: 0.8, ease: 'power3.out', delay: 0.55, scrollTrigger: trigger }
+    );
+
+    // CTA button
+    gsap.fromTo(
+        section.querySelector('.bp-cta'),
+        { opacity: 0, y: 20, scale: 0.97 },
+        { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.75, scrollTrigger: trigger }
+    );
+
+    // Video panel — slides in from right
+    gsap.fromTo(
+        section.querySelector('.bp-video'),
+        { opacity: 0, x: 60 },
+        { opacity: 1, x: 0, duration: 1.1, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger }
+    );
+
+    // Video label strip — slides up
+    gsap.fromTo(
+        section.querySelector('.bp-video-label'),
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.7, scrollTrigger: trigger }
+    );
+</script>
+
+<style>
+    /* Keep lines hidden until GSAP takes over */
+    .bp-line,
+    .bp-label,
+    .bp-body,
+    .bp-cta,
+    .bp-video,
+    .bp-video-label {
+        opacity: 0;
+    }
+
+    .bio-cta {
+        box-shadow: 3px 3px 0 var(--color-ink);
+        transition: box-shadow 0.15s, translate 0.15s, background-color 0.15s, color 0.15s;
+    }
+    .bio-cta:hover {
+        box-shadow: 1px 1px 0 var(--color-ink);
+        translate: 2px 2px;
+    }
+    .bio-cta:active {
+        box-shadow: none;
+        translate: 3px 3px;
+    }
+</style>
