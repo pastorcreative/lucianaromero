@@ -1,0 +1,83 @@
+---
+import type { DirectorData } from '../data/cursos';
+
+interface Props {
+    director: DirectorData;
+}
+const { director } = Astro.props;
+---
+
+<section class="relative z-10 bg-[#f0f0f0] dark:bg-[#1c1c1c] border-b-4 border-ink transition-colors duration-300">
+
+    <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+
+        <!-- Left: photo -->
+        <div class="cd-photo relative overflow-hidden aspect-[3/4] border-b-4 lg:border-b-0 lg:border-r-4 border-ink">
+            <img
+                src={director.photoMeta.src}
+                alt={`${director.nameLines.join(' ')} – ${director.photoLabel}`}
+                width={director.photoMeta.width}
+                height={director.photoMeta.height}
+                class="absolute inset-0 w-full h-full object-cover object-top"
+                loading="lazy"
+            />
+            <!-- Label overlay -->
+            <div class="absolute bottom-0 left-0 right-0 bg-ink px-6 py-3 flex items-center justify-between">
+                <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.25em]">{director.photoLabel}</span>
+                <span class="font-boldonse uppercase text-canvas text-xs opacity-40">{director.photoYears}</span>
+            </div>
+        </div>
+
+        <!-- Right: bio text -->
+        <div class="py-16 md:py-24 pl-0 lg:pl-12 flex flex-col justify-between gap-10">
+
+            <div>
+                <span class="cd-label font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">{director.sectionLabel}</span>
+
+                <h2 class="cd-name font-boldonse uppercase text-5xl md:text-6xl lg:text-7xl tracking-tight text-ink mt-6 leading-tight" set:html={director.nameLines.join('<br>')} />
+
+                <div class="mt-8 border-l-4 border-ink pl-6 space-y-5">
+                    <p class="cd-p font-aleo text-lg md:text-xl italic text-ink opacity-80 leading-relaxed">
+                        {director.quote}
+                    </p>
+                    <p class="cd-p font-aleo text-base md:text-lg text-ink opacity-70 leading-relaxed">
+                        {director.body}
+                    </p>
+                </div>
+            </div>
+
+            <!-- Stats row -->
+            <div class="cd-stats grid grid-cols-3 border-2 border-ink">
+                {director.stats.map((s, i) => (
+                    <div class:list={['px-4 py-6 text-center', i < 2 && 'border-r-2 border-ink']}>
+                        <p class="font-boldonse text-4xl text-ink leading-none">{s.value}</p>
+                        <p class="font-boldonse uppercase text-xs tracking-widest text-ink opacity-40 mt-2">{s.label}</p>
+                    </div>
+                ))}
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = { trigger: '.cd-label', start: 'top 85%', once: true };
+
+    gsap.fromTo('.cd-photo',  { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.cd-label',  { opacity: 0, y: 20 }, { opacity: 0.3, y: 0, duration: 0.5, scrollTrigger: trigger });
+    gsap.fromTo('.cd-name',   { opacity: 0, y: 40 }, { opacity: 1,   y: 0, duration: 0.8, delay: 0.1, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.cd-p',      { opacity: 0, y: 24 }, { opacity: 0.8, y: 0, duration: 0.7, stagger: 0.15, delay: 0.3, scrollTrigger: trigger });
+    gsap.fromTo('.cd-stats',  { opacity: 0, y: 20 }, { opacity: 1,   y: 0, duration: 0.6, delay: 0.6, scrollTrigger: trigger });
+</script>
+
+<style>
+    .cd-photo, .cd-label, .cd-name, .cd-p, .cd-stats { opacity: 0; }
+</style>

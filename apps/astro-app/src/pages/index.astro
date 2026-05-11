@@ -1,51 +1,49 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import FluidCanvas from '../components/FluidCanvas.astro';
-import Hero from '../components/Hero.astro';
-import BioPreview from '../components/BioPreview.astro';
-import Bio from '../components/Bio.astro';
-import Clients from '../components/Clients.astro';
-import BentoGrid from '../components/BentoGrid.astro';
-import Contact from '../components/Contact.astro';
+import Layout from "../layouts/Layout.astro";
+import FluidCanvas from "../components/FluidCanvas.astro";
+import Hero from "../components/Hero.astro";
+import BioPreview from "../components/BioPreview.astro";
+import Bio from "../components/Bio.astro";
+import Clients from "../components/Clients.astro";
+import BentoGrid from "../components/BentoGrid.astro";
+import Contact from "../components/Contact.astro";
 ---
+
 <Layout title="LU.ROMERO">
-		<!-- Canvas fluido como fondo -->
-		<FluidCanvas 
-			colorMin={0.50}
-			colorMax={0.52}
-			intensity={1.15}
-			gamma={2.5}
-			baseRadius={0.12}
-			trailLength={12}
-			smoothness={3.5}
-			deformation={0.1}
-			sizeVariationAmplitude={0.4}
-			sizeVariationFrequency={0.43}
-			sizeVariationBase={0.9}
-			organicOffsetAmplitude={0.18}
-			organicOffsetFrequencyX={1.2}
-			organicOffsetFrequencyY={0.5}
-			surfaceNoiseScale={3.0}
-			trailDecay={0.7}
-			mouseAttractionStrength={0.15}
-			mouseInfluence={0.4}
-			scrollSpeed={1.2}
-			animationSpeed={1.0}
-		/>
+  <!-- Canvas fluido como fondo -->
+  <FluidCanvas
+    colorMin={0.5}
+    colorMax={0.52}
+    intensity={1.15}
+    gamma={2.5}
+    baseRadius={0.11}
+    trailLength={12}
+    smoothness={2.5}
+    deformation={0.4}
+    sizeVariationAmplitude={0.4}
+    sizeVariationFrequency={0.43}
+    sizeVariationBase={0.9}
+    organicOffsetAmplitude={0.18}
+    organicOffsetFrequencyX={1.2}
+    organicOffsetFrequencyY={0.5}
+    surfaceNoiseScale={3.0}
+    trailDecay={0.7}
+    mouseAttractionStrength={0.15}
+    mouseInfluence={0.4}
+    scrollSpeed={1.2}
+    animationSpeed={1.0}
+  />
 
-		<!-- Hero Section -->
-		<Hero />
+  <!-- Hero Section -->
+  <Hero />
 
-		<!-- Bio preview con vídeo -->
-		<BioPreview />
+  <!-- Más contenido -->
+  <BentoGrid />
 
-<!-- Más contenido -->
-	<BentoGrid />
-	
-	<Clients />
+  <!-- Bio preview con vídeo -->
+  <BioPreview />
 
-	
+  <Clients />
 
-	<Contact />
+  <Contact />
 </Layout>
-

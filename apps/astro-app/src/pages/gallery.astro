@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import { editorialImages } from '../data/gallery';
+
+const breadcrumb = [
+    { label: 'Inicio',   href: '/' },
+    { label: 'Gallery',  href: '/gallery' },
+];
+---
+
+<Layout title="Gallery — LU.ROMERO">
+    <HeroPage
+        title="GALLERY"
+        subtitle="— Editorial & Moda"
+        breadcrumb={breadcrumb}
+    />
+    <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+        <div class="container-site py-16 md:py-24">
+            <GalleryGrid images={editorialImages} sectionLabel="EDITORIAL" />
+        </div>
+    </section>
+</Layout>

@@ -10,10 +10,12 @@ const lines = [
 ];
 ---
 
-<section class="bio-preview relative z-10 bg-canvas border-t-4 border-ink min-h-[100dvh] grid grid-cols-1 lg:grid-cols-2 transition-colors duration-300">
+<section class="bio-preview relative z-10 bg-canvas border-t-4 border-ink overflow-x-hidden transition-colors duration-300">
+
+    <div class="container-site grid grid-cols-1 lg:grid-cols-2 min-h-[100dvh]">
 
     <!-- Left: bio summary -->
-    <div class="flex flex-col justify-between px-6 md:px-12 py-16 md:py-24 border-b-4 lg:border-b-0 lg:border-r-4 border-ink">
+    <div class="flex flex-col justify-between py-16 md:py-24 pr-0 lg:pr-12 border-b-4 lg:border-b-0 lg:border-r-4 border-ink">
 
         <div>
             <span class="bp-label font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">01 / PRESENTACIÓN</span>
@@ -68,6 +70,8 @@ const lines = [
             <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.25em]">LU.ROMERO STUDIO</span>
             <Icon name="lucide:circle-play" class="w-4 h-4 text-canvas opacity-50" />
         </div>
+    </div>
+
     </div>
 
 </section>
@@ -125,11 +129,11 @@ const lines = [
         { opacity: 1, y: 0, scale: 1, duration: 0.7, ease: 'back.out(1.4)', delay: 0.75, scrollTrigger: trigger }
     );
 
-    // Video panel — slides in from right
+    // Video panel — slides in from bottom
     gsap.fromTo(
         section.querySelector('.bp-video'),
-        { opacity: 0, x: 60 },
-        { opacity: 1, x: 0, duration: 1.1, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger }
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out', delay: 0.1, scrollTrigger: trigger }
     );
 
     // Video label strip — slides up

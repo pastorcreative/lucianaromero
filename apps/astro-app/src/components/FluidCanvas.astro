@@ -105,30 +105,6 @@ const {
 	const scrollSpeed = parseFloat(canvas.dataset.scrollSpeed || '1.2');
 	const animationSpeed = parseFloat(canvas.dataset.animationSpeed || '1.0');
 
-	// Debug: Log props to verify they're being read correctly
-	console.log('🎨 FluidCanvas Props:', {
-		colorMin,
-		colorMax,
-		intensity,
-		gamma,
-		baseRadius,
-		trailLength,
-		smoothness,
-		deformation,
-		sizeVariationAmplitude,
-		sizeVariationFrequency,
-		sizeVariationBase,
-		organicOffsetAmplitude,
-		organicOffsetFrequencyX,
-		organicOffsetFrequencyY,
-		surfaceNoiseScale,
-		trailDecay,
-		mouseAttractionStrength,
-		mouseInfluence,
-		scrollSpeed,
-		animationSpeed
-	});
-
 	// Vertex Shader
 	const vertexShader = `
 		attribute vec3 position;
@@ -145,7 +121,7 @@ const {
 		precision highp float;
 
 		const float EPS = 1e-4;
-		const int ITR = 48;
+		const int ITR = 36;
 		const int TRAIL_LENGTH = ${trailLength};
 
 		uniform float uTime;
@@ -339,12 +315,14 @@ const {
 	const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 	const renderer = new THREE.WebGLRenderer({ 
 		canvas,
-		antialias: true,
+		antialias: false,
 		alpha: true
 	});
 	
 	renderer.setSize(canvasWidth, canvasHeight);
-	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+	// Cap at 1.0 – the shader produces inherently soft blobs;
+	// sub-pixel detail adds GPU fill cost without visible benefit.
+	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.0));
 
 	// Scroll trail
 	const scrollTrail: THREE.Vector2[] = Array.from({ length: trailLength }, () => new THREE.Vector2(0.5, 0.5));
@@ -402,12 +380,14 @@ const {
 
 	window.addEventListener('scroll', () => {
 		targetScrollY = window.scrollY;
-	});
+		// Pause rendering once the hero is fully covered by subsequent sections
+		paused = window.scrollY > window.innerHeight;
+	}, { passive: true });
 
 	window.addEventListener('mousemove', (e) => {
 		targetMouseX = (e.clientX / window.innerWidth) * 2 - 1;
 		targetMouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-	});
+	}, { passive: true });
 
 	// Update scroll trail
 	function updateScrollTrail() {
@@ -435,10 +415,17 @@ const {
 
 	// Animation loop
 	let time = 0;
-	function animate() {
-		requestAnimationFrame(animate);
+	let paused = false;
+	let lastTs = 0;
 
-		time += 0.016 * animationSpeed;
+	function animate(ts: number) {
+		requestAnimationFrame(animate);
+		if (paused) return;
+
+		const delta = lastTs ? Math.min((ts - lastTs) / 1000, 0.05) : 0.016;
+		lastTs = ts;
+
+		time += delta * animationSpeed;
 		uniforms.uTime.value = time;
 		uniforms.uMouse.value.set(mouseX, mouseY);
 
@@ -447,13 +434,22 @@ const {
 		renderer.render(scene, camera);
 	}
 
-	// Handle window resize
-	window.addEventListener('resize', () => {
-		const newWidth = window.innerWidth;
-		const newHeight = window.innerHeight;
-		renderer.setSize(newWidth, newHeight);
-		uniforms.uResolution.value.set(newWidth, newHeight);
+	// Pause when the browser tab is hidden
+	document.addEventListener('visibilitychange', () => {
+		paused = document.hidden;
 	});
 
-	animate();
+	// Handle window resize (debounced – avoids thrashing during live resize)
+	let resizeTimer: ReturnType<typeof setTimeout>;
+	window.addEventListener('resize', () => {
+		clearTimeout(resizeTimer);
+		resizeTimer = setTimeout(() => {
+			const newWidth = window.innerWidth;
+			const newHeight = window.innerHeight;
+			renderer.setSize(newWidth, newHeight);
+			uniforms.uResolution.value.set(newWidth, newHeight);
+		}, 150);
+	}, { passive: true });
+
+	animate(0);
 </script>

@@ -1,0 +1,100 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { CtaData } from '../data/cursos';
+
+interface Props {
+    cta: CtaData;
+}
+const { cta } = Astro.props;
+---
+
+<section class="relative z-10 bg-ink transition-colors duration-300">
+
+    <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+
+        <!-- Left: main CTA -->
+        <div class="py-16 md:py-24 pr-0 lg:pr-12 border-b-4 lg:border-b-0 lg:border-r-4 border-canvas/20 flex flex-col justify-between gap-12">
+
+            <div>
+                <span class="cc-label font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-canvas">{cta.sectionLabel}</span>
+
+                <h2 class="cc-title font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-canvas mt-6 leading-snug" set:html={cta.headingLines.join('<br>')} />
+
+                <p class="cc-body font-aleo text-lg text-canvas opacity-70 leading-relaxed mt-6">
+                    {cta.body}
+                </p>
+            </div>
+
+            <div class="cc-actions flex flex-col sm:flex-row gap-4">
+                <a
+                    href={cta.instagramUrl}
+                    rel="nofollow noopener noreferrer"
+                    target="_blank"
+                    class="cta-btn inline-flex items-center justify-center gap-3 font-boldonse uppercase text-sm tracking-widest border-2 border-canvas px-6 py-4 text-canvas hover:bg-canvas hover:text-ink transition-colors duration-150"
+                >
+                    <Icon name="lucide:instagram" class="w-4 h-4" />
+                    Instagram DM
+                </a>
+                <a
+                    href={`mailto:${cta.email}?subject=${encodeURIComponent(cta.emailSubject)}`}
+                    class="cta-btn inline-flex items-center justify-center gap-3 font-boldonse uppercase text-sm tracking-widest bg-canvas border-2 border-canvas px-6 py-4 text-ink hover:bg-transparent hover:text-canvas transition-colors duration-150"
+                >
+                    <Icon name="lucide:mail" class="w-4 h-4" />
+                    Enviar Email
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Right: included list -->
+        <div class="py-16 md:py-24 pl-0 lg:pl-12 flex flex-col gap-0">
+            <span class="cc-inc-label font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-canvas mb-8">{cta.includesLabel}</span>
+
+            {cta.includes.map((item, i) => (
+                <div class:list={['cc-item border-b border-canvas/20 py-5 flex items-center justify-between', i === 0 && 'border-t border-canvas/20']}>
+                    <span class="font-aleo text-base md:text-lg text-canvas">{item}</span>
+                    <Icon name="lucide:check" class="w-4 h-4 text-canvas opacity-60 flex-shrink-0 ml-4" />
+                </div>
+            ))}
+        </div>
+
+    </div>
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = { trigger: '.cc-label', start: 'top 85%', once: true };
+
+    gsap.fromTo('.cc-label',     { opacity: 0, y: 20 }, { opacity: 0.4, y: 0, duration: 0.5, scrollTrigger: trigger });
+    gsap.fromTo('.cc-title',     { opacity: 0, y: 40 }, { opacity: 1,   y: 0, duration: 0.8, delay: 0.1, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.cc-body',      { opacity: 0, y: 24 }, { opacity: 0.7, y: 0, duration: 0.6, delay: 0.25, scrollTrigger: trigger });
+    gsap.fromTo('.cc-actions',   { opacity: 0, y: 20 }, { opacity: 1,   y: 0, duration: 0.6, delay: 0.4, scrollTrigger: trigger });
+    gsap.fromTo('.cc-inc-label', { opacity: 0, y: 20 }, { opacity: 0.4, y: 0, duration: 0.5, delay: 0.1, scrollTrigger: trigger });
+    gsap.fromTo('.cc-item',
+        { opacity: 0, x: -20 },
+        { opacity: 1, x: 0, duration: 0.5, ease: 'power2.out', stagger: 0.08, delay: 0.25, scrollTrigger: trigger }
+    );
+</script>
+
+<style>
+    .cc-label, .cc-title, .cc-body, .cc-actions, .cc-inc-label, .cc-item { opacity: 0; }
+
+    .cta-btn {
+        box-shadow: 3px 3px 0 rgba(255,255,255,0.3);
+        transition: box-shadow 0.15s, translate 0.15s, background-color 0.15s, color 0.15s;
+    }
+    .cta-btn:hover {
+        box-shadow: 1px 1px 0 rgba(255,255,255,0.3);
+        translate: 2px 2px;
+    }
+    .cta-btn:active {
+        box-shadow: none;
+        translate: 3px 3px;
+    }
+</style>

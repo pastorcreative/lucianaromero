@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import { comercialImages } from '../data/gallery';
+
+const breadcrumb = [
+    { label: 'Inicio',      href: '/' },
+    { label: 'Commercial',  href: '/commercial' },
+];
+---
+
+<Layout title="Commercial — LU.ROMERO">
+    <HeroPage
+        title="COMMERCIAL"
+        subtitle="— Publicidad & Marcas"
+        breadcrumb={breadcrumb}
+    />
+    <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+        <div class="container-site py-16 md:py-24">
+            <GalleryGrid images={comercialImages} sectionLabel="COMERCIAL" />
+        </div>
+    </section>
+</Layout>

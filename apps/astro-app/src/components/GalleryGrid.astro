@@ -1,0 +1,101 @@
+---
+import type { GalleryImage } from '../data/gallery';
+
+interface Props {
+    images: GalleryImage[];
+    sectionLabel?: string;
+}
+
+const { images, sectionLabel } = Astro.props;
+const galleryId = `gallery-${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<div class="gallery-wrap">
+
+    {sectionLabel && (
+        <div class="flex items-baseline justify-between border-b-4 border-ink pb-4 mb-12">
+            <span class="font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">{sectionLabel}</span>
+            <span class="font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink">{images.length} IMÁGENES</span>
+        </div>
+    )}
+
+    <div class="gallery-grid">
+        {images.map((item) => (
+            <a
+                href={item.meta.src}
+                class={`gallery-item glightbox relative overflow-hidden border-2 border-ink cursor-zoom-in block`}
+                data-gallery={galleryId}
+                data-description={item.label}
+                data-alt={item.alt}
+            >
+                <img
+                    src={item.meta.src}
+                    alt={item.alt}
+                    width={item.meta.width}
+                    height={item.meta.height}
+                    class="w-full block"
+                    loading="lazy"
+                    decoding="async"
+                />
+                <div class="gallery-label absolute bottom-0 left-0 right-0 bg-ink px-5 py-3 flex items-center justify-between" aria-hidden="true">
+                    <span class="font-boldonse uppercase text-canvas text-xs md:text-sm tracking-[0.2em] leading-none">
+                        {item.label}
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-canvas opacity-50"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                </div>
+            </a>
+        ))}
+    </div>
+
+</div>
+
+<style>
+    .gallery-grid {
+        columns: 2;
+        column-gap: 0;
+    }
+
+    @media (min-width: 768px) {
+        .gallery-grid { columns: 3; }
+    }
+
+    @media (min-width: 1280px) {
+        .gallery-grid { columns: 4; }
+    }
+
+    .gallery-item {
+        break-inside: avoid;
+        margin-bottom: -2px;
+        margin-right: -2px;
+        display: block;
+    }
+
+    .gallery-label {
+        transform: translateY(100%);
+        transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .gallery-item:hover .gallery-label,
+    .gallery-item:focus-visible .gallery-label {
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    import GLightbox from 'glightbox';
+    import 'glightbox/dist/css/glightbox.min.css';
+
+    GLightbox({
+        selector: '.glightbox',
+        touchNavigation: true,
+        loop: true,
+        zoomable: false,
+        closeButton: true,
+        svg: {
+            close: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+            next: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+            prev: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+        },
+    });
+</script>
+

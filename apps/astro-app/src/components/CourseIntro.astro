@@ -1,0 +1,106 @@
+---
+import type { IntroData } from '../data/cursos';
+
+interface Props {
+    intro: IntroData;
+}
+const { intro } = Astro.props;
+---
+
+<section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+
+    <div class="container-site">
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+
+        <!-- Left: text -->
+        <div class="py-16 md:py-24 pr-0 lg:pr-12 border-b-4 lg:border-b-0 lg:border-r-4 border-ink flex flex-col justify-between gap-12">
+
+            <div>
+                <span class="ci-tag font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">{intro.tag}</span>
+
+                <h2 class="ci-title font-boldonse uppercase text-4xl md:text-5xl tracking-tight text-ink mt-6 leading-snug" set:html={intro.headingLines.join('<br>')} />
+
+                <p class="ci-lead font-aleo text-xl md:text-2xl italic text-ink opacity-70 mt-6 leading-relaxed">
+                    {intro.lead}
+                </p>
+            </div>
+
+            <div class="space-y-5">
+                {intro.paragraphs.map(para => (
+                    <p class="ci-p font-aleo text-base md:text-lg text-ink opacity-70 leading-relaxed" set:html={para} />
+                ))}
+
+                <!-- Chips row -->
+                <div class="ci-chips flex flex-wrap items-center gap-x-3 gap-y-1 pt-2">
+                    {intro.chips.map((chip, i, arr) => (
+                        <>
+                            <span class="font-boldonse uppercase text-xs tracking-widest text-ink opacity-60">{chip}</span>
+                            {i < arr.length - 1 && <span class="font-boldonse text-ink opacity-20 select-none">/</span>}
+                        </>
+                    ))}
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Right: images stacked -->
+        <div class="grid grid-rows-2 min-h-[70vh] lg:min-h-0">
+
+            <!-- Main image -->
+            <div class="ci-img-main relative overflow-hidden border-b-2 border-ink">
+                <img
+                    src={intro.mainImageMeta.src}
+                    alt={intro.mainImageAlt}
+                    width={intro.mainImageMeta.width}
+                    height={intro.mainImageMeta.height}
+                    class="absolute inset-0 w-full h-full object-cover object-center"
+                    loading="eager"
+                />
+                <div class="absolute top-0 left-0 bg-ink px-4 py-2">
+                    <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.2em]">{intro.mainImageLabel}</span>
+                </div>
+            </div>
+
+            <!-- Secondary image -->
+            <div class="ci-img-sec relative overflow-hidden">
+                <img
+                    src={intro.secondaryImageMeta.src}
+                    alt={intro.secondaryImageAlt}
+                    width={intro.secondaryImageMeta.width}
+                    height={intro.secondaryImageMeta.height}
+                    class="absolute inset-0 w-full h-full object-cover object-center"
+                    loading="lazy"
+                />
+                <div class="absolute bottom-0 right-0 bg-ink px-4 py-2">
+                    <span class="font-boldonse uppercase text-canvas text-xs tracking-[0.2em]">{intro.secondaryImageLabel}</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = { trigger: '.ci-tag', start: 'top 85%', once: true };
+
+    gsap.fromTo('.ci-tag',    { opacity: 0, y: 20 }, { opacity: 0.3, y: 0, duration: 0.5, scrollTrigger: trigger });
+    gsap.fromTo('.ci-title',  { opacity: 0, y: 40 }, { opacity: 1,   y: 0, duration: 0.8, delay: 0.1, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.ci-lead',   { opacity: 0, y: 30 }, { opacity: 0.7, y: 0, duration: 0.7, delay: 0.25, scrollTrigger: trigger });
+    gsap.fromTo('.ci-p',      { opacity: 0, y: 24 }, { opacity: 0.7, y: 0, duration: 0.6, stagger: 0.12, delay: 0.35, scrollTrigger: trigger });
+    gsap.fromTo('.ci-chips',  { opacity: 0, y: 16 }, { opacity: 1,   y: 0, duration: 0.5, delay: 0.7, scrollTrigger: trigger });
+    gsap.fromTo('.ci-img-main', { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 1.1, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.ci-img-sec',  { opacity: 0, scale: 1.04 }, { opacity: 1, scale: 1, duration: 1.1, delay: 0.2, ease: 'power3.out', scrollTrigger: trigger });
+</script>
+
+<style>
+    .ci-tag, .ci-title, .ci-lead, .ci-p, .ci-chips, .ci-img-main, .ci-img-sec {
+        opacity: 0;
+    }
+</style>

@@ -1,0 +1,107 @@
+---
+import type { AcademyData } from '../data/cursos';
+
+interface Props {
+    academy: AcademyData;
+}
+const { academy } = Astro.props;
+---
+
+<section class="relative z-10 bg-canvas border-b-4 border-ink py-16 md:py-24 transition-colors duration-300">
+
+    <div class="container-site">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between border-b-4 border-ink pb-4 mb-14">
+        <h2 class="ca-title font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">{academy.sectionTitle}</h2>
+        <span class="ca-sub font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink mt-2 md:mt-0">{academy.sectionLabel}</span>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-12 items-start">
+
+        <!-- Left: studio info -->
+        <div class="ca-info mb-12 lg:mb-0 flex flex-col gap-8">
+            <div class="border-2 border-ink p-8 academy-card">
+                <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">NOMBRE</span>
+                <p class="font-boldonse uppercase text-3xl md:text-4xl tracking-tight text-ink mt-3 leading-none">
+                    {academy.name}
+                </p>
+            </div>
+
+            <div class="border-2 border-ink p-8">
+                <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">DIRECCIÓN</span>
+                <p class="font-aleo text-lg text-ink mt-3 leading-relaxed">
+                    {academy.address}<br />
+                    <strong>{academy.addressStrong}</strong>
+                </p>
+                <a
+                    href={academy.mapUrl}
+                    rel="nofollow noopener noreferrer"
+                    target="_blank"
+                    class="ca-map inline-flex items-center gap-2 mt-5 font-boldonse uppercase text-xs tracking-widest border-2 border-ink px-4 py-2 text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                >
+                    Ver en Google Maps →
+                </a>
+            </div>
+
+            <div class="border-2 border-ink p-8">
+                <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">MODALIDAD</span>
+                <ul class="mt-4 space-y-3">
+                    {academy.modalities.map(item => (
+                        <li class="flex items-start gap-3 font-aleo text-base text-ink opacity-70">
+                            <span class="font-boldonse text-ink mt-0.5">→</span>
+                            {item}
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right: photo grid -->
+        <div class="ca-photos grid grid-cols-2 gap-3">
+            {academy.photos.map((p, i) => (
+                <div
+                    class="ca-photo relative overflow-hidden border-2 border-ink"
+                    style={`aspect-ratio: 4/3; --photo-delay: ${i * 0.12}s`}
+                >
+                    <img
+                        src={p.meta.src}
+                        alt={p.alt}
+                        width={p.meta.width}
+                        height={p.meta.height}
+                        class="absolute inset-0 w-full h-full object-cover object-center hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                    />
+                </div>
+            ))}
+        </div>
+
+    </div>
+
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = { trigger: '.ca-title', start: 'top 85%', once: true };
+
+    gsap.fromTo('.ca-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.ca-sub',   { opacity: 0, y: 20 }, { opacity: 0.4, y: 0, duration: 0.5, delay: 0.1, scrollTrigger: trigger });
+    gsap.fromTo('.ca-info',  { opacity: 0, y: 40 }, { opacity: 1,   y: 0, duration: 0.8, delay: 0.15, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.ca-photo',
+        { opacity: 0, y: 40 },
+        { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12, delay: 0.2, scrollTrigger: trigger }
+    );
+</script>
+
+<style>
+    .ca-title, .ca-sub, .ca-info, .ca-photo { opacity: 0; }
+
+    .academy-card {
+        box-shadow: 4px 4px 0 var(--color-ink);
+    }
+</style>

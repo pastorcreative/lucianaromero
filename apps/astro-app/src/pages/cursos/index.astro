@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HeroPage from '../../components/HeroPage.astro';
+import { Icon } from 'astro-icon/components';
+import { cursos } from '../../data/cursos';
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: 'Cursos', href: '/cursos' },
+];
+
+const lista = Object.values(cursos);
+---
+
+<Layout title="Cursos — LU.ROMERO">
+    <HeroPage
+        title="CURSOS"
+        subtitle="— Formación profesional de maquillaje & peinado en Barcelona"
+        breadcrumb={breadcrumb}
+    />
+
+    <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+        <div class="container-site py-16 md:py-24">
+
+            <!-- Section header -->
+            <div class="flex flex-col md:flex-row md:items-baseline md:justify-between border-b-4 border-ink pb-4 mb-16">
+                <span class="font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">FORMACIÓN</span>
+                <span class="font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink mt-2 md:mt-0">— {lista.length} CURSO{lista.length !== 1 ? 'S' : ''} DISPONIBLE{lista.length !== 1 ? 'S' : ''}</span>
+            </div>
+
+            <!-- Grid de cursos -->
+            <ul class="grid grid-cols-1 gap-8" role="list">
+                {lista.map((curso) => (
+                    <li class="curso-card group border-2 border-ink flex flex-col sm:flex-row sm:min-h-[340px] bg-canvas transition-colors duration-300">
+
+                        <!-- Imagen -->
+                        <a href={`/cursos/${curso.slug}`} class="block relative overflow-hidden aspect-[4/3] sm:aspect-auto sm:w-72 lg:w-96 flex-shrink-0 sm:self-stretch border-b-2 sm:border-b-0 sm:border-r-2 border-ink">
+                            <img
+                                src={curso.intro.mainImageMeta.src}
+                                alt={curso.intro.mainImageAlt}
+                                width={curso.intro.mainImageMeta.width}
+                                height={curso.intro.mainImageMeta.height}
+                                class="w-full h-full object-cover object-center block transition-transform duration-500 group-hover:scale-105"
+                                loading="lazy"
+                            />
+                        </a>
+
+                        <!-- Contenido -->
+                        <div class="flex flex-col flex-1 p-6 md:p-10 gap-4 justify-between">
+                            <div class="flex-1">
+                                <h2 class="font-boldonse uppercase text-3xl md:text-4xl tracking-tight text-ink leading-tight">
+                                    {curso.heroTitle}
+                                </h2>
+                                <p class="font-aleo text-base md:text-lg text-ink opacity-70 leading-relaxed mt-3 max-w-xl">
+                                    {curso.intro.lead}
+                                </p>
+
+                                <!-- Chips -->
+                                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 mt-4">
+                                    {curso.intro.chips.map((chip, i, arr) => (
+                                        <>
+                                            <span class="font-boldonse uppercase text-xs tracking-widest text-ink opacity-50">{chip}</span>
+                                            {i < arr.length - 1 && <span class="font-boldonse text-ink opacity-20 select-none">/</span>}
+                                        </>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <!-- CTA -->
+                            <a
+                                href={`/cursos/${curso.slug}`}
+                                class="curso-btn mt-4 self-start inline-flex items-center gap-3 font-boldonse uppercase text-sm tracking-widest border-2 border-ink px-6 py-4 text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                            >
+                                Ver curso
+                                <Icon name="lucide:arrow-right" class="w-4 h-4" />
+                            </a>
+                        </div>
+
+                    </li>
+                ))}
+            </ul>
+
+            <!-- Próximamente banner (si hay pocos cursos) -->
+            {lista.length < 3 && (
+                <div class="mt-8 border-2 border-ink border-dashed p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div>
+                        <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-30 text-ink">PRÓXIMAMENTE</span>
+                        <p class="font-boldonse uppercase text-2xl md:text-3xl text-ink mt-2 leading-tight">
+                            Más cursos en camino
+                        </p>
+                        <p class="font-aleo text-base text-ink opacity-60 mt-2">
+                            Sígueme en Instagram para ser la primera en enterarte de nuevas formaciones.
+                        </p>
+                    </div>
+                    <a
+                        href="https://www.instagram.com/luromeromakeup/"
+                        rel="nofollow noopener noreferrer"
+                        target="_blank"
+                        class="flex-shrink-0 inline-flex items-center gap-3 font-boldonse uppercase text-sm tracking-widest border-2 border-ink px-6 py-4 text-ink hover:bg-ink hover:text-canvas transition-colors duration-150"
+                    >
+                        <Icon name="lucide:instagram" class="w-4 h-4" />
+                        @luromeromakeup
+                    </a>
+                </div>
+            )}
+
+        </div>
+    </section>
+</Layout>
+
+<style>
+    .curso-card {
+        box-shadow: 4px 4px 0 var(--color-ink);
+        transition: box-shadow 0.12s ease, transform 0.12s ease;
+    }
+    .curso-card:hover {
+        box-shadow: 2px 2px 0 var(--color-ink);
+        transform: translate(2px, 2px);
+    }
+    .curso-btn {
+        box-shadow: 3px 3px 0 var(--color-ink);
+        transition: box-shadow 0.12s ease, transform 0.12s ease, background-color 0.15s ease, color 0.15s ease;
+    }
+    .curso-btn:hover {
+        box-shadow: 1px 1px 0 var(--color-ink);
+        transform: translate(2px, 2px);
+    }
+    .curso-btn:active {
+        box-shadow: 0 0 0 var(--color-ink);
+        transform: translate(3px, 3px);
+    }
+</style>

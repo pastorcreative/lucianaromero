@@ -1,0 +1,83 @@
+---
+import type { LearningData } from '../data/cursos';
+
+interface Props {
+    learning: LearningData;
+}
+const { learning } = Astro.props;
+const items = learning.items;
+---
+
+<section class="relative z-10 bg-canvas border-b-4 border-ink py-16 md:py-24 transition-colors duration-300">
+
+    <div class="container-site">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-baseline md:justify-between border-b-4 border-ink pb-4 mb-14">
+        <h2 class="cl-title font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink">{learning.sectionTitle}</h2>
+        <span class="cl-sub font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink mt-2 md:mt-0">{learning.sectionLabel}</span>
+    </div>
+
+    <!-- Cards grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
+        {items.map((item, i) => (
+            <div class:list={[
+                'cl-card flex flex-col justify-between p-8 md:p-10 border-2 border-ink course-card',
+                i < items.length - 1 && 'border-b-0 md:border-b-2 md:border-r-0',
+                i === items.length - 1 && '',
+            ]} style={`--card-delay: ${i * 0.15}s`}>
+                <div>
+                    <div class="flex items-start justify-between mb-8">
+                        <span class="font-boldonse uppercase text-xs tracking-[0.3em] border-2 border-ink px-3 py-1 text-ink opacity-60">
+                            {item.tag}
+                        </span>
+                        <span class="font-boldonse text-5xl text-ink opacity-10 leading-none tabular-nums">
+                            {item.num}
+                        </span>
+                    </div>
+                    <h3 class="font-boldonse uppercase text-xl md:text-2xl tracking-tight text-ink leading-snug mb-5">
+                        {item.title}
+                    </h3>
+                    <p class="font-aleo text-base text-ink opacity-70 leading-relaxed">
+                        {item.body}
+                    </p>
+                </div>
+            </div>
+        ))}
+    </div>
+
+    </div>
+
+</section>
+
+<script>
+    import gsap from 'gsap';
+    import { ScrollTrigger } from 'gsap/ScrollTrigger';
+    gsap.registerPlugin(ScrollTrigger);
+
+    const trigger = { trigger: '.cl-title', start: 'top 85%', once: true };
+
+    gsap.fromTo('.cl-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: trigger });
+    gsap.fromTo('.cl-sub',   { opacity: 0, y: 20 }, { opacity: 0.4, y: 0, duration: 0.6, delay: 0.1, scrollTrigger: trigger });
+    gsap.fromTo('.cl-card',
+        { opacity: 0, y: 50 },
+        {
+            opacity: 1, y: 0, duration: 0.75, ease: 'power3.out',
+            stagger: 0.15, delay: 0.2,
+            scrollTrigger: trigger,
+        }
+    );
+</script>
+
+<style>
+    .cl-title, .cl-sub, .cl-card { opacity: 0; }
+
+    .course-card {
+        box-shadow: 4px 4px 0 var(--color-ink);
+        transition: box-shadow 0.15s, translate 0.15s;
+    }
+    .course-card:hover {
+        box-shadow: 2px 2px 0 var(--color-ink);
+        translate: 2px 2px;
+    }
+</style>

@@ -1,0 +1,473 @@
+{
+  "comercial": [
+    {
+      "brand": "BYLIA",
+      "images": [
+        "BYLIA/491856BF-F20A-42AA-B867-67D4C14DFAEB.webp",
+        "BYLIA/5802B1F6-823A-4998-82EB-687DDC46BF8B.webp",
+        "BYLIA/6BCB2FA7-25C5-4F13-ADFD-CEFE2120E9DE.webp",
+        "BYLIA/A785659C-C701-4576-9B57-396C62BEBF3A.webp",
+        "BYLIA/BY LIA1772 copy.webp",
+        "BYLIA/BY LIA1889 copy.webp",
+        "BYLIA/BY LIA2061 copy.webp",
+        "BYLIA/BY LIA2293 copy.webp",
+        "BYLIA/EEE432AD-1760-44EF-994A-A851434F6D71.webp",
+        "BYLIA/IMG_0695.webp",
+        "BYLIA/IMG_0696.webp",
+        "BYLIA/IMG_0697.webp",
+        "BYLIA/IMG_0698.webp"
+      ]
+    },
+    {
+      "brand": "CARLOTA CAHIS",
+      "images": [
+        "CARLOTA CAHIS/IMG_3245.WEBP",
+        "CARLOTA CAHIS/IMG_3247.webp",
+        "CARLOTA CAHIS/IMG_4158.WEBP",
+        "CARLOTA CAHIS/IMG_4160.WEBP",
+        "CARLOTA CAHIS/IMG_4162.WEBP"
+      ]
+    },
+    {
+      "brand": "COCA COLA",
+      "images": [
+        "COCA COLA/IMG-0754.webp",
+        "COCA COLA/IMG-0755.webp"
+      ]
+    },
+    {
+      "brand": "DELARGE",
+      "images": [
+        "DELARGE/IMG_7829.webp",
+        "DELARGE/IMG_7830.webp",
+        "DELARGE/WhatsApp Image 2026-04-22 at 15.33.22 (1).webp",
+        "DELARGE/WhatsApp Image 2026-04-22 at 15.33.22 (2).webp"
+      ]
+    },
+    {
+      "brand": "DESIDERATA",
+      "images": [
+        "DESIDERATA/8f5ad0d5-a1e3-445e-868c-ff205e9cabec.webp",
+        "DESIDERATA/DESIDERATA SS26 DIA 1 1766 WEB OK.webp",
+        "DESIDERATA/DESIDERATA SS26 DIA 1 1808 OK.webp",
+        "DESIDERATA/IMG_5503.webp",
+        "DESIDERATA/IMG_5999.webp",
+        "DESIDERATA/IMG_6010.webp",
+        "DESIDERATA/IMG_6189.webp",
+        "DESIDERATA/c49bf7cd-f039-49d6-82e2-2867a0a4c5cf.webp",
+        "DESIDERATA/d66e112e-e8ad-49c0-8259-ff1bd5c297f7.webp",
+        "DESIDERATA/e5275a5d-11b4-4337-9813-ab5ddb4c5535.webp"
+      ]
+    },
+    {
+      "brand": "DOMA",
+      "images": [
+        "DOMA/IMG_6320.webp",
+        "DOMA/IMG_6321.webp",
+        "DOMA/IMG_6322.webp",
+        "DOMA/IMG_6323.webp"
+      ]
+    },
+    {
+      "brand": "EQUUS",
+      "images": [
+        "EQUUS/IMG_6333.webp",
+        "EQUUS/IMG_6335.webp",
+        "EQUUS/IMG_7004.webp",
+        "EQUUS/IMG_7005.webp",
+        "EQUUS/IMG_7516.webp",
+        "EQUUS/IMG_7517.webp",
+        "EQUUS/IMG_7518.webp"
+      ]
+    },
+    {
+      "brand": "GINEBRA",
+      "images": [
+        "GINEBRA/DSCF0056D.webp",
+        "GINEBRA/DSCF0104C.webp",
+        "GINEBRA/DSCF9833B.webp",
+        "GINEBRA/EC77721B-DC51-4BA4-BBF0-C2A627926A65.webp",
+        "GINEBRA/Ginebra.webp",
+        "GINEBRA/HighresScreenshot00022B.webp",
+        "GINEBRA/Minimal_Default.0002_(13)B.webp",
+        "GINEBRA/Minimal_Default.0002_(23)B.webp"
+      ]
+    },
+    {
+      "brand": "INTIMISSIMI",
+      "images": [
+        "INTIMISSIMI/IMG-1014.webp",
+        "INTIMISSIMI/IMG-1015.webp",
+        "INTIMISSIMI/Intimissimi uomo.webp"
+      ]
+    },
+    {
+      "brand": "LA ROCA VILLAGE",
+      "images": [
+        "LA ROCA VILLAGE/COLLECTION_SPRING_PIK_SHOOT_JANUARY_2023_34-WEB_PORTRAIT.webp",
+        "LA ROCA VILLAGE/COLLECTION_SPRING_PIK_SHOOT_JANUARY_2023_55-WEB_PORTRAIT.webp",
+        "LA ROCA VILLAGE/IMG_1412.WEBP",
+        "LA ROCA VILLAGE/IMG_1413.WEBP",
+        "LA ROCA VILLAGE/IMG_1414.webp",
+        "LA ROCA VILLAGE/IMG_1415.webp",
+        "LA ROCA VILLAGE/IMG_7851.webp",
+        "LA ROCA VILLAGE/IMG_7853.webp"
+      ]
+    },
+    {
+      "brand": "MAISON OLA",
+      "images": [
+        "MAISON OLA/000913--005--VK.webp",
+        "MAISON OLA/000914--001--VK.webp",
+        "MAISON OLA/000915--007--VK.webp",
+        "MAISON OLA/000917--001--VK.webp",
+        "MAISON OLA/000918--002--VK.webp",
+        "MAISON OLA/000918--004--VK.webp",
+        "MAISON OLA/000918--005--VK.webp"
+      ]
+    },
+    {
+      "brand": "MANGO",
+      "images": [
+        "MANGO/WhatsApp Image 2026-04-22 at 15.33.22.webp",
+        "MANGO/WhatsApp Image 2026-04-22 at 15.33.23 (1).webp",
+        "MANGO/WhatsApp Image 2026-04-22 at 15.33.23.webp"
+      ]
+    },
+    {
+      "brand": "MONTBLANC",
+      "images": [
+        "MONTBLANC/Maxi Iglesias Montblanc.webp"
+      ]
+    },
+    {
+      "brand": "PARDO HATS",
+      "images": [
+        "PARDO HATS/A1B709B5-8D6A-4FE8-A6E6-468A29CDDB4D.webp",
+        "PARDO HATS/IMG_7862.webp",
+        "PARDO HATS/Pardo Hats.webp"
+      ]
+    },
+    {
+      "brand": "POMPEII",
+      "images": [
+        "POMPEII/IMG-0756.webp",
+        "POMPEII/IMG-0757.webp",
+        "POMPEII/IMG-0759.webp",
+        "POMPEII/IMG-0763.webp",
+        "POMPEII/IMG-0765.webp",
+        "POMPEII/IMG-8918.webp",
+        "POMPEII/IMG-8919.webp",
+        "POMPEII/IMG-8920.webp"
+      ]
+    },
+    {
+      "brand": "PRUNE",
+      "images": [
+        "PRUNE/IMG_9153.webp",
+        "PRUNE/IMG_9154.webp",
+        "PRUNE/IMG_9156.webp"
+      ]
+    },
+    {
+      "brand": "REEBOK",
+      "images": [
+        "REEBOK/_MG_6559.webp",
+        "REEBOK/_MG_7586.webp",
+        "REEBOK/_MG_7828.webp"
+      ]
+    },
+    {
+      "brand": "SALTYFACE",
+      "images": [
+        "SALTYFACE/IMG_5274.webp",
+        "SALTYFACE/IMG_5275.webp",
+        "SALTYFACE/IMG_5277.WEBP",
+        "SALTYFACE/IMG_5280.WEBP",
+        "SALTYFACE/IMG_5282.WEBP",
+        "SALTYFACE/IMG_5283.WEBP",
+        "SALTYFACE/IMG_5285.WEBP",
+        "SALTYFACE/IMG_5286.WEBP"
+      ]
+    },
+    {
+      "brand": "SAMSUNG",
+      "images": [
+        "SAMSUNG/IMG_6973.webp",
+        "SAMSUNG/IMG_6974.webp",
+        "SAMSUNG/IMG_6975.webp"
+      ]
+    },
+    {
+      "brand": "SUOT",
+      "images": [
+        "SUOT/IMG_1225.webp",
+        "SUOT/IMG_1226.webp",
+        "SUOT/IMG_1227.webp",
+        "SUOT/IMG_1228.webp",
+        "SUOT/IMG_1229.webp",
+        "SUOT/IMG_1230.webp",
+        "SUOT/IMG_1231.webp",
+        "SUOT/IMG_1232.webp",
+        "SUOT/IMG_1233.webp",
+        "SUOT/IMG_1234.webp"
+      ]
+    },
+    {
+      "brand": "WALD",
+      "images": [
+        "WALD/70EEA622-2377-4B9D-BF64-70EC7F7991A4.webp",
+        "WALD/Wald+PaulaAmenta_13.webp",
+        "WALD/Wald+PaulaAmenta_15.webp",
+        "WALD/Wald+PaulaAmenta_16.webp"
+      ]
+    },
+    {
+      "brand": "WOLFLAMB",
+      "images": [
+        "WOLFLAMB/IMG_1431.WEBP",
+        "WOLFLAMB/IMG_1432.WEBP",
+        "WOLFLAMB/IMG_1435.WEBP",
+        "WOLFLAMB/IMG_1437.WEBP",
+        "WOLFLAMB/IMG_3104.webp",
+        "WOLFLAMB/IMG_3105.webp",
+        "WOLFLAMB/IMG_3106.webp"
+      ]
+    }
+  ],
+  "editorial": [
+    {
+      "brand": "CONTRIBUTOR",
+      "images": [
+        "CONTRIBUTOR/20.webp",
+        "CONTRIBUTOR/47b253f5-5ffd-4ef4-9e3e-2e50c37549f8.webp",
+        "CONTRIBUTOR/IMG-0392.webp",
+        "CONTRIBUTOR/IMG-8834-2.webp",
+        "CONTRIBUTOR/IMG-9056.webp"
+      ]
+    },
+    {
+      "brand": "DREAMINGLESS",
+      "images": [
+        "DREAMINGLESS/image00009.webp",
+        "DREAMINGLESS/image00010.webp",
+        "DREAMINGLESS/image00011.webp"
+      ]
+    },
+    {
+      "brand": "EY",
+      "images": [
+        "EY/-MG-6933.webp",
+        "EY/-MG-8063.webp",
+        "EY/ey!.webp",
+        "EY/image00108.webp",
+        "EY/image00109.webp",
+        "EY/image00110.webp"
+      ]
+    },
+    {
+      "brand": "FLANELLE",
+      "images": [
+        "FLANELLE/DSC00800.webp",
+        "FLANELLE/FLANELLE-DIGITAL-ISSUE-september 2024 v9 (1).webp",
+        "FLANELLE/SHOOTING 1/15.webp",
+        "FLANELLE/SHOOTING 1/paula_amenta_01.webp",
+        "FLANELLE/SHOOTING 1/paula_amenta_05.webp",
+        "FLANELLE/SHOOTING 1/paula_amenta_13.webp",
+        "FLANELLE/SHOOTING 1/paula_amenta_17.webp",
+        "FLANELLE/SHOOTING 1/paula_amenta_19.webp"
+      ]
+    },
+    {
+      "brand": "HERDES",
+      "images": [
+        "HERDES/IMG_7864.webp",
+        "HERDES/Mutations_edit_-06.webp",
+        "HERDES/Mutations_edit_-07.webp",
+        "HERDES/Mutations_edit_-11.webp",
+        "HERDES/Mutations_edit_-14.webp",
+        "HERDES/Mutations_edit_-18.webp"
+      ]
+    },
+    {
+      "brand": "KLUID",
+      "images": [
+        "KLUID/B04807F0-0E29-437D-AB18-B6DFB313088B.webp",
+        "KLUID/C7086CDD-FB66-467E-B0F7-1929FE255696.webp",
+        "KLUID/D5C99FB0-D758-44B2-AA83-7EDA25B1E644.webp"
+      ]
+    },
+    {
+      "brand": "L´OFFICIEL",
+      "images": [
+        "L´OFFICIEL/Hard Flower 1.webp",
+        "L´OFFICIEL/Hard Flower 5.webp",
+        "L´OFFICIEL/Hard Flower 7.webp",
+        "L´OFFICIEL/Nepalauziama Portada.webp",
+        "L´OFFICIEL/SHOOTING 1/IMG-0503.webp",
+        "L´OFFICIEL/SHOOTING 1/Lu0226.webp",
+        "L´OFFICIEL/SHOOTING 1/Lu0356 web.webp",
+        "L´OFFICIEL/SHOOTING 1/insta 1b.webp",
+        "L´OFFICIEL/SHOOTING 1/insta 8.webp"
+      ]
+    },
+    {
+      "brand": "MARIE CLAIRE",
+      "images": [
+        "MARIE CLAIRE/PHOTO-2019-05-08-11-44-50 (1).webp",
+        "MARIE CLAIRE/PHOTO-2019-05-08-11-44-51 (1).webp",
+        "MARIE CLAIRE/image00120.webp",
+        "MARIE CLAIRE/image00121.webp",
+        "MARIE CLAIRE/image00122.webp"
+      ]
+    },
+    {
+      "brand": "NUMERO",
+      "images": [
+        "NUMERO/Alex_Numérp_0691127 18.10.52.webp",
+        "NUMERO/Nando Alavedra_Ale Velasco_LOGdig-3 copia.webp"
+      ]
+    },
+    {
+      "brand": "NYLON",
+      "images": [
+        "NYLON/0006.webp",
+        "NYLON/57E67F55-1FEB-4E9E-BF43-D6B129702509.webp",
+        "NYLON/9A6438B2-F4F4-400F-9603-FAF41DF33349.webp",
+        "NYLON/F980177F-0EB1-4B3D-B955-15585FB71175.webp",
+        "NYLON/IMG-9994.webp"
+      ]
+    },
+    {
+      "brand": "PAP",
+      "images": [
+        "PAP/IMG-6125.webp",
+        "PAP/IMG-6126.webp"
+      ]
+    },
+    {
+      "brand": "SCHON",
+      "images": [
+        "SCHON/F11.webp",
+        "SCHON/F6.webp",
+        "SCHON/F7.webp",
+        "SCHON/F9.webp"
+      ]
+    },
+    {
+      "brand": "TRABAJO PERSONAL",
+      "images": [
+        "TRABAJO PERSONAL/2AD29C66-CA3F-4536-99C0-5FCF31B4B3C0.webp",
+        "TRABAJO PERSONAL/DSCF1825.webp",
+        "TRABAJO PERSONAL/DSCF1934.webp",
+        "TRABAJO PERSONAL/DSCF2092 1.webp",
+        "TRABAJO PERSONAL/DSCF2392.webp",
+        "TRABAJO PERSONAL/DSCF2398.webp",
+        "TRABAJO PERSONAL/DSCF2489.webp",
+        "TRABAJO PERSONAL/DSCF2652.webp",
+        "TRABAJO PERSONAL/DSCF2656 (1).webp",
+        "TRABAJO PERSONAL/DSCF2656.webp",
+        "TRABAJO PERSONAL/DSCF2664.webp",
+        "TRABAJO PERSONAL/GS7A6634 (1).webp",
+        "TRABAJO PERSONAL/GS7A6695 (1).webp",
+        "TRABAJO PERSONAL/GS7A6733 (1).webp",
+        "TRABAJO PERSONAL/GS7A6850.webp",
+        "TRABAJO PERSONAL/GS7A6932.webp",
+        "TRABAJO PERSONAL/IMG-7913.webp",
+        "TRABAJO PERSONAL/IMG_1773.webp",
+        "TRABAJO PERSONAL/IMG_1774.webp",
+        "TRABAJO PERSONAL/IMG_1776.webp",
+        "TRABAJO PERSONAL/IMG_1781.webp",
+        "TRABAJO PERSONAL/IMG_3525.webp",
+        "TRABAJO PERSONAL/IMG_3527.webp",
+        "TRABAJO PERSONAL/IMG_3528.webp",
+        "TRABAJO PERSONAL/IMG_7865.webp",
+        "TRABAJO PERSONAL/IMG_7866.webp",
+        "TRABAJO PERSONAL/JEM31721.webp",
+        "TRABAJO PERSONAL/Valentina Ferrer-2498.webp",
+        "TRABAJO PERSONAL/Valentina Ferrer-2653.webp",
+        "TRABAJO PERSONAL/Valentina Ferrer-2707.webp",
+        "TRABAJO PERSONAL/Valentina Ferrer-2745.webp",
+        "TRABAJO PERSONAL/Valentina Ferrer-2763.webp",
+        "TRABAJO PERSONAL/image00103.webp",
+        "TRABAJO PERSONAL/image00123.webp",
+        "TRABAJO PERSONAL/image00132.webp",
+        "TRABAJO PERSONAL/image00133.webp",
+        "TRABAJO PERSONAL/image00144.webp",
+        "TRABAJO PERSONAL/image00145.webp",
+        "TRABAJO PERSONAL/portada.webp"
+      ]
+    },
+    {
+      "brand": "VOGUE",
+      "images": [
+        "VOGUE/Ethereal Light_BeatrizMaldonado_01.webp",
+        "VOGUE/Ethereal Light_BeatrizMaldonado_02.webp",
+        "VOGUE/Ethereal Light_BeatrizMaldonado_03.webp",
+        "VOGUE/Ethereal Light_BeatrizMaldonado_06.webp"
+      ]
+    }
+  ],
+  "novias": [
+    {
+      "brand": "NOVIAS EDITORIAL",
+      "images": [
+        "NOVIAS EDITORIAL/001544--015--VK.webp",
+        "NOVIAS EDITORIAL/02DF487C-79BD-40F7-B40C-93A3A85386C1.webp",
+        "NOVIAS EDITORIAL/2W6A3604_websize.webp",
+        "NOVIAS EDITORIAL/2W6A4678_websize.webp",
+        "NOVIAS EDITORIAL/9A24A3C1-ACFD-4AA6-B548-6881D883715E.webp",
+        "NOVIAS EDITORIAL/ANIZ137.webp",
+        "NOVIAS EDITORIAL/DSC_4536.webp",
+        "NOVIAS EDITORIAL/DSC_5169.webp",
+        "NOVIAS EDITORIAL/IMG-0548.webp",
+        "NOVIAS EDITORIAL/IMG-4963.webp",
+        "NOVIAS EDITORIAL/IMG-5339.webp",
+        "NOVIAS EDITORIAL/IMG-5380.webp",
+        "NOVIAS EDITORIAL/IMG-7093.webp",
+        "NOVIAS EDITORIAL/IMG-7094.webp",
+        "NOVIAS EDITORIAL/IMG_1879.webp",
+        "NOVIAS EDITORIAL/IMG_1889.webp",
+        "NOVIAS EDITORIAL/IMG_1890.webp",
+        "NOVIAS EDITORIAL/IMG_2832.webp",
+        "NOVIAS EDITORIAL/Imagen de WhatsApp 2025-10-14 a las 14.25.28_e22fd1b6.webp",
+        "NOVIAS EDITORIAL/Imagen de WhatsApp 2025-10-14 a las 14.25.42_9a76276d.webp",
+        "NOVIAS EDITORIAL/Marta_Marti_01_129.webp",
+        "NOVIAS EDITORIAL/WOLFLAMB SS210293.webp",
+        "NOVIAS EDITORIAL/WhatsApp Image 2026-04-22 at 15.29.09.webp",
+        "NOVIAS EDITORIAL/WhatsApp Image 2026-04-22 at 15.29.10 (1).webp",
+        "NOVIAS EDITORIAL/WhatsApp Image 2026-04-22 at 15.29.10.webp",
+        "NOVIAS EDITORIAL/by Pablo Laguia Chateau 0553_websize.webp",
+        "NOVIAS EDITORIAL/by Pablo Laguia Chateau 0591_websize.webp",
+        "NOVIAS EDITORIAL/by Pablo Laguia Chateau 0604_websize.webp",
+        "NOVIAS EDITORIAL/image00001.webp",
+        "NOVIAS EDITORIAL/image00002.webp",
+        "NOVIAS EDITORIAL/image00005.webp",
+        "NOVIAS EDITORIAL/image00049.webp",
+        "NOVIAS EDITORIAL/image00051.webp",
+        "NOVIAS EDITORIAL/image00053.webp",
+        "NOVIAS EDITORIAL/image00057.webp",
+        "NOVIAS EDITORIAL/image00325.webp",
+        "NOVIAS EDITORIAL/image00326.webp"
+      ]
+    },
+    {
+      "brand": "NOVIAS REALES",
+      "images": [
+        "NOVIAS REALES/AdelantoEduClaudia-0037.webp",
+        "NOVIAS REALES/EduClaudia-Lavanda--0139.webp",
+        "NOVIAS REALES/EduClaudia-Lavanda--0351.webp",
+        "NOVIAS REALES/EduClaudia-Lavanda--0377.webp",
+        "NOVIAS REALES/EduClaudia-Lavanda--0383.webp",
+        "NOVIAS REALES/EduClaudia-Lavanda--0667.webp",
+        "NOVIAS REALES/IMG_7775.webp",
+        "NOVIAS REALES/IMG_7778.webp",
+        "NOVIAS REALES/IMG_7779.webp",
+        "NOVIAS REALES/IMG_7780.webp",
+        "NOVIAS REALES/Julie & Augustin-0223_websize (1).webp",
+        "NOVIAS REALES/Julie & Augustin-0234_websize.webp",
+        "NOVIAS REALES/Julie & Augustin-0309_websize.webp"
+      ]
+    }
+  ]
+}

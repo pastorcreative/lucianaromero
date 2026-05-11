@@ -1,0 +1,24 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import GalleryGrid from '../components/GalleryGrid.astro';
+import { noviasImages } from '../data/gallery';
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: 'Novias', href: '/novia' },
+];
+---
+
+<Layout title="Novias — LU.ROMERO">
+    <HeroPage
+        title="NOVIAS"
+        subtitle="— Maquillaje & Peinado para el día más especial"
+        breadcrumb={breadcrumb}
+    />
+    <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+        <div class="container-site py-16 md:py-24">
+            <GalleryGrid images={noviasImages} sectionLabel="NOVIAS" />
+        </div>
+    </section>
+</Layout>

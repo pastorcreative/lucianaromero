@@ -1,0 +1,101 @@
+{
+  "peinado-inicial": {
+    "slug": "peinado-inicial",
+    "pageTitle": "Curso Peinado Inicial — LU.ROMERO",
+    "heroTitle": "PEINADO INICIAL",
+    "heroSubtitle": "— Curso Acelerado de Peinado Social · 4 Clases · Barcelona",
+    "intro": {
+      "tag": "CURSO ACELERADO DE PEINADO SOCIAL",
+      "headingLines": ["Crea tu técnica", "desde cero."],
+      "lead": "Eleva tu potencial y comienza a vivir de tu pasión.",
+      "paragraphs": [
+        "Destinado para maquilladoras/es que deseen elevar su facturación ampliando la oferta de sus servicios. Así como también para toda persona que desee trabajar como <strong>Hair Stylist</strong>.",
+        "Las 4 clases son para que puedas crear tu técnica desde cero con <strong>atención 100% personalizada</strong> y feedback constante, corrigiendo en cada paso para que ganes seguridad.",
+        "Te enseñaré todas las técnicas y secretos para hacer peinados para novias e invitadas con un estilo contemporáneo, inspirado en las tendencias del mundo de la moda."
+      ],
+      "chips": ["4 Clases", "Materiales incluidos", "Sin conocimientos previos", "Presencial BCN"],
+      "mainImage": "imagen-main-curso-peinado.webp",
+      "mainImageAlt": "Curso Peinado Inicial – imagen principal",
+      "mainImageLabel": "PEINADO SOCIAL",
+      "secondaryImage": "imagen-secundaria-curso-peinado.webp",
+      "secondaryImageAlt": "Curso Peinado Inicial – detalle",
+      "secondaryImageLabel": "NOVIAS & EVENTOS"
+    },
+    "learning": {
+      "sectionTitle": "QUÉ APRENDERÁS",
+      "sectionLabel": "— EN ESTE CURSO",
+      "items": [
+        {
+          "num": "01",
+          "title": "TÉCNICAS QUE VENDEN",
+          "body": "En cuatro clases vas a dominar los peinados más solicitados por novias, eventos y sesiones fotográficas. Elevarás tu valor profesional y tus ingresos.",
+          "tag": "TÉCNICA"
+        },
+        {
+          "num": "02",
+          "title": "CONFIANZA & LIBERTAD CREATIVA",
+          "body": "Vas a saber cómo resolver imprevistos, adaptar estilos a diferentes tipos de cabello y lograr peinados con acabados profesionales.",
+          "tag": "MENTALIDAD"
+        },
+        {
+          "num": "03",
+          "title": "NUEVA FUENTE DE INGRESOS",
+          "body": "No es un curso más, es una inversión que se recupera rápido. En cuatro clases ganarás una habilidad que te hará facturar más toda la vida.",
+          "tag": "NEGOCIO"
+        }
+      ]
+    },
+    "director": {
+      "photo": "lu-romero-bio.avif",
+      "photoFolder": "bento",
+      "photoLabel": "DIRECTORA ACADÉMICA",
+      "photoYears": "16 AÑOS",
+      "sectionLabel": "— QUIÉN TE ENSEÑA",
+      "nameLines": ["LU.", "ROMERO"],
+      "quote": "Después de 16 años trabajando con novias y en el mundo de la moda, he descubierto que peinar no es solo técnica: es entender estilos, realzar personalidades y crear momentos inolvidables.",
+      "body": "En este curso quiero compartirte todo lo que he aprendido desde mi experiencia y mi visión en cuanto a la moda y a lo social, para que tú también puedas elevar tu trabajo, tu confianza y tu valor profesional.",
+      "stats": [
+        { "value": "16", "label": "Años de carrera" },
+        { "value": "4",  "label": "Clases personalizadas" },
+        { "value": "∞",  "label": "Habilidad de por vida" }
+      ]
+    },
+    "academy": {
+      "sectionTitle": "LA ACADEMIA",
+      "sectionLabel": "— DÓNDE SE IMPARTE",
+      "name": "STUDIO METAL",
+      "address": "Ronda General Mitre 217",
+      "addressStrong": "Sant Gervasi — Barcelona",
+      "mapUrl": "https://maps.google.com/?q=Ronda+General+Mitre+217+Sant+Gervasi+Barcelona",
+      "modalities": [
+        "Presencial en Barcelona",
+        "Grupos reducidos / atención individual",
+        "Todos los materiales incluidos",
+        "Prácticas en cada sesión"
+      ],
+      "photos": [
+        { "file": "studio-metal-1.webp", "alt": "Studio Metal – espacio de prácticas 1" },
+        { "file": "studio-metal-2.webp", "alt": "Studio Metal – espacio de prácticas 2" },
+        { "file": "studio-metal-3.webp", "alt": "Studio Metal – espacio de prácticas 3" },
+        { "file": "studio-metal-4.webp", "alt": "Studio Metal – espacio de prácticas 4" }
+      ]
+    },
+    "cta": {
+      "sectionLabel": "— INSCRIPCIÓN",
+      "headingLines": ["RESERVA TU", "PLAZA AHORA"],
+      "body": "Las plazas son limitadas para garantizar la atención personalizada. Contacta ahora para reservar tu lugar y comenzar a construir tu carrera como Hair Stylist.",
+      "instagramUrl": "https://www.instagram.com/luromeromakeup/",
+      "email": "luromeroestudio@gmail.com",
+      "emailSubject": "Curso Peinado Inicial – reserva de plaza",
+      "includesLabel": "QUÉ INCLUYE",
+      "includes": [
+        "4 clases presenciales en Barcelona",
+        "Atención 100% personalizada",
+        "Todos los materiales de práctica",
+        "Feedback constante en cada paso",
+        "Técnicas para novias e invitadas",
+        "Soporte post-curso vía Instagram"
+      ]
+    }
+  }
+}

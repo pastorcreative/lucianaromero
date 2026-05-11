@@ -1,0 +1,19 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import Contact from '../components/Contact.astro';
+
+const breadcrumb = [
+    { label: 'Inicio',   href: '/' },
+    { label: 'Contacto', href: '/contacto' },
+];
+---
+
+<Layout title="Contacto — LU.ROMERO">
+    <HeroPage
+        title="CONTACTO"
+        subtitle="— Hablemos de tu proyecto"
+        breadcrumb={breadcrumb}
+    />
+    <Contact />
+</Layout>

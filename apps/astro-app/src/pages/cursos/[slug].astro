@@ -1,0 +1,36 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import HeroPage from '../../components/HeroPage.astro';
+import CourseIntro from '../../components/CourseIntro.astro';
+import CourseLearning from '../../components/CourseLearning.astro';
+import CourseDirector from '../../components/CourseDirector.astro';
+import CourseAcademy from '../../components/CourseAcademy.astro';
+import CourseCTA from '../../components/CourseCTA.astro';
+import { cursos } from '../../data/cursos';
+
+export function getStaticPaths() {
+    return Object.keys(cursos).map(slug => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const curso = cursos[slug!];
+
+const breadcrumb = [
+    { label: 'Inicio',  href: '/' },
+    { label: 'Cursos',  href: '/cursos' },
+    { label: curso.heroTitle, href: `/cursos/${slug}` },
+];
+---
+
+<Layout title={curso.pageTitle}>
+    <HeroPage
+        title={curso.heroTitle}
+        subtitle={curso.heroSubtitle}
+        breadcrumb={breadcrumb}
+    />
+    <CourseIntro intro={curso.intro} />
+    <CourseLearning learning={curso.learning} />
+    <CourseDirector director={curso.director} />
+    <CourseAcademy academy={curso.academy} />
+    <CourseCTA cta={curso.cta} />
+</Layout>
