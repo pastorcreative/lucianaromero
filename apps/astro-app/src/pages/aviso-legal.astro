@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import LegalPage from '../components/LegalPage.astro';
+import legal from '../data/legal.json';
+
+const { title, updatedAt, sections } = legal.avisoLegal;
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: 'Aviso Legal', href: '/aviso-legal' },
+];
+---
+
+<Layout title="Aviso Legal — LU.ROMERO">
+    <HeroPage
+        title="AVISO LEGAL"
+        subtitle="— Información legal del sitio"
+        breadcrumb={breadcrumb}
+    />
+    <LegalPage title={title} updatedAt={updatedAt} sections={sections} />
+</Layout>

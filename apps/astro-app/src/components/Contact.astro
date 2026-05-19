@@ -100,13 +100,30 @@ const socials = [
             <div class="border-b-2 border-ink px-6 py-4">
                 <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">ENVÍA UN MENSAJE</span>
             </div>
+
+            <!-- Success state (hidden by default) -->
+            <div id="contact-success" class="hidden p-6 md:p-8 flex flex-col items-center justify-center gap-4 min-h-[400px] text-center">
+                <span class="font-boldonse uppercase text-4xl text-ink">✓</span>
+                <p class="font-boldonse uppercase text-xl tracking-tight text-ink">¡Mensaje enviado!</p>
+                <p class="font-aleo text-base text-ink opacity-60">Te responderé lo antes posible.</p>
+            </div>
+
             <form
+                id="contact-form"
                 name="contact"
                 method="POST"
-                action="#contact"
+                data-netlify="true"
+                netlify-honeypot="bot-field"
                 class="p-6 md:p-8 flex flex-col gap-5"
                 novalidate
             >
+                <!-- Netlify hidden fields -->
+                <input type="hidden" name="form-name" value="contact" />
+                <!-- Honeypot (anti-spam) -->
+                <p class="hidden">
+                    <label>No rellenes esto: <input name="bot-field" /></label>
+                </p>
+
                 <!-- Name -->
                 <div class="flex flex-col gap-1">
                     <label for="contact-name" class="font-boldonse uppercase text-xs tracking-[0.2em] text-ink opacity-60">Nombre</label>
@@ -162,11 +179,17 @@ const socials = [
 
                 <!-- Submit -->
                 <button
+                    id="contact-submit"
                     type="submit"
-                    class="submit-btn mt-2 w-full font-boldonse uppercase tracking-[0.2em] text-sm px-6 py-4 bg-ink text-canvas border-2 border-ink hover:bg-canvas hover:text-ink transition-colors duration-150"
+                    class="submit-btn mt-2 w-full font-boldonse uppercase tracking-[0.2em] text-sm px-6 py-4 bg-ink text-canvas border-2 border-ink hover:bg-canvas hover:text-ink transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Enviar mensaje →
                 </button>
+
+                <!-- Error message -->
+                <p id="contact-error" class="hidden font-aleo text-sm text-center text-red-600 opacity-80">
+                    Algo salió mal. Inténtalo de nuevo o escríbeme directamente por email.
+                </p>
             </form>
         </div>
 
@@ -175,6 +198,49 @@ const socials = [
     </div>
 
 </section>
+
+<script>
+    const form    = document.getElementById('contact-form') as HTMLFormElement | null;
+    const success = document.getElementById('contact-success');
+    const errorEl = document.getElementById('contact-error');
+    const submitBtn = document.getElementById('contact-submit') as HTMLButtonElement | null;
+
+    form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!form || !submitBtn) return;
+
+        // Basic HTML5 validation
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Enviando…';
+        errorEl?.classList.add('hidden');
+
+        try {
+            const body = new URLSearchParams(new FormData(form) as unknown as URLSearchParams);
+            const res  = await fetch('/', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body:    body.toString(),
+            });
+
+            if (res.ok) {
+                form.classList.add('hidden');
+                success?.classList.remove('hidden');
+                success?.classList.add('flex');
+            } else {
+                throw new Error(`Status ${res.status}`);
+            }
+        } catch {
+            errorEl?.classList.remove('hidden');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Enviar mensaje →';
+        }
+    });
+</script>
 
 <style>
     .contact-form-card {

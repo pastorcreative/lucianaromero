@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import LegalPage from '../components/LegalPage.astro';
+import legal from '../data/legal.json';
+
+const { title, updatedAt, sections } = legal.cookies;
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: 'Política de Cookies', href: '/politica-de-cookies' },
+];
+---
+
+<Layout title="Política de Cookies — LU.ROMERO">
+    <HeroPage
+        title="COOKIES"
+        subtitle="— Política de uso de cookies"
+        breadcrumb={breadcrumb}
+    />
+    <LegalPage title={title} updatedAt={updatedAt} sections={sections} />
+</Layout>

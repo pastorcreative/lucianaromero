@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../cookiebanner/styles.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -12,7 +13,7 @@ const { title = 'LU.ROMERO' } = Astro.props;
 <html lang="es">
     <head>
         <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
         <meta name="viewport" content="width=device-width" />
         <title>{title}</title>
         <!-- Prevent FOUC: apply dark class before first paint -->
@@ -32,5 +33,46 @@ const { title = 'LU.ROMERO' } = Astro.props;
             <slot />
         </main>
         <Footer />
+        <!-- Traduce los textos hardcodeados en inglés del banner de cookies -->
+        <script is:inline>
+            (function () {
+                const MAP_LINKS = { 'Cookie Policy': 'Política de Cookies', 'Privacy Policy': 'Política de Privacidad' };
+                const MAP_ROWS  = { 'Essential': 'Esencial', 'Always on': 'Siempre activo', 'Analytics': 'Analítica', 'Marketing': 'Marketing' };
+
+                function translateRoot(root) {
+                    // Links dentro de .cb-desc y .cb-modal-header
+                    root.querySelectorAll('.cb-desc a, .cb-modal-header a').forEach(function (a) {
+                        var t = a.textContent.trim();
+                        if (MAP_LINKS[t]) a.textContent = MAP_LINKS[t];
+                    });
+                    // Text nodes "Read our … and …"
+                    root.querySelectorAll('.cb-desc, .cb-modal-header p').forEach(function (el) {
+                        el.childNodes.forEach(function (node) {
+                            if (node.nodeType === 3) {
+                                node.textContent = node.textContent
+                                    .replace(/Read our/g, 'Lee nuestra')
+                                    .replace(/ and\s*/g, ' y ');
+                            }
+                        });
+                    });
+                    // Panel de preferencias: spans y strongs
+                    root.querySelectorAll('.cb-row span, .cb-row strong').forEach(function (el) {
+                        var t = el.textContent.trim();
+                        if (MAP_ROWS[t]) el.textContent = MAP_ROWS[t];
+                    });
+                }
+
+                var observer = new MutationObserver(function () {
+                    ['astro-consent-banner', 'astro-consent-modal'].forEach(function (id) {
+                        var el = document.getElementById(id);
+                        if (el && !el.dataset.translated) {
+                            el.dataset.translated = '1';
+                            translateRoot(el);
+                        }
+                    });
+                });
+                observer.observe(document.body, { childList: true, subtree: true });
+            })();
+        </script>
     </body>
 </html>

@@ -1,0 +1,484 @@
+---
+import videos from '../data/videos.json';
+
+const videoModules = import.meta.glob('../assets/img/video/*.mp4', { as: 'url', eager: true });
+
+const videoList = videos.map(v => {
+  const key = Object.keys(videoModules).find(k => k.endsWith(v.filename));
+  return { ...v, url: key ? videoModules[key] : null };
+}).filter(v => v.url !== null);
+
+const firstVideo = videoList[0];
+---
+
+<section class="multimedia-section relative z-10 bg-canvas py-16 md:py-24 transition-colors duration-300">
+  <div class="container-site">
+
+    <div class="multimedia-layout flex flex-col lg:flex-row lg:items-start gap-12 lg:gap-16">
+
+      <!-- ── IZQUIERDA: título + miniaturas ───────────────── -->
+      <div class="multimedia-meta lg:sticky lg:top-32 flex-shrink-0 lg:w-64 flex flex-col gap-6">
+
+        <div class="border-b-4 border-ink pb-4 transition-colors duration-300">
+          <h2 class="font-boldonse leading-tight uppercase text-5xl md:text-6xl lg:text-7xl text-ink">
+            MULTI<br/>MEDIA
+          </h2>
+        </div>
+
+        <!-- Grid de miniaturas -->
+        <div class="mm-thumbs grid grid-cols-3 gap-3">
+          {videoList.map((v, i) => (
+            <button
+              class="mm-thumb relative border-4 border-ink cursor-pointer focus:outline-none group"
+              style="aspect-ratio: 9/16; background: transparent;"
+              data-video-index={i}
+              data-src={v.url}
+              aria-label={v.title}
+            >
+              <!-- Sombra offset brutalista -->
+              <div class="absolute inset-0 translate-x-1 translate-y-1 bg-ink -z-10 transition-transform duration-150 group-hover:translate-x-1.5 group-hover:translate-y-1.5"></div>
+
+              <!-- Frame capturado -->
+              <canvas
+                id={`mm-thumb-canvas-${i}`}
+                class="absolute inset-0 w-full h-full object-cover block"
+                style="opacity: 0; transition: opacity 0.3s ease;"
+              ></canvas>
+
+              <!-- Placeholder (título) hasta que cargue el frame -->
+              <div class="mm-thumb-placeholder absolute inset-0 flex items-end justify-start bg-canvas p-1.5 transition-opacity duration-300">
+                <span class="font-boldonse uppercase text-ink leading-tight"
+                  style="font-size: 7px; letter-spacing: 0.08em;">
+                  {v.title}
+                </span>
+              </div>
+
+              <!-- Botón play siempre visible -->
+              <div class="mm-thumb-play absolute inset-0 flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity duration-150">
+                <div class="relative">
+                  <div class="absolute inset-0 translate-x-[2px] translate-y-[2px] bg-ink"></div>
+                  <div class="relative border-2 border-ink bg-canvas px-2 py-1.5 flex items-center justify-center">
+                    <svg width="9" height="9" viewBox="0 0 20 20" fill="currentColor" class="text-ink">
+                      <polygon points="4,2 18,10 4,18"/>
+                    </svg>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Barra activo -->
+              <div
+                id={`mm-thumb-active-${i}`}
+                class="absolute bottom-0 left-0 right-0 h-[3px] bg-ink transition-opacity duration-150"
+                style={i === 0 ? 'opacity:1' : 'opacity:0'}
+              ></div>
+            </button>
+          ))}
+        </div>
+
+      </div>
+
+      <!-- ── DERECHA: reproductor (solo desktop) ──────────── -->
+      <div class="multimedia-player hidden lg:flex flex-1 flex-col gap-6">
+
+        <div class="mm-frame-outer relative" style="max-width: 360px; margin: 0 auto; width: 100%;">
+          <div class="mm-frame-shadow absolute inset-0 translate-x-3 translate-y-3 bg-ink transition-colors duration-300"></div>
+
+          <div class="mm-frame relative border-4 border-ink bg-ink overflow-hidden" style="aspect-ratio: 9/16;">
+            <video
+              id="mm-main-video"
+              class="w-full h-full object-cover block"
+              preload="none"
+              playsinline
+              loop
+              data-src={firstVideo.url}
+            ></video>
+
+            <!-- Botón pause/play desktop -->
+            <button
+              id="mm-desktop-pause-btn"
+              class="mm-pause-btn hidden absolute bottom-4 right-4 z-20 focus:outline-none group"
+              aria-label="Pausar vídeo"
+            >
+              <div class="absolute inset-0 translate-x-[2px] translate-y-[2px] bg-canvas" style="opacity:0.25;"></div>
+              <div class="relative border-2 border-canvas px-3 py-2 flex items-center gap-2" style="background: rgba(0,0,0,0.55);">
+                <!-- Icono pause -->
+                <svg id="mm-desktop-pause-icon" width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="text-canvas">
+                  <rect x="3" y="2" width="5" height="16" rx="1"/>
+                  <rect x="12" y="2" width="5" height="16" rx="1"/>
+                </svg>
+                <!-- Icono play (oculto por defecto) -->
+                <svg id="mm-desktop-play-icon" width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="text-canvas hidden">
+                  <polygon points="4,2 18,10 4,18"/>
+                </svg>
+                <span id="mm-desktop-pause-label" class="font-boldonse uppercase text-xs tracking-widest text-canvas">PAUSA</span>
+              </div>
+            </button>
+
+            <div
+              id="mm-play-overlay"
+              class="mm-overlay absolute inset-0 flex flex-col items-center justify-center gap-4 cursor-pointer select-none"
+            >
+              <img
+                id="mm-overlay-poster"
+                class="absolute inset-0 w-full h-full object-cover"
+                style="opacity: 0; transition: opacity 0.4s ease;"
+                alt=""
+                aria-hidden="true"
+              />
+              <div class="absolute inset-0 bg-ink" style="opacity: 0.45;"></div>
+
+              <div class="relative z-10 flex flex-col items-center gap-4">
+                <div class="text-center px-6">
+                  <p id="mm-overlay-cat" class="font-boldonse text-xs tracking-[0.3em] uppercase opacity-70 text-canvas mb-2">
+                    {firstVideo.category}
+                  </p>
+                  <p id="mm-overlay-title" class="font-boldonse uppercase text-2xl leading-tight text-canvas">
+                    {firstVideo.title}
+                  </p>
+                </div>
+                <div class="mm-play-btn relative mt-2">
+                  <div class="absolute inset-0 translate-x-1.5 translate-y-1.5 bg-canvas" style="opacity:0.3;"></div>
+                  <div class="relative border-4 border-canvas bg-transparent px-8 py-4 flex items-center gap-3">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" class="text-canvas">
+                      <polygon points="4,2 18,10 4,18"/>
+                    </svg>
+                    <span class="font-boldonse uppercase text-sm tracking-widest text-canvas">PLAY</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── MODAL móvil/tablet ──────────────────────────────────────── -->
+<div
+  id="mm-modal"
+  class="fixed inset-0 z-[200] flex items-center justify-center lg:hidden"
+  style="display: none !important;"
+  role="dialog"
+  aria-modal="true"
+>
+  <!-- Backdrop -->
+  <div id="mm-modal-backdrop" class="absolute inset-0 bg-ink" style="opacity: 0.85;"></div>
+
+  <!-- Contenedor del marco + botón cerrar -->
+  <div class="relative flex flex-col items-center gap-4 px-6 w-full" style="max-width: 340px;">
+
+    <!-- Botón cerrar brutalista -->
+    <div class="self-end">
+      <button id="mm-modal-close" class="relative focus:outline-none group" aria-label="Cerrar">
+        <div class="absolute inset-0 translate-x-[3px] translate-y-[3px] bg-canvas opacity-30"></div>
+        <div class="relative border-4 border-canvas px-4 py-2 flex items-center gap-2 transition-transform duration-100 active:translate-x-[1px] active:translate-y-[1px] group-hover:-translate-x-[1px] group-hover:-translate-y-[1px]">
+          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="3" class="text-canvas">
+            <line x1="3" y1="3" x2="17" y2="17"/>
+            <line x1="17" y1="3" x2="3" y2="17"/>
+          </svg>
+          <span class="font-boldonse uppercase text-xs tracking-widest text-canvas">CERRAR</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Marco brutalista del vídeo -->
+    <div class="mm-modal-frame-outer relative w-full">
+      <div class="absolute inset-0 translate-x-3 translate-y-3 bg-canvas opacity-20"></div>
+      <div class="relative border-4 border-canvas overflow-hidden" style="aspect-ratio: 9/16;">
+        <video
+          id="mm-modal-video"
+          class="w-full h-full object-cover block"
+          preload="none"
+          playsinline
+          loop
+        ></video>
+
+        <!-- Botón pause/play modal -->
+        <button
+          id="mm-modal-pause-btn"
+          class="mm-pause-btn absolute bottom-20 right-3 z-20 focus:outline-none group"
+          aria-label="Pausar vídeo"
+        >
+          <div class="absolute inset-0 translate-x-[2px] translate-y-[2px] bg-canvas" style="opacity:0.25;"></div>
+          <div class="relative border-2 border-canvas px-3 py-2 flex items-center gap-2" style="background: rgba(0,0,0,0.55);">
+            <svg id="mm-modal-pause-icon" width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="text-canvas">
+              <rect x="3" y="2" width="5" height="16" rx="1"/>
+              <rect x="12" y="2" width="5" height="16" rx="1"/>
+            </svg>
+            <svg id="mm-modal-play-icon" width="13" height="13" viewBox="0 0 20 20" fill="currentColor" class="text-canvas hidden">
+              <polygon points="4,2 18,10 4,18"/>
+            </svg>
+            <span id="mm-modal-pause-label" class="font-boldonse uppercase text-xs tracking-widest text-canvas">PAUSA</span>
+          </div>
+        </button>
+
+        <!-- Título sobre el vídeo (esquina inferior) -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 pointer-events-none" style="background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);">
+          <p id="mm-modal-cat" class="font-boldonse text-xs tracking-[0.3em] uppercase opacity-70 text-canvas mb-1"></p>
+          <p id="mm-modal-title" class="font-boldonse uppercase text-lg leading-tight text-canvas"></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script define:vars={{ videoList }}>
+
+  /* ── Referencias DOM ───────────────────────────────────────────────────── */
+  const mainVideo     = document.getElementById('mm-main-video');
+  const playOverlay   = document.getElementById('mm-play-overlay');
+  const overlayPoster = document.getElementById('mm-overlay-poster');
+  const overlayTitle  = document.getElementById('mm-overlay-title');
+  const overlayCategory = document.getElementById('mm-overlay-cat');
+
+  const modal         = document.getElementById('mm-modal');
+  const modalVideo    = document.getElementById('mm-modal-video');
+  const modalClose    = document.getElementById('mm-modal-close');
+  const modalBackdrop = document.getElementById('mm-modal-backdrop');
+  const modalTitle    = document.getElementById('mm-modal-title');
+  const modalCategory = document.getElementById('mm-modal-cat');
+
+  // Pause/play buttons
+  const desktopPauseBtn   = document.getElementById('mm-desktop-pause-btn');
+  const desktopPauseIcon  = document.getElementById('mm-desktop-pause-icon');
+  const desktopPlayIcon   = document.getElementById('mm-desktop-play-icon');
+  const desktopPauseLabel = document.getElementById('mm-desktop-pause-label');
+
+  const modalPauseBtn   = document.getElementById('mm-modal-pause-btn');
+  const modalPauseIcon  = document.getElementById('mm-modal-pause-icon');
+  const modalPlayIcon   = document.getElementById('mm-modal-play-icon');
+  const modalPauseLabel = document.getElementById('mm-modal-pause-label');
+
+  const thumbButtons = document.querySelectorAll('.mm-thumb');
+
+  let activeIndex  = 0;
+  let videoLoaded  = false;
+  const posterCache = {};
+
+  const isDesktop = () => window.innerWidth >= 1024;
+
+  /* ── Capturar primer frame ─────────────────────────────────────────────── */
+  function captureThumbnail(index, src) {
+    const canvas = document.getElementById(`mm-thumb-canvas-${index}`);
+    if (!canvas) return;
+
+    const tmp = document.createElement('video');
+    tmp.preload = 'metadata';
+    tmp.muted = true;
+    tmp.playsInline = true;
+    tmp.crossOrigin = 'anonymous';
+
+    tmp.addEventListener('loadeddata', () => { tmp.currentTime = 0.1; });
+
+    tmp.addEventListener('seeked', () => {
+      const ctx = canvas.getContext('2d');
+      canvas.width  = tmp.videoWidth  || 160;
+      canvas.height = tmp.videoHeight || 284;
+      ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
+      canvas.style.opacity = '1';
+
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+      posterCache[index] = dataUrl;
+
+      if (index === activeIndex && overlayPoster) {
+        overlayPoster.src = dataUrl;
+        overlayPoster.style.opacity = '1';
+      }
+
+      const placeholder = canvas.parentElement?.querySelector('.mm-thumb-placeholder');
+      if (placeholder) placeholder.style.opacity = '0';
+
+      tmp.src = ''; tmp.load();
+    });
+
+    tmp.src = src; tmp.load();
+  }
+
+  videoList.forEach((v, i) => { if (v.url) captureThumbnail(i, v.url); });
+
+  /* ── Estado visual miniaturas ──────────────────────────────────────────── */
+  function setActiveThumb(index) {
+    thumbButtons.forEach((_, i) => {
+      const bar = document.getElementById(`mm-thumb-active-${i}`);
+      if (bar) bar.style.opacity = i === index ? '1' : '0';
+    });
+  }
+
+  /* ── Actualizar poster del overlay desktop ─────────────────────────────── */
+  function updateOverlayPoster(index) {
+    if (!overlayPoster) return;
+    if (posterCache[index]) {
+      overlayPoster.src = posterCache[index];
+      overlayPoster.style.opacity = '1';
+    } else {
+      overlayPoster.style.opacity = '0';
+    }
+    if (overlayTitle)    overlayTitle.textContent    = videoList[index].title;
+    if (overlayCategory) overlayCategory.textContent = videoList[index].category;
+  }
+
+  /* ── Helpers pause/play ────────────────────────────────────────────────── */
+  function setDesktopPauseState(playing) {
+    if (!desktopPauseBtn) return;
+    desktopPauseBtn.classList.remove('hidden');
+    if (playing) {
+      desktopPauseIcon?.classList.remove('hidden');
+      desktopPlayIcon?.classList.add('hidden');
+      if (desktopPauseLabel) desktopPauseLabel.textContent = 'PAUSA';
+      desktopPauseBtn.setAttribute('aria-label', 'Pausar vídeo');
+    } else {
+      desktopPauseIcon?.classList.add('hidden');
+      desktopPlayIcon?.classList.remove('hidden');
+      if (desktopPauseLabel) desktopPauseLabel.textContent = 'PLAY';
+      desktopPauseBtn.setAttribute('aria-label', 'Reanudar vídeo');
+    }
+  }
+
+  function setModalPauseState(playing) {
+    if (!modalPauseBtn) return;
+    if (playing) {
+      modalPauseIcon?.classList.remove('hidden');
+      modalPlayIcon?.classList.add('hidden');
+      if (modalPauseLabel) modalPauseLabel.textContent = 'PAUSA';
+      modalPauseBtn.setAttribute('aria-label', 'Pausar vídeo');
+    } else {
+      modalPauseIcon?.classList.add('hidden');
+      modalPlayIcon?.classList.remove('hidden');
+      if (modalPauseLabel) modalPauseLabel.textContent = 'PLAY';
+      modalPauseBtn.setAttribute('aria-label', 'Reanudar vídeo');
+    }
+  }
+
+  /* ── Reproducir en el player desktop ──────────────────────────────────── */
+  function playVideoDesktop(index) {
+    activeIndex = index;
+    videoLoaded = true;
+
+    mainVideo.pause();
+    mainVideo.src = videoList[index].url;
+    mainVideo.load();
+    mainVideo.play().catch(() => {});
+
+    playOverlay.style.transition = 'opacity 0.3s ease';
+    playOverlay.style.opacity = '0';
+    setTimeout(() => {
+      playOverlay.style.display = 'none';
+      playOverlay.style.opacity = '1';
+      playOverlay.style.transition = '';
+    }, 300);
+
+    setActiveThumb(index);
+    setDesktopPauseState(true);
+  }
+
+  /* ── Abrir modal móvil ─────────────────────────────────────────────────── */
+  function openModal(index) {
+    activeIndex = index;
+    const v = videoList[index];
+
+    if (modalTitle)    modalTitle.textContent    = v.title;
+    if (modalCategory) modalCategory.textContent = v.category;
+
+    modalVideo.src = v.url;
+    modalVideo.load();
+    modalVideo.play().catch(() => {});
+
+    modal.style.removeProperty('display');
+    document.body.style.overflow = 'hidden';
+    setActiveThumb(index);
+    setModalPauseState(true);
+  }
+
+  /* ── Cerrar modal ──────────────────────────────────────────────────────── */
+  function closeModal() {
+    modalVideo.pause();
+    modalVideo.src = '';
+    modalVideo.load();
+    modal.style.display = 'none !important';
+    // forzar ocultamiento real con clase
+    modal.setAttribute('style', 'display: none !important;');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Listeners ─────────────────────────────────────────────────────────── */
+  if (playOverlay) {
+    playOverlay.addEventListener('click', () => playVideoDesktop(activeIndex));
+  }
+
+  desktopPauseBtn?.addEventListener('click', () => {
+    if (mainVideo.paused) {
+      mainVideo.play().catch(() => {});
+      setDesktopPauseState(true);
+    } else {
+      mainVideo.pause();
+      setDesktopPauseState(false);
+    }
+  });
+
+  modalPauseBtn?.addEventListener('click', () => {
+    if (modalVideo.paused) {
+      modalVideo.play().catch(() => {});
+      setModalPauseState(true);
+    } else {
+      modalVideo.pause();
+      setModalPauseState(false);
+    }
+  });
+
+  modalClose?.addEventListener('click', closeModal);
+  modalBackdrop?.addEventListener('click', closeModal);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeModal();
+  });
+
+  thumbButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.videoIndex, 10);
+
+      if (isDesktop()) {
+        if (videoLoaded && index !== activeIndex) {
+          playOverlay.style.display = 'flex';
+          playOverlay.style.opacity = '1';
+          updateOverlayPoster(index);
+          setTimeout(() => playVideoDesktop(index), 80);
+        } else {
+          playVideoDesktop(index);
+        }
+      } else {
+        openModal(index);
+      }
+    });
+  });
+
+  /* ── Init ──────────────────────────────────────────────────────────────── */
+  setActiveThumb(0);
+  updateOverlayPoster(0);
+</script>
+
+<style>
+  .mm-thumb {
+    transition: transform 0.1s ease;
+  }
+  .mm-thumb:hover  { transform: translate(-1px, -1px); }
+  .mm-thumb:active { transform: translate(0.5px, 0.5px); }
+
+  .mm-frame-outer:hover .mm-frame-shadow {
+    transform: translate(5px, 5px);
+    transition: transform 0.2s ease;
+  }
+
+  .mm-play-btn:hover > div:last-child  { transform: translate(-2px, -2px); }
+  .mm-play-btn > div:last-child { transition: transform 0.15s ease; }
+
+  .mm-pause-btn > div:last-child { transition: transform 0.1s ease; }
+  .mm-pause-btn:hover > div:last-child { transform: translate(-1px, -1px); }
+  .mm-pause-btn:active > div:last-child { transform: translate(1px, 1px); }
+
+  /* Evitar scroll del body cuando el modal está abierto */
+  body.mm-open { overflow: hidden; }
+</style>

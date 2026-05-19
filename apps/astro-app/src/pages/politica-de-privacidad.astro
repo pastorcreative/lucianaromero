@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HeroPage from '../components/HeroPage.astro';
+import LegalPage from '../components/LegalPage.astro';
+import legal from '../data/legal.json';
+
+const { title, updatedAt, sections } = legal.privacidad;
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: 'Política de Privacidad', href: '/politica-de-privacidad' },
+];
+---
+
+<Layout title="Política de Privacidad — LU.ROMERO">
+    <HeroPage
+        title="PRIVACIDAD"
+        subtitle="— Política de protección de datos"
+        breadcrumb={breadcrumb}
+    />
+    <LegalPage title={title} updatedAt={updatedAt} sections={sections} />
+</Layout>
