@@ -96,7 +96,33 @@ async function apiUpdateGlobal(slug: string, data: Record<string, unknown>) {
   })
 }
 
-// ── Utilidades de imagen ──────────────────────────────────────────────────────
+async function apiBulkDelete(collection: string) {
+  const res = await fetch(
+    `${PROD_URL}/api/${collection}?where[id][exists]=true`,
+    { method: 'DELETE', headers: authHeaders() },
+  )
+  if (!res.ok) {
+    const body = await res.text()
+    console.warn(`    ⚠  No se pudo vaciar ${collection} (${res.status}): ${body}`)
+    return
+  }
+  const data = await res.json()
+  console.log(`    ✓ ${collection}: ${data.docs?.length ?? '?'} documentos eliminados`)
+}
+
+// ── Limpieza ──────────────────────────────────────────────────────────────────
+
+async function limpiarProduccion() {
+  console.log('\n🗑️  Limpiando colecciones en producción...')
+  await apiBulkDelete('cursos')
+  await apiBulkDelete('galerias')
+  await apiBulkDelete('galeria-imagenes')
+  await apiBulkDelete('media')
+  imageCache.clear()
+  console.log('  ✓ Limpieza completada\n')
+}
+
+
 
 const imageCache = new Map<string, number | string>()
 
@@ -148,7 +174,8 @@ async function uploadImage(
   const blob    = new Blob([buffer], { type: getMimetype(basename) })
   const form    = new FormData()
   form.append('file', blob, basename)
-  form.append('alt', alt)
+  // Payload REST API requiere los campos extra como JSON en '_payload'
+  form.append('_payload', JSON.stringify({ alt }))
 
   // No incluir Content-Type en los headers: fetch lo pone con el boundary correcto
   const res = await fetch(`${PROD_URL}/api/media`, {
@@ -407,10 +434,16 @@ async function migrarGalerias() {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log(`🚀 Iniciando migración hacia PRODUCCIÓN`)
+  const reset = process.argv.includes('--reset')
+
+  console.log(`🚀 Iniciando migración hacia PRODUCCIÓN${reset ? ' (con reset)' : ''}`)
   console.log(`   URL: ${PROD_URL}\n`)
 
   await login()
+
+  if (reset) {
+    await limpiarProduccion()
+  }
 
   await migrarCursos()
   await migrarConfiguracion()
