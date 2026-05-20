@@ -1,0 +1,95 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import HeroPage from '../../components/HeroPage.astro'
+import GalleryGridCMS from '../../components/GalleryGridCMS.astro'
+
+// ── Tipos ────────────────────────────────────────────────────────────────────
+
+type GaleriaItem = {
+    id?: string
+    imagen: { url: string; width?: number | null; height?: number | null }
+    grupo?: string
+    alt?: string
+}
+
+type GaleriaDoc = {
+    id:        string
+    slug:      string
+    titulo:    string
+    subtitulo: string
+    seoTitle?: string
+    imagenes:  GaleriaItem[]
+}
+
+// ── Fallback estático (si Payload no está disponible) ─────────────────────────
+
+const FALLBACK_PATHS = [
+    { slug: 'editorial', titulo: 'GALLERY',   subtitulo: '— Editorial & Moda',                              seoTitle: 'Gallery — LU.ROMERO'   },
+    { slug: 'comercial', titulo: 'COMERCIAL', subtitulo: '— Publicidad & Marcas',                           seoTitle: 'Comercial — LU.ROMERO' },
+    { slug: 'novias',    titulo: 'NOVIAS',    subtitulo: '— Maquillaje & Peinado para el día más especial', seoTitle: 'Novias — LU.ROMERO'    },
+]
+
+// ── getStaticPaths ────────────────────────────────────────────────────────────
+
+export async function getStaticPaths() {
+    const PAYLOAD_URL = import.meta.env.PUBLIC_PAYLOAD_URL ?? 'http://localhost:3001'
+
+    const FALLBACK = [
+        { slug: 'editorial', titulo: 'GALLERY',   subtitulo: '— Editorial & Moda',                              seoTitle: 'Gallery — LU.ROMERO'   },
+        { slug: 'comercial', titulo: 'COMERCIAL', subtitulo: '— Publicidad & Marcas',                           seoTitle: 'Comercial — LU.ROMERO' },
+        { slug: 'novias',    titulo: 'NOVIAS',    subtitulo: '— Maquillaje & Peinado para el día más especial', seoTitle: 'Novias — LU.ROMERO'    },
+    ]
+
+    try {
+        const res = await fetch(`${PAYLOAD_URL}/api/galerias?limit=20&depth=1&sort=slug`)
+        if (!res.ok) throw new Error(`${res.status}`)
+
+        const data = await res.json()
+        const docs: GaleriaDoc[] = data.docs ?? []
+
+        if (docs.length === 0) throw new Error('Sin galerías en Payload')
+
+        return docs.map(doc => ({
+            params: { slug: doc.slug },
+            props:  {
+                titulo:    doc.titulo,
+                subtitulo: doc.subtitulo,
+                seoTitle:  doc.seoTitle || `${doc.titulo} — LU.ROMERO`,
+                imagenes:  doc.imagenes ?? [],
+                PAYLOAD_URL,
+            },
+        }))
+    } catch (err) {
+        console.warn(`[galeria] No se pudo conectar con Payload: ${err}. Usando fallback estático.`)
+        return FALLBACK.map(f => ({
+            params: { slug: f.slug },
+            props:  { titulo: f.titulo, subtitulo: f.subtitulo, seoTitle: f.seoTitle, imagenes: [], PAYLOAD_URL },
+        }))
+    }
+}
+
+// ── Props de página ───────────────────────────────────────────────────────────
+
+const { slug } = Astro.params
+const { titulo, subtitulo, seoTitle, imagenes, PAYLOAD_URL } = Astro.props
+
+const breadcrumb = [
+    { label: 'Inicio', href: '/' },
+    { label: titulo,   href: `/galeria/${slug}` },
+]
+---
+
+<Layout title={seoTitle}>
+    <HeroPage title={titulo} subtitle={subtitulo} breadcrumb={breadcrumb} />
+
+    <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
+        <div class="container-site py-16 md:py-24">
+            <GalleryGridCMS
+                imagenes={imagenes}
+                sectionLabel={titulo}
+                payloadUrl={PAYLOAD_URL}
+            />
+        </div>
+    </section>
+</Layout>
+

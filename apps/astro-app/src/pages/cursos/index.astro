@@ -2,14 +2,14 @@
 import Layout from '../../layouts/Layout.astro';
 import HeroPage from '../../components/HeroPage.astro';
 import { Icon } from 'astro-icon/components';
-import { cursos } from '../../data/cursos';
+import { fetchCursos } from '../../lib/payload';
 
 const breadcrumb = [
     { label: 'Inicio', href: '/' },
     { label: 'Cursos', href: '/cursos' },
 ];
 
-const lista = Object.values(cursos);
+const lista = await fetchCursos();
 ---
 
 <Layout title="Cursos — LU.ROMERO">

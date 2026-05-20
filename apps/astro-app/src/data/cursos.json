@@ -97,5 +97,204 @@
         "Soporte post-curso vía Instagram"
       ]
     }
+  },
+
+  "automaquillaje": {
+    "slug": "automaquillaje",
+    "pageTitle": "Automaquillaje — LU.ROMERO",
+    "heroTitle": "AUTOMAQUILLAJE",
+    "heroSubtitle": "— Maquíllate con Confianza y Estilo",
+    "intro": {
+      "tag": "CURSO DE AUTOMAQUILLAJE",
+      "headingLines": ["Maquíllate con", "confianza."],
+      "lead": "Aprende a sacar el mejor partido de tu belleza y personalidad.",
+      "paragraphs": [
+        "Maquillarse no tiene por qué ser algo complejo. Con las claves que te enseñaremos podrás lograr desde <strong>looks rápidos y sencillos</strong> a más elaborados, siempre ajustándose a lo que mejor refleje tu belleza y personalidad.",
+        "Te ayudaremos a elegir los <strong>productos que mejor se adapten a ti</strong>, y también a sacar el mejor partido de los que ya tienes."
+      ],
+      "chips": ["Individual o Grupal", "Adaptado a ti", "Presencial BCN", "Tus propios productos"],
+      "mainImage": "automaquillaje-1.jpg",
+      "mainImageAlt": "Curso Automaquillaje – imagen principal",
+      "mainImageLabel": "MAQUILLAJE PERSONAL",
+      "secondaryImage": "automaquillaje-1.jpg",
+      "secondaryImageAlt": "Curso Automaquillaje – detalle",
+      "secondaryImageLabel": "LOOKS A TU MEDIDA"
+    },
+    "learning": {
+      "sectionTitle": "MODALIDADES",
+      "sectionLabel": "— ELIGE TU CLASE",
+      "items": [
+        {
+          "num": "01",
+          "title": "INDIVIDUAL",
+          "body": "2 horas ONE to ONE con una make up artist del equipo METAL. Atención totalmente personalizada centrada en tus necesidades concretas.",
+          "tag": "2H · PRIVADO"
+        },
+        {
+          "num": "02",
+          "title": "GRUPAL PRIVADO",
+          "body": "Hasta 6 personas del mismo grupo en una clase de dos horas y media. Ideal para amigas, compañeras o familiares que quieran aprender juntas.",
+          "tag": "2.5H · GRUPO"
+        },
+        {
+          "num": "03",
+          "title": "GRUPAL METAL",
+          "body": "Súmate a un grupo de máximo 6 personas en las fechas propuestas por el estudio. La opción perfecta si no tienes grupo propio.",
+          "tag": "GRUPO ABIERTO"
+        }
+      ]
+    },
+    "director": {
+      "photo": "lu-romero-bio.avif",
+      "photoFolder": "bento",
+      "photoLabel": "DIRECTORA ACADÉMICA",
+      "photoYears": "16 AÑOS",
+      "sectionLabel": "— QUIÉN TE ENSEÑA",
+      "nameLines": ["LU.", "ROMERO"],
+      "quote": "El maquillaje es una herramienta de expresión, no una máscara. Mi objetivo es que aprendas a realzar tu propia belleza con seguridad y sin complicarte.",
+      "body": "Con más de 16 años de experiencia en moda y belleza, cada sesión es una oportunidad de descubrir lo que funciona para ti, adaptado a tu estilo de vida y a los productos que ya tienes.",
+      "stats": [
+        { "value": "16", "label": "Años de carrera" },
+        { "value": "3",  "label": "Formatos disponibles" },
+        { "value": "6",  "label": "Máx. personas por grupo" }
+      ]
+    },
+    "academy": {
+      "sectionTitle": "LA ACADEMIA",
+      "sectionLabel": "— DÓNDE SE IMPARTE",
+      "name": "STUDIO METAL",
+      "address": "Ronda General Mitre 217",
+      "addressStrong": "Sant Gervasi — Barcelona",
+      "mapUrl": "https://maps.google.com/?q=Ronda+General+Mitre+217+Sant+Gervasi+Barcelona",
+      "modalities": [
+        "Presencial en Barcelona",
+        "Grupos reducidos / hasta 6 personas",
+        "Adaptado a tu nivel y productos",
+        "Prácticas en cada sesión"
+      ],
+      "photos": [
+        { "file": "studio-metal-1.webp", "alt": "Studio Metal – espacio de prácticas 1" },
+        { "file": "studio-metal-2.webp", "alt": "Studio Metal – espacio de prácticas 2" },
+        { "file": "studio-metal-3.webp", "alt": "Studio Metal – espacio de prácticas 3" },
+        { "file": "studio-metal-4.webp", "alt": "Studio Metal – espacio de prácticas 4" }
+      ]
+    },
+    "cta": {
+      "sectionLabel": "— INSCRIPCIÓN",
+      "headingLines": ["RESERVA TU", "PLAZA AHORA"],
+      "body": "Las plazas son limitadas para garantizar una atención de calidad. Contacta ahora para reservar tu lugar y empezar a maquillarte con confianza.",
+      "instagramUrl": "https://www.instagram.com/luromeromakeup/",
+      "email": "luromeroestudio@gmail.com",
+      "emailSubject": "Automaquillaje – reserva de plaza",
+      "includesLabel": "QUÉ INCLUYE",
+      "includes": [
+        "Clase presencial en Barcelona",
+        "Análisis de tu estilo y productos actuales",
+        "Técnicas adaptadas a ti",
+        "Consejos personalizados de make up",
+        "Selección de productos recomendados",
+        "Soporte post-curso vía Instagram"
+      ]
+    }
+  },
+
+  "one-to-one": {
+    "slug": "one-to-one",
+    "pageTitle": "ONE to ONE — LU.ROMERO",
+    "heroTitle": "ONE TO ONE",
+    "heroSubtitle": "— Sesiones Avanzadas para Profesionales",
+    "intro": {
+      "tag": "FORMACIÓN PARA PROFESIONALES",
+      "headingLines": ["Lleva tu carrera", "al siguiente nivel."],
+      "lead": "Sesiones intensivas de maquillaje y/o peinado para profesionales que quieren crecer.",
+      "paragraphs": [
+        "Estas sesiones van dirigidas para <strong>profesionales que deseen avanzar en su carrera</strong> y así abrir nuevas oportunidades laborales.",
+        "Trabajarás a solas con una de nosotras (Lu o Ali) <strong>+ una modelo, durante 4 horas</strong>. Responderemos todas tus dudas sobre técnicas, productos y metodología de trabajo. Te ayudaremos a ganar seguridad y vencer tus miedos a la hora de crear.",
+        "Compartiremos contigo cómo hacemos nuestro trabajo, nuestro kit, técnicas y mucho más."
+      ],
+      "chips": ["4 Horas", "Con modelo", "Correcciones en directo", "Barcelona"],
+      "mainImage": "one-to-one.jpg",
+      "mainImageAlt": "Sesión ONE to ONE – imagen principal",
+      "mainImageLabel": "FORMACIÓN AVANZADA",
+      "secondaryImage": "one-to-one.jpg",
+      "secondaryImageAlt": "Sesión ONE to ONE – detalle",
+      "secondaryImageLabel": "TÉCNICA & CREATIVIDAD"
+    },
+    "learning": {
+      "sectionTitle": "PROPUESTA TEMÁTICA",
+      "sectionLabel": "— ELIGE TU ENFOQUE",
+      "items": [
+        {
+          "num": "01",
+          "title": "MAQUILLAJE & TÉCNICA",
+          "body": "Smokey eyes, difuminados, eyeliner, maquillaje de precisión, moda, shootings, runway, maquillaje social para invitadas y eventos.",
+          "tag": "MAQUILLAJE"
+        },
+        {
+          "num": "02",
+          "title": "PEINADO & STYLING",
+          "body": "Peinado social para invitadas y eventos. Técnicas de peinado para sesiones fotográficas, desfiles y trabajo en moda.",
+          "tag": "PEINADO"
+        },
+        {
+          "num": "03",
+          "title": "NOVIAS & BRIDAL",
+          "body": "Maquillaje de novias, peinado de novias. Metodología de trabajo para bodas y sesiones editoriales.",
+          "tag": "BRIDAL"
+        }
+      ]
+    },
+    "director": {
+      "photo": "lu-romero-bio.avif",
+      "photoFolder": "bento",
+      "photoLabel": "TU MENTORA",
+      "photoYears": "16 AÑOS",
+      "sectionLabel": "— QUIÉN TE ENSEÑA",
+      "nameLines": ["LU.", "ROMERO"],
+      "quote": "Después de 16 años en moda y belleza, sé lo que marca la diferencia. En estas sesiones te comparto todo lo que sé para que des el salto que necesitas.",
+      "body": "Cada sesión ONE to ONE es un espacio de aprendizaje intensivo. Practicarás, recibirás correcciones en tiempo real y saldrás con nuevas habilidades y una visión más clara de tu trabajo.",
+      "stats": [
+        { "value": "4",  "label": "Horas por sesión" },
+        { "value": "1",  "label": "Modelo incluida" },
+        { "value": "∞",  "label": "Sesiones disponibles" }
+      ]
+    },
+    "academy": {
+      "sectionTitle": "LA ACADEMIA",
+      "sectionLabel": "— DÓNDE SE IMPARTE",
+      "name": "STUDIO METAL",
+      "address": "Ronda General Mitre 217",
+      "addressStrong": "Sant Gervasi — Barcelona",
+      "mapUrl": "https://maps.google.com/?q=Ronda+General+Mitre+217+Sant+Gervasi+Barcelona",
+      "modalities": [
+        "Presencial en Barcelona",
+        "Sesión individual con modelo",
+        "Correcciones y feedback personalizados",
+        "Elige la cantidad de sesiones"
+      ],
+      "photos": [
+        { "file": "studio-metal-1.webp", "alt": "Studio Metal – espacio de prácticas 1" },
+        { "file": "studio-metal-2.webp", "alt": "Studio Metal – espacio de prácticas 2" },
+        { "file": "studio-metal-3.webp", "alt": "Studio Metal – espacio de prácticas 3" },
+        { "file": "studio-metal-4.webp", "alt": "Studio Metal – espacio de prácticas 4" }
+      ]
+    },
+    "cta": {
+      "sectionLabel": "— INSCRIPCIÓN",
+      "headingLines": ["RESERVA TU", "SESIÓN"],
+      "body": "Elige la temática que quieres trabajar y contáctanos para reservar tu sesión. Puedes elegir la cantidad de sesiones que desees.",
+      "instagramUrl": "https://www.instagram.com/luromeromakeup/",
+      "email": "luromeroestudio@gmail.com",
+      "emailSubject": "ONE to ONE – reserva de sesión",
+      "includesLabel": "QUÉ INCLUYE",
+      "includes": [
+        "4 horas presenciales en Barcelona",
+        "Trabajo con modelo en directo",
+        "Correcciones y feedback personalizado",
+        "Acceso a técnicas y metodología profesional",
+        "Kit y productos del equipo METAL",
+        "Soporte post-sesión vía Instagram"
+      ]
+    }
   }
 }

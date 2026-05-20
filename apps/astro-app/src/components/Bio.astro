@@ -1,13 +1,17 @@
 ---
-import bioImg from '../assets/img/bento/lu-romero-bio.avif';
+import { fetchBio } from '../lib/payload';
 
-const paragraphs = [
+const bio = await fetchBio();
+const paragraphs = bio.parrafos.length > 0 ? bio.parrafos : [
     'Luciana Romero nació en Argentina. Estuvo durante su infancia y adolescencia formando parte de talleres de dibujo y pintura donde fue creando su pequeño universo de texturas, detalles, formas, líneas y colores.',
     'El maquillaje y el peinado llegan a su vida por casualidad y logran atraparla por completo. Desde aquel momento y con 16 años de carrera que le anteceden, logró el perfecto engranaje de dos piezas fundamentales, la pasión y el trabajo.',
     'Luciana se destaca por su intervención artística en las más importantes revistas de moda, publicidades, desfiles, campañas gráficas, novias y eventos sociales.',
     'Creativa, innovadora, detallista, apasionada y talentosa, Luciana Romero se convirtió rápidamente en una referente del maquillaje y el peinado.',
     'Actualmente reside en Barcelona, España, desde donde expande su arte al mundo entero.',
 ];
+const img = bio.fotoMeta.src
+    ? bio.fotoMeta
+    : { src: '/img/bento/lu-romero-bio.avif', width: 800, height: 1067 };
 ---
 
 <section class="relative z-10 bg-canvas border-t-4 border-ink py-16 md:py-24 transition-colors duration-300">
@@ -48,10 +52,10 @@ const paragraphs = [
             <!-- Offset frame (neobrutalista) -->
             <div class="relative border-2 border-ink bio-img-wrapper transition-colors duration-300">
                 <img
-                    src={bioImg.src}
+                    src={img.src}
                     alt="Luciana Romero"
-                    width={bioImg.width}
-                    height={bioImg.height}
+                    width={img.width ?? undefined}
+                    height={img.height ?? undefined}
                     class="block w-full h-full object-cover object-top"
                     loading="lazy"
                 />

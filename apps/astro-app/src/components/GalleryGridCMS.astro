@@ -1,0 +1,128 @@
+---
+// Tipos del modelo Payload CMS (colección galerias)
+type GaleriaItem = {
+    id?:    string
+    imagen: { url: string; width?: number | null; height?: number | null }
+    grupo?: string
+    alt?:   string
+}
+
+interface Props {
+    imagenes:      GaleriaItem[]
+    sectionLabel?: string
+    payloadUrl:    string
+}
+
+const { imagenes, sectionLabel, payloadUrl } = Astro.props
+
+/** Resuelve una URL media: si ya es absoluta la devuelve tal cual, si es relativa añade el origen de Payload */
+function resolveUrl(url: string): string {
+    return url.startsWith('http') ? url : `${payloadUrl}${url}`
+}
+
+const galleryId = `gallery-${Math.random().toString(36).slice(2, 7)}`
+
+// Filtramos items sin imagen y construimos el array de render
+const items = imagenes
+    .filter((item) => !!item?.imagen?.url)
+    .map((item: GaleriaItem) => ({
+        src:    resolveUrl(item.imagen.url),
+        width:  item.imagen.width  ?? undefined,
+        height: item.imagen.height ?? undefined,
+        alt:    item.alt || item.grupo,
+        label:  item.grupo,
+    }))
+---
+
+<div class="gallery-wrap">
+
+    {sectionLabel && (
+        <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between border-b-4 border-ink pb-4 mb-12 gap-1 sm:gap-0">
+            <span class="font-boldonse uppercase text-5xl md:text-6xl tracking-tight text-ink leading-normal">{sectionLabel}</span>
+            <span class="font-boldonse uppercase text-sm tracking-widest opacity-40 text-ink">{items.length} IMÁGENES</span>
+        </div>
+    )}
+
+    {items.length === 0 ? (
+        <p class="font-aleo text-ink opacity-50 text-center py-24">No hay imágenes disponibles en este momento.</p>
+    ) : (
+        <div class="gallery-grid">
+            {items.map((item) => (
+                <a
+                    href={item.src}
+                    class="gallery-item glightbox relative overflow-hidden border-2 border-ink cursor-zoom-in block"
+                    data-gallery={galleryId}
+                    data-description={item.label}
+                    data-alt={item.alt}
+                >
+                    <img
+                        src={item.src}
+                        alt={item.alt}
+                        width={item.width}
+                        height={item.height}
+                        class="w-full block"
+                        loading="lazy"
+                        decoding="async"
+                    />
+                    <div class="gallery-label absolute bottom-0 left-0 right-0 bg-ink px-5 py-3 flex items-center justify-between" aria-hidden="true">
+                        <span class="font-boldonse uppercase text-canvas text-xs md:text-sm tracking-[0.2em] leading-none">
+                            {item.label}
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-canvas opacity-50"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                    </div>
+                </a>
+            ))}
+        </div>
+    )}
+
+</div>
+
+<style>
+    .gallery-grid {
+        columns: 2;
+        column-gap: 0;
+    }
+
+    @media (min-width: 768px) {
+        .gallery-grid { columns: 3; }
+    }
+
+    @media (min-width: 1280px) {
+        .gallery-grid { columns: 4; }
+    }
+
+    .gallery-item {
+        break-inside: avoid;
+        margin-bottom: -2px;
+        margin-right: -2px;
+        display: block;
+    }
+
+    .gallery-label {
+        transform: translateY(100%);
+        transition: transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .gallery-item:hover .gallery-label,
+    .gallery-item:focus-visible .gallery-label {
+        transform: translateY(0);
+    }
+</style>
+
+<script>
+    import GLightbox from 'glightbox';
+    import 'glightbox/dist/css/glightbox.min.css';
+
+    GLightbox({
+        selector: '.glightbox',
+        touchNavigation: true,
+        loop: true,
+        zoomable: false,
+        closeButton: true,
+        svg: {
+            close: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+            next:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+            prev:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+        },
+    });
+</script>

@@ -18,6 +18,11 @@ dist/
 .DS_Store
 Thumbs.db
 
+# Database backups
+*.sql
+*.dump
+
+
 # Logs
 *.log
 npm-debug.log*

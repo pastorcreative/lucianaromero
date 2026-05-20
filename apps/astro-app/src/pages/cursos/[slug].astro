@@ -6,18 +6,21 @@ import CourseLearning from '../../components/CourseLearning.astro';
 import CourseDirector from '../../components/CourseDirector.astro';
 import CourseAcademy from '../../components/CourseAcademy.astro';
 import CourseCTA from '../../components/CourseCTA.astro';
-import { cursos } from '../../data/cursos';
+import { fetchCursos, fetchCurso } from '../../lib/payload';
 
-export function getStaticPaths() {
-    return Object.keys(cursos).map(slug => ({ params: { slug } }));
+export async function getStaticPaths() {
+    const cursos = await fetchCursos();
+    return cursos.map(c => ({ params: { slug: c.slug } }));
 }
 
 const { slug } = Astro.params;
-const curso = cursos[slug!];
+const curso = await fetchCurso(slug!);
+
+if (!curso) return Astro.redirect('/cursos', 302);
 
 const breadcrumb = [
-    { label: 'Inicio',  href: '/' },
-    { label: 'Cursos',  href: '/cursos' },
+    { label: 'Inicio',        href: '/' },
+    { label: 'Cursos',        href: '/cursos' },
     { label: curso.heroTitle, href: `/cursos/${slug}` },
 ];
 ---

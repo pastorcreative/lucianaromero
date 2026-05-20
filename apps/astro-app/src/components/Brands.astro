@@ -1,16 +1,13 @@
 ---
 import LogoGrid from './LogoGrid.astro';
-import brandsData from '../data/brands.json';
+import { fetchConfiguracion } from '../lib/payload';
 
-const logoModules = import.meta.glob<{ default: string }>(
-    '../assets/img/brands/*.svg',
-    { eager: true, query: '?url' }
-);
+const { marcas } = await fetchConfiguracion();
 
-const items = brandsData.map(b => ({
-    name: b.name,
-    url:  b.url,
-    src:  (logoModules[`../assets/img/brands/${b.logo}`] as any)?.default ?? '',
+const items = marcas.map(m => ({
+    name: m.nombre,
+    url:  m.url,
+    src:  m.logoSrc,
 }));
 ---
 
