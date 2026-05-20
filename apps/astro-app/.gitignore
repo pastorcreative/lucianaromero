@@ -15,7 +15,7 @@ pnpm-debug.log*
 
 # environment variables
 .env
-.env.production
+# .env.production no se ignora: solo contiene PUBLIC_ vars (sin secretos)
 
 # macOS-specific files
 .DS_Store
