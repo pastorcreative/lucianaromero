@@ -6,16 +6,61 @@ import Footer from '../components/Footer.astro';
 
 interface Props {
     title?: string;
+    description?: string;
+    ogImage?: string;
+    noindex?: boolean;
 }
 
-const { title = 'LU.ROMERO' } = Astro.props;
+const {
+    title = 'LU.ROMERO',
+    description = 'Luciana Romero — Makeup Artist & Hair Stylist. Portfolio de maquillaje editorial, comercial y nupcial en Barcelona.',
+    ogImage = '/og-default.jpg',
+    noindex = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const ogImageAbsolute = new URL(ogImage, Astro.site).toString();
 ---
 <html lang="es">
     <head>
         <meta charset="utf-8" />
         <link rel="icon" type="image/jpeg" href="/favicon.jpg" />
-        <meta name="viewport" content="width=device-width" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalURL} />
+        {noindex && <meta name="robots" content="noindex, nofollow" />}
+        <!-- Open Graph -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={ogImageAbsolute} />
+        <meta property="og:locale" content="es_ES" />
+        <meta property="og:site_name" content="LU.ROMERO" />
+        <!-- Twitter Card -->
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={ogImageAbsolute} />
+        <!-- Organization JSON-LD -->
+        <script type="application/ld+json" is:inline set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "name": "Luciana Romero",
+            "jobTitle": "Makeup Artist & Hair Stylist",
+            "url": "https://lucianaromero.com",
+            "image": ogImageAbsolute,
+            "sameAs": [
+                "https://www.instagram.com/lu.romero_mua"
+            ],
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Barcelona",
+                "addressCountry": "ES"
+            }
+        })} />
+        <slot name="head" />
         <!-- Prevent FOUC: apply dark class before first paint -->
         <script is:inline>
             (function() {

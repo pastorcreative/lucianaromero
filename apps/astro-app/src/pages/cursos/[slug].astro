@@ -25,7 +25,31 @@ const breadcrumb = [
 ];
 ---
 
-<Layout title={curso.pageTitle}>
+<Layout
+    title={curso.pageTitle}
+    description={curso.intro?.lead ?? curso.heroSubtitle}
+>
+    <Fragment slot="head">
+        <script type="application/ld+json" set:html={JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Course",
+            "name": curso.heroTitle,
+            "description": curso.intro?.lead || curso.heroSubtitle,
+            "url": `https://lucianaromero.com/cursos/${slug}`,
+            "provider": {
+                "@type": "Organization",
+                "name": curso.academy?.name || "LU.ROMERO Academy",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": curso.academy?.address || "",
+                    "addressLocality": "Barcelona",
+                    "addressCountry": "ES"
+                }
+            },
+            "educationalLevel": "Professional",
+            "inLanguage": "es"
+        })} />
+    </Fragment>
     <HeroPage
         title={curso.heroTitle}
         subtitle={curso.heroSubtitle}

@@ -2,12 +2,17 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import icon from 'astro-icon';
+import sitemap from '@astrojs/sitemap';
 import astroConsent from 'astro-consent';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://lucianaromero.com',
   integrations: [
     icon(),
+    sitemap({
+      filter: (page) => !page.includes('/admin') && !page.includes('/api'),
+    }),
     astroConsent({
       siteName: 'LU.ROMERO',
       headline: 'Gestión de cookies',

@@ -79,7 +79,10 @@ const breadcrumb = [
 ]
 ---
 
-<Layout title={seoTitle}>
+<Layout
+    title={seoTitle}
+    description={`${titulo} — ${subtitulo.replace(/^—\s*/, '')}. Portfolio de maquillaje de Luciana Romero.`}
+>
     <HeroPage title={titulo} subtitle={subtitulo} breadcrumb={breadcrumb} />
 
     <section class="relative z-10 bg-canvas border-b-4 border-ink transition-colors duration-300">
