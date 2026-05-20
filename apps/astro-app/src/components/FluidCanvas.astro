@@ -79,8 +79,12 @@ const {
 ></canvas>
 
 <script>
-	import * as THREE from 'three';
-	
+	import type { Vector2 } from 'three';
+
+	// Dynamic import — THREE.js (~600 KB) se carga en idle, no bloquea LCP
+	async function initFluidCanvas() {
+		const THREE = await import('three');
+
 	// Get canvas and read props from data attributes
 	const canvas = document.getElementById('fluid-canvas') as HTMLCanvasElement;
 	
@@ -325,7 +329,7 @@ const {
 	renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.0));
 
 	// Scroll trail
-	const scrollTrail: THREE.Vector2[] = Array.from({ length: trailLength }, () => new THREE.Vector2(0.5, 0.5));
+	const scrollTrail: Vector2[] = Array.from({ length: trailLength }, () => new THREE.Vector2(0.5, 0.5));
 
 	// Uniforms
 	const uniforms = {
@@ -452,4 +456,11 @@ const {
 	}, { passive: true });
 
 	animate(0);
+	} // end initFluidCanvas
+
+	if ('requestIdleCallback' in window) {
+		(window as any).requestIdleCallback(() => initFluidCanvas(), { timeout: 3000 });
+	} else {
+		setTimeout(initFluidCanvas, 0);
+	}
 </script>

@@ -60,6 +60,7 @@ const items = imagenes
                         alt={item.alt}
                         width={item.width}
                         height={item.height}
+                        style={item.width && item.height ? `aspect-ratio:${item.width}/${item.height}` : 'aspect-ratio:3/4'}
                         class="w-full block"
                         loading="lazy"
                         decoding="async"
@@ -110,19 +111,35 @@ const items = imagenes
 </style>
 
 <script>
-    import GLightbox from 'glightbox';
-    import 'glightbox/dist/css/glightbox.min.css';
+    // GLightbox se carga de forma lazy en el primer click — no bloquea INP
+    let glightboxReady = false;
 
-    GLightbox({
-        selector: '.glightbox',
-        touchNavigation: true,
-        loop: true,
-        zoomable: false,
-        closeButton: true,
-        svg: {
-            close: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
-            next:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
-            prev:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
-        },
-    });
+    document.addEventListener('click', async (e) => {
+        const target = e.target as Element;
+        if (!target.closest('.glightbox') || glightboxReady) return;
+        e.preventDefault();
+        glightboxReady = true;
+
+        const [{ default: GLightbox }] = await Promise.all([
+            import('glightbox'),
+            import('glightbox/dist/css/glightbox.min.css'),
+        ]);
+
+        const lb = GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true,
+            zoomable: false,
+            closeButton: true,
+            svg: {
+                close: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+                next:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+                prev:  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+            },
+        });
+
+        // Abrir el elemento que el usuario clicó
+        const clicked = target.closest('.glightbox') as HTMLElement;
+        if (clicked) lb.openAt(Array.from(document.querySelectorAll('.glightbox')).indexOf(clicked));
+    }, true);
 </script>

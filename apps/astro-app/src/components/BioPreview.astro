@@ -77,13 +77,19 @@ const lines = [
 </section>
 
 <script>
-    import gsap from 'gsap';
-    import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-    gsap.registerPlugin(ScrollTrigger);
-
+    // Carga GSAP de forma lazy cuando la sección entra en el viewport
     const section = document.querySelector('.bio-preview') as HTMLElement;
     if (!section) throw new Error('bio-preview not found');
+
+    const observer = new IntersectionObserver(async (entries) => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+
+        const [{ default: gsap }, { ScrollTrigger }] = await Promise.all([
+            import('gsap'),
+            import('gsap/ScrollTrigger'),
+        ]);
+        gsap.registerPlugin(ScrollTrigger);
 
     // Shared ScrollTrigger config
     const trigger: ScrollTrigger.Vars = {
@@ -142,6 +148,9 @@ const lines = [
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', delay: 0.7, scrollTrigger: trigger }
     );
+    }, { rootMargin: '200px' }); // pre-carga 200px antes de entrar en viewport
+
+    observer.observe(section);
 </script>
 
 <style>

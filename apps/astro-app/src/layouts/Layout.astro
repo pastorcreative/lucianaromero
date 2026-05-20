@@ -26,6 +26,15 @@ const { title = 'LU.ROMERO' } = Astro.props;
                 }
             })();
         </script>
+        <!-- Speculation Rules: prerender likely-next pages on hover (Chromium) -->
+        <script type="speculationrules" is:inline>
+        {
+            "prerender": [{
+                "where": { "href_matches": "/*" },
+                "eagerness": "moderate"
+            }]
+        }
+        </script>
     </head>
     <body class="m-0 bg-canvas font-sans transition-colors duration-300">
         <Header />
