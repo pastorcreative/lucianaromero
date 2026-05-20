@@ -2,7 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 export const GaleriaImagenes: CollectionConfig = {
   slug: 'galeria-imagenes',
-  label: { singular: 'Imagen de galería', plural: 'Imágenes de galería' },
+  labels: { singular: 'Imagen de galería', plural: 'Imágenes de galería' },
   access: { read: () => true },
   admin: {
     group: 'Contenido',
