@@ -61,23 +61,31 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    ...(process.env.R2_BUCKET
-      ? [
-          s3Storage({
-            collections: {
-              media: true,
-            },
-            bucket: process.env.R2_BUCKET,
-            config: {
-              credentials: {
-                accessKeyId:     process.env.R2_ACCESS_KEY_ID     || '',
-                secretAccessKey: process.env.R2_SECRET_ACCESS_KEY || '',
+    ...(process.env.NODE_ENV === 'production' || process.env.R2_BUCKET
+      ? (() => {
+          const bucket          = process.env.R2_BUCKET
+          const accessKeyId     = process.env.R2_ACCESS_KEY_ID
+          const secretAccessKey = process.env.R2_SECRET_ACCESS_KEY
+          const endpoint        = process.env.R2_ENDPOINT
+
+          if (!bucket || !accessKeyId || !secretAccessKey || !endpoint) {
+            throw new Error(
+              'Faltan variables de entorno para Cloudflare R2: R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_ENDPOINT',
+            )
+          }
+
+          return [
+            s3Storage({
+              collections: { media: true },
+              bucket,
+              config: {
+                credentials: { accessKeyId, secretAccessKey },
+                region:   'auto',
+                endpoint,
               },
-              region:   'auto',
-              endpoint: process.env.R2_ENDPOINT || '',
-            },
-          }),
-        ]
+            }),
+          ]
+        })()
       : []),
   ],
 })
