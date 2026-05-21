@@ -30,6 +30,14 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterNavLinks: [
+        {
+          path: '/components/LanzarProduccion',
+          exportName: 'LanzarProduccionButton',
+        },
+      ],
+    },
   },
   i18n: {
     supportedLanguages: { es },
