@@ -41,6 +41,12 @@ export const Galerias: CollectionConfig = {
       type: 'text',
       admin: { position: 'sidebar' },
     },
+    {
+      name: 'seoDescripcion',
+      label: 'Meta descripción SEO',
+      type: 'textarea',
+      admin: { position: 'sidebar' },
+    },
 
     // ── Imágenes ───────────────────────────────────────────────────────────────
     {

@@ -13,12 +13,13 @@ type GaleriaItem = {
 }
 
 type GaleriaDoc = {
-    id:        string
-    slug:      string
-    titulo:    string
-    subtitulo: string
-    seoTitle?: string
-    imagenes:  GaleriaItem[]
+    id:             string
+    slug:           string
+    titulo:         string
+    subtitulo:      string
+    seoTitle?:      string
+    seoDescripcion?: string
+    imagenes:       GaleriaItem[]
 }
 
 // ── Fallback estático (si Payload no está disponible) ─────────────────────────
@@ -52,10 +53,11 @@ export async function getStaticPaths() {
         return docs.map(doc => ({
             params: { slug: doc.slug },
             props:  {
-                titulo:    doc.titulo,
-                subtitulo: doc.subtitulo,
-                seoTitle:  doc.seoTitle || `${doc.titulo} — LU.ROMERO`,
-                imagenes:  doc.imagenes ?? [],
+                titulo:         doc.titulo,
+                subtitulo:      doc.subtitulo,
+                seoTitle:       doc.seoTitle || `${doc.titulo} — LU.ROMERO`,
+                seoDescripcion: doc.seoDescripcion || '',
+                imagenes:       doc.imagenes ?? [],
                 PAYLOAD_URL,
             },
         }))
@@ -71,7 +73,7 @@ export async function getStaticPaths() {
 // ── Props de página ───────────────────────────────────────────────────────────
 
 const { slug } = Astro.params
-const { titulo, subtitulo, seoTitle, imagenes, PAYLOAD_URL } = Astro.props
+const { titulo, subtitulo, seoTitle, seoDescripcion, imagenes, PAYLOAD_URL } = Astro.props
 
 const breadcrumb = [
     { label: 'Inicio', href: '/' },
@@ -81,7 +83,7 @@ const breadcrumb = [
 
 <Layout
     title={seoTitle}
-    description={`${titulo} — ${subtitulo.replace(/^—\s*/, '')}. Portfolio de maquillaje de Luciana Romero.`}
+    description={seoDescripcion || `${titulo} — ${subtitulo.replace(/^—\s*/, '')}. Portfolio de maquillaje de Luciana Romero.`}
 >
     <HeroPage title={titulo} subtitle={subtitulo} breadcrumb={breadcrumb} />
 

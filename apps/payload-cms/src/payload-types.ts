@@ -97,20 +97,12 @@ export interface Config {
     'configuracion-sitio': ConfiguracionSitio;
     'pagina-inicio': PaginaInicio;
     'pagina-bio': PaginaBio;
-    'pagina-galeria': PaginaGaleria;
-    'pagina-comercial': PaginaComercial;
-    'pagina-novia': PaginaNovia;
-    'pagina-contacto': PaginaContacto;
     'pagina-legal': PaginaLegal;
   };
   globalsSelect: {
     'configuracion-sitio': ConfiguracionSitioSelect<false> | ConfiguracionSitioSelect<true>;
     'pagina-inicio': PaginaInicioSelect<false> | PaginaInicioSelect<true>;
     'pagina-bio': PaginaBioSelect<false> | PaginaBioSelect<true>;
-    'pagina-galeria': PaginaGaleriaSelect<false> | PaginaGaleriaSelect<true>;
-    'pagina-comercial': PaginaComercialSelect<false> | PaginaComercialSelect<true>;
-    'pagina-novia': PaginaNoviaSelect<false> | PaginaNoviaSelect<true>;
-    'pagina-contacto': PaginaContactoSelect<false> | PaginaContactoSelect<true>;
     'pagina-legal': PaginaLegalSelect<false> | PaginaLegalSelect<true>;
   };
   locale: null;
@@ -333,6 +325,7 @@ export interface Galeria {
   titulo: string;
   subtitulo?: string | null;
   seoTitle?: string | null;
+  seoDescripcion?: string | null;
   /**
    * Arrastra las filas para cambiar el orden. El orden aquí es el orden en el sitio.
    */
@@ -623,6 +616,7 @@ export interface GaleriasSelect<T extends boolean = true> {
   titulo?: T;
   subtitulo?: T;
   seoTitle?: T;
+  seoDescripcion?: T;
   imagenes?:
     | T
     | {
@@ -798,85 +792,6 @@ export interface PaginaBio {
    * Texto breve que aparece bajo las líneas destacadas en la página de inicio.
    */
   resumen?: string | null;
-  seo?: {
-    titulo?: string | null;
-    descripcion?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-galeria".
- */
-export interface PaginaGaleria {
-  id: number;
-  hero?: {
-    titulo?: string | null;
-    subtitulo?: string | null;
-  };
-  secciones?: {
-    editorial?: string | null;
-    comercial?: string | null;
-    novias?: string | null;
-  };
-  seo?: {
-    titulo?: string | null;
-    descripcion?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-comercial".
- */
-export interface PaginaComercial {
-  id: number;
-  hero?: {
-    titulo?: string | null;
-    subtitulo?: string | null;
-  };
-  seo?: {
-    titulo?: string | null;
-    descripcion?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-novia".
- */
-export interface PaginaNovia {
-  id: number;
-  hero?: {
-    titulo?: string | null;
-    subtitulo?: string | null;
-  };
-  seo?: {
-    titulo?: string | null;
-    descripcion?: string | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-contacto".
- */
-export interface PaginaContacto {
-  id: number;
-  hero?: {
-    titulo?: string | null;
-    subtitulo?: string | null;
-  };
-  formulario?: {
-    titulo?: string | null;
-    descripcion?: string | null;
-    emailDestino?: string | null;
-    mensajeExito?: string | null;
-  };
   seo?: {
     titulo?: string | null;
     descripcion?: string | null;
@@ -1083,105 +998,6 @@ export interface PaginaBioSelect<T extends boolean = true> {
         id?: T;
       };
   resumen?: T;
-  seo?:
-    | T
-    | {
-        titulo?: T;
-        descripcion?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-galeria_select".
- */
-export interface PaginaGaleriaSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        titulo?: T;
-        subtitulo?: T;
-      };
-  secciones?:
-    | T
-    | {
-        editorial?: T;
-        comercial?: T;
-        novias?: T;
-      };
-  seo?:
-    | T
-    | {
-        titulo?: T;
-        descripcion?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-comercial_select".
- */
-export interface PaginaComercialSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        titulo?: T;
-        subtitulo?: T;
-      };
-  seo?:
-    | T
-    | {
-        titulo?: T;
-        descripcion?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-novia_select".
- */
-export interface PaginaNoviaSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        titulo?: T;
-        subtitulo?: T;
-      };
-  seo?:
-    | T
-    | {
-        titulo?: T;
-        descripcion?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "pagina-contacto_select".
- */
-export interface PaginaContactoSelect<T extends boolean = true> {
-  hero?:
-    | T
-    | {
-        titulo?: T;
-        subtitulo?: T;
-      };
-  formulario?:
-    | T
-    | {
-        titulo?: T;
-        descripcion?: T;
-        emailDestino?: T;
-        mensajeExito?: T;
-      };
   seo?:
     | T
     | {

@@ -305,13 +305,6 @@ async function migrarConfiguracion() {
     revistas.push({ nombre: mag.name, logo: logoId, url: mag.url })
   }
 
-  const videosRaw = JSON.parse(readFileSync(path.join(ASTRO_DATA, 'videos.json'), 'utf-8')) as any[]
-  const videos = videosRaw.map((v) => ({
-    titulo:    v.title,
-    categoria: v.category,
-    cliente:   v.client ?? '',
-  }))
-
   await apiUpdateGlobal('configuracion-sitio', {
     identidad: {
       nombreSitio:      'LU.ROMERO',
@@ -320,11 +313,17 @@ async function migrarConfiguracion() {
       ubicacion:        'Barcelona, España',
     },
     redes: {
-      instagram: 'https://www.instagram.com/luromeromakeup/',
+      instagram:       'https://www.instagram.com/luromeromakeup/',
+      instagramHandle: '@luromeromakeup',
+      facebook:        'https://www.facebook.com/people/Luciana-Romero-Make-Up-Artist/100063943687534/',
+      facebookHandle:  'Luciana Romero MUA',
+      linkedin:        'https://www.linkedin.com/in/lucianaromeromakeup/',
+      linkedinHandle:  'lucianaromeromakeup',
+      youtube:         'https://www.youtube.com/@lucianaromero9645',
+      youtubeHandle:   '@lucianaromero9645',
     },
     marcas,
     revistas,
-    videos,
     footer: {
       copyright: '© LU.ROMERO',
       tagline:   'Make Up & Hair Artist',
@@ -354,10 +353,87 @@ async function migrarBio() {
       { texto: 'Creativa, innovadora, detallista, apasionada y talentosa, Luciana Romero se convirtió rápidamente en una referente del maquillaje y el peinado.' },
       { texto: 'Actualmente reside en Barcelona, España, desde donde expande su arte al mundo entero.' },
     ],
-    seo: { titulo: 'Bio — LU.ROMERO' },
+    lineasDestacadas: [
+      { texto: 'MUA & HAIR ARTIST' },
+      { texto: '17 AÑOS DE CARRERA' },
+      { texto: 'BARCELONA · ARGENTINA' },
+      { texto: 'MODA · PUBLICIDAD · NOVIAS' },
+    ],
+    resumen: 'Luciana Romero nació en Argentina. Con más de 17 años de carrera, fusiona la pasión artística con el trabajo profesional en moda, publicidad y eventos. Actualmente basada en Barcelona.',
+    seo: {
+      titulo:      'Bio — LU.ROMERO',
+      descripcion: 'Conoce a Luciana Romero, Makeup Artist & Hair Stylist con sede en Barcelona. Especialista en maquillaje editorial, comercial y nupcial para moda y publicidad.',
+    },
   })
 
   console.log('  ✓ Página Bio actualizada')
+}
+
+// ── Migración de Página Inicio ───────────────────────────────────────────────
+
+async function migrarPaginaInicio() {
+  console.log('\n🏠 Migrando página Inicio...')
+
+  const raw = JSON.parse(
+    readFileSync(path.join(__dirname, 'seed-data/pagina-inicio.json'), 'utf-8'),
+  )
+
+  // Los vídeos no tienen archivo aún (subir .mp4 manualmente desde el admin)
+  const videos = raw.videos.map((v: any) => ({
+    titulo:    v.titulo,
+    categoria: v.categoria,
+    cliente:   v.cliente ?? '',
+  }))
+
+  await apiUpdateGlobal('pagina-inicio', {
+    hero:   raw.hero,
+    bento:  raw.bento,
+    videos,
+    seo:    raw.seo,
+  })
+
+  console.log('  ✓ Página Inicio actualizada')
+}
+
+// ── Migración de Textos Legales ───────────────────────────────────────────────
+
+async function migrarLegal() {
+  console.log('\n⚖️  Migrando textos legales...')
+
+  const raw = JSON.parse(
+    readFileSync(path.join(__dirname, 'seed-data/pagina-legal.json'), 'utf-8'),
+  )
+
+  function mapSections(sections: any[]) {
+    return (sections ?? []).map((s: any) => ({
+      heading:    s.heading    ?? '',
+      paragraphs: (s.paragraphs ?? []).map((t: string) => ({ texto: t })),
+      items:      (s.items     ?? []).map((t: string) => ({ texto: t })),
+    }))
+  }
+
+  await apiUpdateGlobal('pagina-legal', {
+    avisoLegal: {
+      title:     raw.avisoLegal.title,
+      slug:      raw.avisoLegal.slug,
+      updatedAt: raw.avisoLegal.updatedAt,
+      sections:  mapSections(raw.avisoLegal.sections),
+    },
+    privacidad: {
+      title:     raw.privacidad.title,
+      slug:      raw.privacidad.slug,
+      updatedAt: raw.privacidad.updatedAt,
+      sections:  mapSections(raw.privacidad.sections),
+    },
+    cookies: {
+      title:     raw.cookies.title,
+      slug:      raw.cookies.slug,
+      updatedAt: raw.cookies.updatedAt,
+      sections:  mapSections(raw.cookies.sections),
+    },
+  })
+
+  console.log('  ✓ Textos legales actualizados')
 }
 
 // ── Migración de Galerías ─────────────────────────────────────────────────────
@@ -448,6 +524,8 @@ async function main() {
   await migrarCursos()
   await migrarConfiguracion()
   await migrarBio()
+  await migrarPaginaInicio()
+  await migrarLegal()
   await migrarGalerias()
 
   console.log('\n✅ Migración a producción completada con éxito.')

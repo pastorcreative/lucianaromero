@@ -16,10 +16,6 @@ import { Galerias } from './collections/Galerias'
 import { ConfiguracionSitio } from './globals/ConfiguracionSitio'
 import { PaginaInicio } from './globals/PaginaInicio'
 import { PaginaBio } from './globals/PaginaBio'
-import { PaginaGaleria } from './globals/PaginaGaleria'
-import { PaginaComerical } from './globals/PaginaComerical'
-import { PaginaNovia } from './globals/PaginaNovia'
-import { PaginaContacto } from './globals/PaginaContacto'
 import { PaginaLegal } from './globals/PaginaLegal'
 
 const filename = fileURLToPath(import.meta.url)
@@ -50,10 +46,6 @@ export default buildConfig({
     ConfiguracionSitio,
     PaginaInicio,
     PaginaBio,
-    PaginaGaleria,
-    PaginaComerical,
-    PaginaNovia,
-    PaginaContacto,
     PaginaLegal,
   ],
   editor: lexicalEditor(),
