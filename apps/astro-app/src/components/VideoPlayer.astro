@@ -282,23 +282,33 @@ const firstVideo = videoList[0];
     tmp.preload = 'metadata';
     tmp.muted = true;
     tmp.playsInline = true;
-    tmp.crossOrigin = 'anonymous';
 
-    tmp.addEventListener('loadeddata', () => { tmp.currentTime = 0.1; });
+    // Solo añadir crossOrigin para URLs externas (evita canvas tainted en same-origin)
+    try {
+      const url = new URL(src, location.href);
+      if (url.origin !== location.origin) tmp.crossOrigin = 'anonymous';
+    } catch { /* URL inválida, no hacemos nada */ }
+
+    tmp.addEventListener('loadedmetadata', () => { tmp.currentTime = 0.5; });
+    tmp.addEventListener('loadeddata', () => { if (tmp.currentTime < 0.1) tmp.currentTime = 0.5; });
 
     tmp.addEventListener('seeked', () => {
-      const ctx = canvas.getContext('2d');
-      canvas.width  = tmp.videoWidth  || 160;
-      canvas.height = tmp.videoHeight || 284;
-      ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
-      canvas.style.opacity = '1';
+      try {
+        const ctx = canvas.getContext('2d');
+        canvas.width  = tmp.videoWidth  || 160;
+        canvas.height = tmp.videoHeight || 284;
+        ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
+        canvas.style.opacity = '1';
 
-      const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-      posterCache[index] = dataUrl;
+        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+        posterCache[index] = dataUrl;
 
-      if (index === activeIndex && overlayPoster) {
-        overlayPoster.src = dataUrl;
-        overlayPoster.style.opacity = '1';
+        if (index === activeIndex && overlayPoster) {
+          overlayPoster.src = dataUrl;
+          overlayPoster.style.opacity = '1';
+        }
+      } catch {
+        // Canvas tainted (CORS) — mostrar placeholder como fallback
       }
 
       const placeholder = canvas.parentElement?.querySelector('.mm-thumb-placeholder');
