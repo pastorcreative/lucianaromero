@@ -8,14 +8,17 @@ const videoModules = import.meta.glob('../assets/img/video/*.mp4', { as: 'url', 
 
 type VideoEntry = { title: string; category: string; client: string; url: string }
 
-const videoList: VideoEntry[] = inicio.videos.length > 0
-  ? inicio.videos
-      .filter(v => !!v.archivoUrl)
-      .map(v => ({ title: v.titulo, category: v.categoria, client: v.cliente, url: v.archivoUrl }))
-  : Object.entries(videoModules).map(([key, url]) => {
-      const filename = key.split('/').pop() ?? key
-      return { title: filename.replace(/\.mp4$/i, ''), category: 'COMERCIAL', client: '', url }
-    });
+const localVideos: VideoEntry[] = Object.entries(videoModules).map(([key, url]) => {
+  const filename = key.split('/').pop() ?? key
+  return { title: filename.replace(/\.mp4$/i, ''), category: 'COMERCIAL', client: '', url }
+})
+
+// Usa vídeos de Payload solo si alguno tiene archivo subido; si no, usa los locales
+const payloadVideos: VideoEntry[] = inicio.videos
+  .filter(v => !!v.archivoUrl)
+  .map(v => ({ title: v.titulo, category: v.categoria, client: v.cliente, url: v.archivoUrl }))
+
+const videoList: VideoEntry[] = payloadVideos.length > 0 ? payloadVideos : localVideos;
 
 const firstVideo = videoList[0];
 ---
