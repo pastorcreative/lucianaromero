@@ -50,14 +50,20 @@ const firstVideo = videoList[0];
               <!-- Sombra offset brutalista -->
               <div class="absolute inset-0 translate-x-1 translate-y-1 bg-ink -z-10 transition-transform duration-150 group-hover:translate-x-1.5 group-hover:translate-y-1.5"></div>
 
-              <!-- Frame capturado -->
-              <canvas
-                id={`mm-thumb-canvas-${i}`}
+              <!-- Frame: vídeo nativo con primer frame (más fiable que canvas) -->
+              <video
+                id={`mm-thumb-video-${i}`}
+                src={v.url}
                 class="absolute inset-0 w-full h-full object-cover block"
                 style="opacity: 0; transition: opacity 0.3s ease;"
-              ></canvas>
+                preload="metadata"
+                muted
+                playsinline
+                tabindex="-1"
+                aria-hidden="true"
+              ></video>
 
-              <!-- Placeholder (título) hasta que cargue el frame -->
+              <!-- Placeholder mientras carga -->
               <div class="mm-thumb-placeholder absolute inset-0 flex items-end justify-start bg-canvas p-1.5 transition-opacity duration-300">
                 <span class="font-boldonse uppercase text-ink leading-tight"
                   style="font-size: 7px; letter-spacing: 0.08em;">
@@ -130,13 +136,17 @@ const firstVideo = videoList[0];
               id="mm-play-overlay"
               class="mm-overlay absolute inset-0 flex flex-col items-center justify-center gap-4 cursor-pointer select-none"
             >
-              <img
+              <video
                 id="mm-overlay-poster"
                 class="absolute inset-0 w-full h-full object-cover"
-                style="opacity: 0; transition: opacity 0.4s ease;"
-                alt=""
+                style="opacity: 1; transition: opacity 0.4s ease;"
+                src={firstVideo.url}
+                preload="metadata"
+                muted
+                playsinline
+                tabindex="-1"
                 aria-hidden="true"
-              />
+              ></video>
               <div class="absolute inset-0 bg-ink" style="opacity: 0.45;"></div>
 
               <div class="relative z-10 flex flex-col items-center gap-4">
@@ -269,58 +279,27 @@ const firstVideo = videoList[0];
 
   let activeIndex  = 0;
   let videoLoaded  = false;
-  const posterCache = {};
 
   const isDesktop = () => window.innerWidth >= 1024;
 
-  /* ── Capturar primer frame ─────────────────────────────────────────────── */
-  function captureThumbnail(index, src) {
-    const canvas = document.getElementById(`mm-thumb-canvas-${index}`);
-    if (!canvas) return;
+  /* ── Mostrar primer frame en miniaturas ─────────────────────────────────── */
+  videoList.forEach((_, i) => {
+    const thumbVideo = document.getElementById(`mm-thumb-video-${i}`);
+    if (!thumbVideo) return;
 
-    const tmp = document.createElement('video');
-    tmp.preload = 'metadata';
-    tmp.muted = true;
-    tmp.playsInline = true;
-
-    // Solo añadir crossOrigin para URLs externas (evita canvas tainted en same-origin)
-    try {
-      const url = new URL(src, location.href);
-      if (url.origin !== location.origin) tmp.crossOrigin = 'anonymous';
-    } catch { /* URL inválida, no hacemos nada */ }
-
-    tmp.addEventListener('loadedmetadata', () => { tmp.currentTime = 0.5; });
-    tmp.addEventListener('loadeddata', () => { if (tmp.currentTime < 0.1) tmp.currentTime = 0.5; });
-
-    tmp.addEventListener('seeked', () => {
-      try {
-        const ctx = canvas.getContext('2d');
-        canvas.width  = tmp.videoWidth  || 160;
-        canvas.height = tmp.videoHeight || 284;
-        ctx.drawImage(tmp, 0, 0, canvas.width, canvas.height);
-        canvas.style.opacity = '1';
-
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
-        posterCache[index] = dataUrl;
-
-        if (index === activeIndex && overlayPoster) {
-          overlayPoster.src = dataUrl;
-          overlayPoster.style.opacity = '1';
-        }
-      } catch {
-        // Canvas tainted (CORS) — mostrar placeholder como fallback
-      }
-
-      const placeholder = canvas.parentElement?.querySelector('.mm-thumb-placeholder');
+    const showThumb = () => {
+      thumbVideo.style.opacity = '1';
+      const placeholder = thumbVideo.parentElement?.querySelector('.mm-thumb-placeholder');
       if (placeholder) placeholder.style.opacity = '0';
+    };
 
-      tmp.src = ''; tmp.load();
-    });
-
-    tmp.src = src; tmp.load();
-  }
-
-  videoList.forEach((v, i) => { if (v.url) captureThumbnail(i, v.url); });
+    // readyState >= 2 = HAVE_CURRENT_DATA (ya tiene el primer frame)
+    if (thumbVideo.readyState >= 2) {
+      showThumb();
+    } else {
+      thumbVideo.addEventListener('loadeddata', showThumb, { once: true });
+    }
+  });
 
   /* ── Estado visual miniaturas ──────────────────────────────────────────── */
   function setActiveThumb(index) {
@@ -330,17 +309,14 @@ const firstVideo = videoList[0];
     });
   }
 
-  /* ── Actualizar poster del overlay desktop ─────────────────────────────── */
-  function updateOverlayPoster(index) {
-    if (!overlayPoster) return;
-    if (posterCache[index]) {
-      overlayPoster.src = posterCache[index];
-      overlayPoster.style.opacity = '1';
-    } else {
-      overlayPoster.style.opacity = '0';
-    }
+  /* ── Actualizar overlay desktop al cambiar de vídeo ───────────────────── */
+  function updateOverlay(index) {
     if (overlayTitle)    overlayTitle.textContent    = videoList[index].title;
     if (overlayCategory) overlayCategory.textContent = videoList[index].category;
+    if (overlayPoster) {
+      overlayPoster.src = videoList[index].url;
+      overlayPoster.load();
+    }
   }
 
   /* ── Helpers pause/play ────────────────────────────────────────────────── */
@@ -466,7 +442,7 @@ const firstVideo = videoList[0];
         if (videoLoaded && index !== activeIndex) {
           playOverlay.style.display = 'flex';
           playOverlay.style.opacity = '1';
-          updateOverlayPoster(index);
+          updateOverlay(index);
           setTimeout(() => playVideoDesktop(index), 80);
         } else {
           playVideoDesktop(index);
@@ -479,7 +455,7 @@ const firstVideo = videoList[0];
 
   /* ── Init ──────────────────────────────────────────────────────────────── */
   setActiveThumb(0);
-  updateOverlayPoster(0);
+  updateOverlay(0);
 </script>
 
 <style>
