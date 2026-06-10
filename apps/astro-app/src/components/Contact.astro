@@ -1,39 +1,9 @@
 ---
 import { Icon } from 'astro-icon/components';
 import contactoImg from '../assets/img/contacto.avif';
+import { fetchConfiguracion } from '../lib/payload';
 
-const socials = [
-    {
-        name:  'Instagram',
-        handle: '@luromeromakeup',
-        icon:  'lucide:instagram',
-        url:   'https://www.instagram.com/luromeromakeup/',
-    },
-    {
-        name:  'Facebook',
-        handle: 'Luciana Romero MUA',
-        icon:  'lucide:facebook',
-        url:   'https://www.facebook.com/people/Luciana-Romero-Make-Up-Artist/100063943687534/',
-    },
-    {
-        name:  'LinkedIn',
-        handle: 'lucianaromeromakeup',
-        icon:  'lucide:linkedin',
-        url:   'https://www.linkedin.com/in/lucianaromeromakeup/',
-    },
-    {
-        name:  'YouTube',
-        handle: '@lucianaromero9645',
-        icon:  'lucide:youtube',
-        url:   'https://www.youtube.com/@lucianaromero9645',
-    },
-    {
-        name:  'Email',
-        handle: 'luromeroestudio@gmail.com',
-        icon:  'lucide:mail',
-        url:   'mailto:luromeroestudio@gmail.com',
-    },
-];
+const { redes } = await fetchConfiguracion();
 ---
 
 <section id="contact" class="relative z-10 bg-canvas border-t-4 border-ink py-16 md:py-24 transition-colors duration-300">
@@ -49,8 +19,8 @@ const socials = [
                 <span class="font-boldonse uppercase text-xs tracking-[0.3em] opacity-40 text-ink">REDES & CONTACTO</span>
             </div>
             <ul>
-                {socials.map((s, i) => (
-                    <li class:list={['border-b-2 border-ink', i === socials.length - 1 && 'border-b-0']}>
+                {redes.map((s, i) => (
+                    <li class:list={['border-b-2 border-ink', i === redes.length - 1 && 'border-b-0']}>
                         <a
                             href={s.url}
                             rel={s.url.startsWith('mailto') ? undefined : 'nofollow noopener noreferrer'}
@@ -60,7 +30,7 @@ const socials = [
                             <div class="flex items-center gap-4">
                                 <Icon name={s.icon} class="w-5 h-5 flex-shrink-0" />
                                 <div>
-                                    <p class="font-boldonse uppercase text-sm tracking-widest leading-none">{s.name}</p>
+                                    <p class="font-boldonse uppercase text-sm tracking-widest leading-none">{s.nombre}</p>
                                     <p class="font-aleo text-xs opacity-50 mt-1 group-hover:opacity-70 transition-opacity">{s.handle}</p>
                                 </div>
                             </div>

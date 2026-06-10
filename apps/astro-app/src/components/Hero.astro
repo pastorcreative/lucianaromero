@@ -1,5 +1,9 @@
 ---
 import logoSvg from '../assets/img/lu-romero-logo.svg';
+import { fetchPaginaInicio } from '../lib/payload';
+
+const inicio = await fetchPaginaInicio();
+const subtitulo = inicio.hero.subtitulo;
 ---
 
 <section class="hero-section sticky top-0 z-10 h-dvh flex items-start justify-start overflow-hidden">
@@ -12,7 +16,7 @@ import logoSvg from '../assets/img/lu-romero-logo.svg';
             class="w-[60vw] max-w-200 h-auto logo-adaptive"
         />
         <h1 class="hero-subtitle font-boldonse uppercase text-white text-sm sm:text-base md:text-lg lg:text-xl tracking-[0.25em] leading-normal sm:leading-none opacity-80">
-            MAKE UP &amp; HAIR ARTIST BASED IN BCN
+            {subtitulo}
         </h1>
     </div>
 </section>

@@ -25,10 +25,16 @@ export const ConfiguracionSitio: GlobalConfig = {
       label: 'Redes Sociales',
       type: 'group',
       fields: [
-        { name: 'instagram', label: 'URL Instagram', type: 'text', defaultValue: 'https://www.instagram.com/luromeromakeup/' },
-        { name: 'tiktok', label: 'URL TikTok', type: 'text' },
-        { name: 'youtube', label: 'URL YouTube', type: 'text' },
-        { name: 'pinterest', label: 'URL Pinterest', type: 'text' },
+        { name: 'instagram',       label: 'URL Instagram',         type: 'text', defaultValue: 'https://www.instagram.com/luromeromakeup/' },
+        { name: 'instagramHandle', label: 'Handle Instagram',      type: 'text', defaultValue: '@luromeromakeup' },
+        { name: 'facebook',        label: 'URL Facebook',          type: 'text', defaultValue: 'https://www.facebook.com/people/Luciana-Romero-Make-Up-Artist/100063943687534/' },
+        { name: 'facebookHandle',  label: 'Nombre Facebook',       type: 'text', defaultValue: 'Luciana Romero MUA' },
+        { name: 'linkedin',        label: 'URL LinkedIn',          type: 'text', defaultValue: 'https://www.linkedin.com/in/lucianaromeromakeup/' },
+        { name: 'linkedinHandle',  label: 'Handle LinkedIn',       type: 'text', defaultValue: 'lucianaromeromakeup' },
+        { name: 'youtube',         label: 'URL YouTube',           type: 'text', defaultValue: 'https://www.youtube.com/@lucianaromero9645' },
+        { name: 'youtubeHandle',   label: 'Handle YouTube',        type: 'text', defaultValue: '@lucianaromero9645' },
+        { name: 'tiktok',          label: 'URL TikTok',            type: 'text' },
+        { name: 'pinterest',       label: 'URL Pinterest',         type: 'text' },
       ],
     },
 
@@ -55,32 +61,6 @@ export const ConfiguracionSitio: GlobalConfig = {
         { name: 'nombre', label: 'Nombre', type: 'text', required: true },
         { name: 'logo', label: 'Logo (SVG)', type: 'upload', relationTo: 'media' },
         { name: 'url', label: 'URL de la revista', type: 'text' },
-      ],
-    },
-
-    // ── Videos ───────────────────────────────────────────────────
-    {
-      name: 'videos',
-      label: 'Vídeos (VideoPlayer)',
-      type: 'array',
-      fields: [
-        { name: 'titulo', label: 'Título', type: 'text', required: true },
-        {
-          name: 'categoria',
-          label: 'Categoría',
-          type: 'select',
-          options: [
-            { label: 'Comercial', value: 'COMERCIAL' },
-            { label: 'Editorial', value: 'EDITORIAL' },
-          ],
-        },
-        { name: 'cliente', label: 'Cliente', type: 'text' },
-        {
-          name: 'archivo',
-          label: 'Archivo de vídeo',
-          type: 'upload',
-          relationTo: 'media',
-        },
       ],
     },
 

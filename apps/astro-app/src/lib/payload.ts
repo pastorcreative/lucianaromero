@@ -245,17 +245,37 @@ export async function fetchCurso(slug: string): Promise<CursoData | null> {
 
 export interface MarcaItem   { nombre: string; logoSrc: string; url: string }
 export interface RevistaItem { nombre: string; logoSrc: string; url: string }
-export interface VideoItem   { titulo: string; categoria: string; cliente: string }
+export interface VideoItem   { titulo: string; categoria: string; cliente: string; archivoUrl: string }
+export interface RedSocialItem {
+  nombre: string
+  handle: string
+  icon:   string
+  url:    string
+}
 
 export interface ConfiguracionData {
   marcas:   MarcaItem[]
   revistas: RevistaItem[]
-  videos:   VideoItem[]
+  identidad: { nombreSitio: string; descripcionCorta: string; email: string; ubicacion: string }
+  redes:    RedSocialItem[]
+  footer:   { copyright: string; tagline: string }
 }
 
-/** Devuelve marcas, revistas y metadatos de vídeos desde el global de configuración. */
+/** Devuelve marcas, revistas, identidad, redes y footer desde el global de configuración. */
 export async function fetchConfiguracion(): Promise<ConfiguracionData> {
   const raw = await get<Record<string, any>>('globals/configuracion-sitio?depth=1')
+
+  const r = raw?.redes ?? {}
+  const redes: RedSocialItem[] = []
+  if (r.instagram) redes.push({ nombre: 'Instagram', handle: r.instagramHandle ?? r.instagram, icon: 'lucide:instagram', url: r.instagram })
+  if (r.facebook)  redes.push({ nombre: 'Facebook',  handle: r.facebookHandle  ?? r.facebook,  icon: 'lucide:facebook',  url: r.facebook  })
+  if (r.linkedin)  redes.push({ nombre: 'LinkedIn',  handle: r.linkedinHandle  ?? r.linkedin,  icon: 'lucide:linkedin',  url: r.linkedin  })
+  if (r.youtube)   redes.push({ nombre: 'YouTube',   handle: r.youtubeHandle   ?? r.youtube,   icon: 'lucide:youtube',   url: r.youtube   })
+  if (r.tiktok)    redes.push({ nombre: 'TikTok',    handle: r.tiktok,                          icon: 'lucide:music',     url: r.tiktok    })
+
+  const email = raw?.identidad?.email ?? 'luromeroestudio@gmail.com'
+  if (email) redes.push({ nombre: 'Email', handle: email, icon: 'lucide:mail', url: `mailto:${email}` })
+
   return {
     marcas: (raw?.marcas ?? []).map((m: Record<string, any>) => ({
       nombre:  m.nombre ?? '',
@@ -267,11 +287,17 @@ export async function fetchConfiguracion(): Promise<ConfiguracionData> {
       logoSrc: toImg(r.logo).src,
       url:     r.url    ?? '',
     })),
-    videos: (raw?.videos ?? []).map((v: Record<string, any>) => ({
-      titulo:    v.titulo    ?? '',
-      categoria: v.categoria ?? '',
-      cliente:   v.cliente   ?? '',
-    })),
+    identidad: {
+      nombreSitio:      raw?.identidad?.nombreSitio      ?? 'LU.ROMERO',
+      descripcionCorta: raw?.identidad?.descripcionCorta ?? 'Make Up & Hair Artist',
+      email,
+      ubicacion:        raw?.identidad?.ubicacion        ?? 'Barcelona, España',
+    },
+    redes,
+    footer: {
+      copyright: raw?.footer?.copyright ?? '© LU.ROMERO',
+      tagline:   raw?.footer?.tagline   ?? 'Make Up & Hair Artist',
+    },
   }
 }
 
@@ -280,9 +306,12 @@ export async function fetchConfiguracion(): Promise<ConfiguracionData> {
 // ══════════════════════════════════════════════════════════════════════════════
 
 export interface BioData {
-  hero:     { titulo: string; subtitulo: string }
-  fotoMeta: ImgProps
-  parrafos: string[]
+  hero:             { titulo: string; subtitulo: string }
+  fotoMeta:         ImgProps
+  parrafos:         string[]
+  lineasDestacadas: string[]
+  resumen:          string
+  seo:              { titulo: string; descripcion: string }
 }
 
 /** Devuelve el contenido de la página Bio desde Payload. */
@@ -293,7 +322,107 @@ export async function fetchBio(): Promise<BioData> {
       titulo:    raw?.hero?.titulo    ?? 'BIO',
       subtitulo: raw?.hero?.subtitulo ?? '',
     },
-    fotoMeta: toImg(raw?.foto),
-    parrafos: texts(raw?.parrafos),
+    fotoMeta:         toImg(raw?.foto),
+    parrafos:         texts(raw?.parrafos),
+    lineasDestacadas: texts(raw?.lineasDestacadas),
+    resumen:          raw?.resumen ?? '',
+    seo: {
+      titulo:      raw?.seo?.titulo      ?? 'Bio — LU.ROMERO',
+      descripcion: raw?.seo?.descripcion ?? '',
+    },
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// PÁGINA INICIO
+// ══════════════════════════════════════════════════════════════════════════════
+
+export interface PaginaInicioData {
+  hero:    { subtitulo: string }
+  bento:   {
+    etiquetaGaleria:   string; descGaleria:   string
+    etiquetaComercial: string; descComercial: string
+    etiquetaNovias:    string; descNovias:    string
+    etiquetaCursos:    string; descCursos:    string
+  }
+  videos:  VideoItem[]
+  seo:     { titulo: string; descripcion: string }
+}
+
+/** Devuelve el contenido de la página de inicio desde Payload. */
+export async function fetchPaginaInicio(): Promise<PaginaInicioData> {
+  const raw = await get<Record<string, any>>('globals/pagina-inicio?depth=1')
+  return {
+    hero: {
+      subtitulo: raw?.hero?.subtitulo ?? 'MAKE UP & HAIR ARTIST BASED IN BCN',
+    },
+    bento: {
+      etiquetaGaleria:   raw?.bento?.etiquetaGaleria   ?? 'GALLERY',
+      descGaleria:       raw?.bento?.descGaleria        ?? 'Editoriales & retratos',
+      etiquetaComercial: raw?.bento?.etiquetaComercial  ?? 'COMERCIAL',
+      descComercial:     raw?.bento?.descComercial      ?? 'Campañas & marcas',
+      etiquetaNovias:    raw?.bento?.etiquetaNovias     ?? 'NOVIAS',
+      descNovias:        raw?.bento?.descNovias         ?? 'Maquillaje nupcial',
+      etiquetaCursos:    raw?.bento?.etiquetaCursos     ?? 'COURSES',
+      descCursos:        raw?.bento?.descCursos         ?? 'Formación profesional',
+    },
+    videos: (raw?.videos ?? []).map((v: Record<string, any>) => ({
+      titulo:     v.titulo     ?? '',
+      categoria:  v.categoria  ?? '',
+      cliente:    v.cliente    ?? '',
+      archivoUrl: v.archivo ? toImg(v.archivo).src : '',
+    })),
+    seo: {
+      titulo:      raw?.seo?.titulo      ?? 'LU.ROMERO — Make Up & Hair Artist',
+      descripcion: raw?.seo?.descripcion ?? '',
+    },
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TEXTOS LEGALES
+// ══════════════════════════════════════════════════════════════════════════════
+
+export interface LegalSection {
+  heading:    string
+  paragraphs: string[]
+  items:      string[]
+}
+
+export interface LegalPageData {
+  title:     string
+  slug:      string
+  updatedAt: string
+  sections:  LegalSection[]
+}
+
+export interface LegalData {
+  avisoLegal: LegalPageData
+  privacidad: LegalPageData
+  cookies:    LegalPageData
+}
+
+function mapLegalPage(raw: Record<string, any> | undefined, defaults: LegalPageData): LegalPageData {
+  if (!raw) return defaults
+  return {
+    title:     raw.title     ?? defaults.title,
+    slug:      raw.slug      ?? defaults.slug,
+    updatedAt: raw.updatedAt ?? defaults.updatedAt,
+    sections: (raw.sections ?? []).map((s: Record<string, any>) => ({
+      heading:    s.heading    ?? '',
+      paragraphs: texts(s.paragraphs),
+      items:      texts(s.items),
+    })),
+  }
+}
+
+/** Devuelve los textos legales desde Payload. Cae en fallback vacío si no hay datos. */
+export async function fetchLegal(): Promise<LegalData> {
+  const raw = await get<Record<string, any>>('globals/pagina-legal?depth=0')
+  const empty: LegalPageData = { title: '', slug: '', updatedAt: '', sections: [] }
+  return {
+    avisoLegal: mapLegalPage(raw?.avisoLegal, { ...empty, title: 'Aviso Legal',            slug: 'aviso-legal'           }),
+    privacidad: mapLegalPage(raw?.privacidad, { ...empty, title: 'Política de Privacidad', slug: 'politica-de-privacidad' }),
+    cookies:    mapLegalPage(raw?.cookies,    { ...empty, title: 'Política de Cookies',    slug: 'politica-de-cookies'   }),
   }
 }

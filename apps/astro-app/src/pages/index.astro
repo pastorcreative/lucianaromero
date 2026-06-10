@@ -8,11 +8,16 @@ import Clients from "../components/Clients.astro";
 import BentoGrid from "../components/BentoGrid.astro";
 import Contact from "../components/Contact.astro";
 import VideoPlayer from "../components/VideoPlayer.astro";
+import { fetchPaginaInicio } from "../lib/payload";
+
+const inicio = await fetchPaginaInicio();
+const seoTitulo = inicio.seo.titulo || "LU.ROMERO — Makeup Artist & Hair Stylist Barcelona";
+const seoDesc   = inicio.seo.descripcion || "Portfolio de Luciana Romero, Makeup Artist & Hair Stylist en Barcelona. Especialista en maquillaje editorial, comercial y nupcial.";
 ---
 
 <Layout
-    title="LU.ROMERO — Makeup Artist & Hair Stylist Barcelona"
-    description="Portfolio de Luciana Romero, Makeup Artist & Hair Stylist en Barcelona. Especialista en maquillaje editorial, comercial y nupcial."
+    title={seoTitulo}
+    description={seoDesc}
 >
   <!-- Canvas fluido como fondo -->
   <FluidCanvas

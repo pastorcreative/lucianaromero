@@ -1,12 +1,21 @@
 ---
-import videos from '../data/videos.json';
+import { fetchPaginaInicio } from '../lib/payload';
 
+const inicio = await fetchPaginaInicio();
+
+// Vídeos locales como fallback cuando Payload aún no tiene archivos subidos
 const videoModules = import.meta.glob('../assets/img/video/*.mp4', { as: 'url', eager: true });
 
-const videoList = videos.map(v => {
-  const key = Object.keys(videoModules).find(k => k.endsWith(v.filename));
-  return { ...v, url: key ? videoModules[key] : null };
-}).filter(v => v.url !== null);
+type VideoEntry = { title: string; category: string; client: string; url: string }
+
+const videoList: VideoEntry[] = inicio.videos.length > 0
+  ? inicio.videos
+      .filter(v => !!v.archivoUrl)
+      .map(v => ({ title: v.titulo, category: v.categoria, client: v.cliente, url: v.archivoUrl }))
+  : Object.entries(videoModules).map(([key, url]) => {
+      const filename = key.split('/').pop() ?? key
+      return { title: filename.replace(/\.mp4$/i, ''), category: 'COMERCIAL', client: '', url }
+    });
 
 const firstVideo = videoList[0];
 ---

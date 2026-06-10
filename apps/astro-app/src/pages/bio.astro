@@ -2,6 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import HeroPage from '../components/HeroPage.astro';
 import Bio from '../components/Bio.astro';
+import { fetchBio } from '../lib/payload';
+
+const bio = await fetchBio();
 
 const breadcrumb = [
     { label: 'Inicio', href: '/' },
@@ -10,12 +13,12 @@ const breadcrumb = [
 ---
 
 <Layout
-    title="Bio — LU.ROMERO"
-    description="Conoce a Luciana Romero, Makeup Artist & Hair Stylist con sede en Barcelona. Especialista en maquillaje editorial, comercial y nupcial para moda y publicidad."
+    title={bio.seo.titulo || 'Bio — LU.ROMERO'}
+    description={bio.seo.descripcion || 'Conoce a Luciana Romero, Makeup Artist & Hair Stylist con sede en Barcelona.'}
 >
     <HeroPage
-        title="BIO"
-        subtitle="— Sobre Luciana Romero, MUA & Hair Artist"
+        title={bio.hero.titulo || 'BIO'}
+        subtitle={bio.hero.subtitulo || '— Sobre Luciana Romero, MUA & Hair Artist'}
         breadcrumb={breadcrumb}
     />
     <Bio />

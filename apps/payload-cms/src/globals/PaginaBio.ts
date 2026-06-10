@@ -31,13 +31,32 @@ export const PaginaBio: GlobalConfig = {
         { name: 'texto', label: 'Párrafo', type: 'textarea', required: true },
       ],
     },
+
+    // ── BioPreview ────────────────────────────────────────────────
+    {
+      name: 'lineasDestacadas',
+      label: 'Líneas destacadas (BioPreview)',
+      type: 'array',
+      admin: { description: 'Las líneas que aparecen en la sección de presentación de la página de inicio.' },
+      fields: [
+        { name: 'texto', label: 'Texto', type: 'text', required: true },
+      ],
+    },
+    {
+      name: 'resumen',
+      label: 'Resumen (BioPreview)',
+      type: 'textarea',
+      admin: { description: 'Texto breve que aparece bajo las líneas destacadas en la página de inicio.' },
+      defaultValue: 'Luciana Romero nació en Argentina. Con más de 17 años de carrera, fusiona la pasión artística con el trabajo profesional en moda, publicidad y eventos. Actualmente basada en Barcelona.',
+    },
+
     {
       name: 'seo',
       label: 'SEO',
       type: 'group',
       fields: [
-        { name: 'titulo', label: 'Título de página', type: 'text', defaultValue: 'Bio — LU.ROMERO' },
-        { name: 'descripcion', label: 'Meta descripción', type: 'textarea' },
+        { name: 'titulo',      label: 'Título de página',  type: 'text',     defaultValue: 'Bio — LU.ROMERO' },
+        { name: 'descripcion', label: 'Meta descripción',  type: 'textarea', defaultValue: 'Conoce a Luciana Romero, Makeup Artist & Hair Stylist con sede en Barcelona. Especialista en maquillaje editorial, comercial y nupcial para moda y publicidad.' },
       ],
     },
   ],

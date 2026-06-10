@@ -1,18 +1,23 @@
 ---
 import { Icon } from 'astro-icon/components';
 import videoSrc from '../assets/img/video-loop-home.mp4?url';
+import { fetchBio } from '../lib/payload';
 
-const lines = [
-    { label: 'MUA & HAIR ARTIST' },
-    { label: '16 AÑOS DE CARRERA' },
-    { label: 'BARCELONA · ARGENTINA' },
-    { label: 'MODA · PUBLICIDAD · NOVIAS' },
-];
+const bio = await fetchBio();
+const lines = bio.lineasDestacadas.length > 0
+    ? bio.lineasDestacadas.map(label => ({ label }))
+    : [
+        { label: 'MUA & HAIR ARTIST' },
+        { label: '17 AÑOS DE CARRERA' },
+        { label: 'BARCELONA · ARGENTINA' },
+        { label: 'MODA · PUBLICIDAD · NOVIAS' },
+    ];
+const resumen = bio.resumen || 'Luciana Romero nació en Argentina. Con más de 17 años de carrera, fusiona la pasión artística con el trabajo profesional en moda, publicidad y eventos. Actualmente basada en Barcelona.';
 ---
 
 <section class="bio-preview relative z-10 bg-canvas border-t-4 border-ink overflow-x-hidden transition-colors duration-300">
 
-    <div class="container-site grid grid-cols-1 lg:grid-cols-2 min-h-[100dvh]">
+    <div class="container-site grid grid-cols-1 lg:grid-cols-2 min-h-dvh">
 
     <!-- Left: bio summary -->
     <div class="flex flex-col justify-between py-16 md:py-24 pr-0 lg:pr-12 border-b-4 lg:border-b-0 lg:border-r-4 border-ink">
@@ -37,9 +42,7 @@ const lines = [
 
         <div class="mt-12 md:mt-16">
             <p class="bp-body font-aleo text-base md:text-lg text-ink opacity-70 leading-relaxed max-w-md">
-                Luciana Romero nació en Argentina. Con más de 16 años de carrera,
-                fusiona la pasión artística con el trabajo profesional en moda,
-                publicidad y eventos. Actualmente basada en Barcelona.
+                {resumen}
             </p>
 
             <a

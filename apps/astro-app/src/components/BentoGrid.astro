@@ -1,15 +1,19 @@
 ---
 import editorial from '../assets/img/bento/editorial-2.jpg';
-import novias from '../assets/img/bento/novias-1.jpg';
+import novias from '../assets/img/bento/novias-1.webp';
 import commercial from '../assets/img/bento/commercial.jpg';
 import courses from '../assets/img/bento/courses.jpg';
+import { fetchPaginaInicio } from '../lib/payload';
+
+const inicio = await fetchPaginaInicio();
+const b = inicio.bento;
 
 const items = [
     {
         id: 'gallery',
-        label: 'GALLERY',
+        label: b.etiquetaGaleria,
         tag: '01',
-        desc: 'Editoriales & retratos',
+        desc: b.descGaleria,
         href: '/galeria/editorial',
         inverted: false,
         spanClass: 'col-span-1 md:col-span-2 lg:col-span-2',
@@ -20,9 +24,9 @@ const items = [
     },
     {
         id: 'novias',
-        label: 'NOVIAS',
+        label: b.etiquetaNovias,
         tag: '02',
-        desc: 'Maquillaje nupcial',
+        desc: b.descNovias,
         href: '/galeria/novias',
         inverted: true,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1 md:row-span-2 lg:row-span-2',
@@ -33,9 +37,9 @@ const items = [
     },
     {
         id: 'commercial',
-        label: 'COMERCIAL',
+        label: b.etiquetaComercial,
         tag: '03',
-        desc: 'Campañas & marcas',
+        desc: b.descComercial,
         href: '/galeria/comercial',
         inverted: true,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1',
@@ -46,9 +50,9 @@ const items = [
     },
     {
         id: 'courses',
-        label: 'COURSES',
+        label: b.etiquetaCursos,
         tag: '04',
-        desc: 'Formación profesional',
+        desc: b.descCursos,
         href: '/courses',
         inverted: false,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1',

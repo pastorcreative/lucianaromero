@@ -101,6 +101,7 @@ export interface Config {
     'pagina-comercial': PaginaComercial;
     'pagina-novia': PaginaNovia;
     'pagina-contacto': PaginaContacto;
+    'pagina-legal': PaginaLegal;
   };
   globalsSelect: {
     'configuracion-sitio': ConfiguracionSitioSelect<false> | ConfiguracionSitioSelect<true>;
@@ -110,6 +111,7 @@ export interface Config {
     'pagina-comercial': PaginaComercialSelect<false> | PaginaComercialSelect<true>;
     'pagina-novia': PaginaNoviaSelect<false> | PaginaNoviaSelect<true>;
     'pagina-contacto': PaginaContactoSelect<false> | PaginaContactoSelect<true>;
+    'pagina-legal': PaginaLegalSelect<false> | PaginaLegalSelect<true>;
   };
   locale: null;
   widgets: {
@@ -686,8 +688,14 @@ export interface ConfiguracionSitio {
   };
   redes?: {
     instagram?: string | null;
-    tiktok?: string | null;
+    instagramHandle?: string | null;
+    facebook?: string | null;
+    facebookHandle?: string | null;
+    linkedin?: string | null;
+    linkedinHandle?: string | null;
     youtube?: string | null;
+    youtubeHandle?: string | null;
+    tiktok?: string | null;
     pinterest?: string | null;
   };
   /**
@@ -712,15 +720,6 @@ export interface ConfiguracionSitio {
         id?: string | null;
       }[]
     | null;
-  videos?:
-    | {
-        titulo: string;
-        categoria?: ('COMERCIAL' | 'EDITORIAL') | null;
-        cliente?: string | null;
-        archivo?: (number | null) | Media;
-        id?: string | null;
-      }[]
-    | null;
   footer?: {
     copyright?: string | null;
     tagline?: string | null;
@@ -739,9 +738,26 @@ export interface PaginaInicio {
   };
   bento?: {
     etiquetaGaleria?: string | null;
-    etiquetaComerical?: string | null;
+    descGaleria?: string | null;
+    etiquetaComercial?: string | null;
+    descComercial?: string | null;
     etiquetaNovias?: string | null;
+    descNovias?: string | null;
+    etiquetaCursos?: string | null;
+    descCursos?: string | null;
   };
+  /**
+   * Vídeos que aparecen en el reproductor de la página de inicio.
+   */
+  videos?:
+    | {
+        titulo: string;
+        categoria?: ('COMERCIAL' | 'EDITORIAL') | null;
+        cliente?: string | null;
+        archivo?: (number | null) | Media;
+        id?: string | null;
+      }[]
+    | null;
   seo?: {
     titulo?: string | null;
     descripcion?: string | null;
@@ -769,6 +785,19 @@ export interface PaginaBio {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Las líneas que aparecen en la sección de presentación de la página de inicio.
+   */
+  lineasDestacadas?:
+    | {
+        texto: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Texto breve que aparece bajo las líneas destacadas en la página de inicio.
+   */
+  resumen?: string | null;
   seo?: {
     titulo?: string | null;
     descripcion?: string | null;
@@ -856,6 +885,86 @@ export interface PaginaContacto {
   createdAt?: string | null;
 }
 /**
+ * Aviso Legal, Política de Privacidad y Política de Cookies.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pagina-legal".
+ */
+export interface PaginaLegal {
+  id: number;
+  avisoLegal?: {
+    title?: string | null;
+    slug?: string | null;
+    updatedAt?: string | null;
+    sections?:
+      | {
+          heading?: string | null;
+          paragraphs?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          items?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  privacidad?: {
+    title?: string | null;
+    slug?: string | null;
+    updatedAt?: string | null;
+    sections?:
+      | {
+          heading?: string | null;
+          paragraphs?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          items?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  cookies?: {
+    title?: string | null;
+    slug?: string | null;
+    updatedAt?: string | null;
+    sections?:
+      | {
+          heading?: string | null;
+          paragraphs?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          items?:
+            | {
+                texto?: string | null;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "configuracion-sitio_select".
  */
@@ -872,8 +981,14 @@ export interface ConfiguracionSitioSelect<T extends boolean = true> {
     | T
     | {
         instagram?: T;
-        tiktok?: T;
+        instagramHandle?: T;
+        facebook?: T;
+        facebookHandle?: T;
+        linkedin?: T;
+        linkedinHandle?: T;
         youtube?: T;
+        youtubeHandle?: T;
+        tiktok?: T;
         pinterest?: T;
       };
   marcas?:
@@ -890,15 +1005,6 @@ export interface ConfiguracionSitioSelect<T extends boolean = true> {
         nombre?: T;
         logo?: T;
         url?: T;
-        id?: T;
-      };
-  videos?:
-    | T
-    | {
-        titulo?: T;
-        categoria?: T;
-        cliente?: T;
-        archivo?: T;
         id?: T;
       };
   footer?:
@@ -925,8 +1031,22 @@ export interface PaginaInicioSelect<T extends boolean = true> {
     | T
     | {
         etiquetaGaleria?: T;
-        etiquetaComerical?: T;
+        descGaleria?: T;
+        etiquetaComercial?: T;
+        descComercial?: T;
         etiquetaNovias?: T;
+        descNovias?: T;
+        etiquetaCursos?: T;
+        descCursos?: T;
+      };
+  videos?:
+    | T
+    | {
+        titulo?: T;
+        categoria?: T;
+        cliente?: T;
+        archivo?: T;
+        id?: T;
       };
   seo?:
     | T
@@ -956,6 +1076,13 @@ export interface PaginaBioSelect<T extends boolean = true> {
         texto?: T;
         id?: T;
       };
+  lineasDestacadas?:
+    | T
+    | {
+        texto?: T;
+        id?: T;
+      };
+  resumen?: T;
   seo?:
     | T
     | {
@@ -1060,6 +1187,90 @@ export interface PaginaContactoSelect<T extends boolean = true> {
     | {
         titulo?: T;
         descripcion?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "pagina-legal_select".
+ */
+export interface PaginaLegalSelect<T extends boolean = true> {
+  avisoLegal?:
+    | T
+    | {
+        title?: T;
+        slug?: T;
+        updatedAt?: T;
+        sections?:
+          | T
+          | {
+              heading?: T;
+              paragraphs?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              items?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  privacidad?:
+    | T
+    | {
+        title?: T;
+        slug?: T;
+        updatedAt?: T;
+        sections?:
+          | T
+          | {
+              heading?: T;
+              paragraphs?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              items?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  cookies?:
+    | T
+    | {
+        title?: T;
+        slug?: T;
+        updatedAt?: T;
+        sections?:
+          | T
+          | {
+              heading?: T;
+              paragraphs?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              items?:
+                | T
+                | {
+                    texto?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

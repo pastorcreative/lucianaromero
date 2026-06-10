@@ -1,0 +1,27 @@
+{
+  "hero": {
+    "subtitulo": "MAKE UP & HAIR ARTIST BASED IN BCN"
+  },
+  "bento": {
+    "etiquetaGaleria":   "GALLERY",
+    "descGaleria":       "Editoriales & retratos",
+    "etiquetaComercial": "COMERCIAL",
+    "descComercial":     "Campañas & marcas",
+    "etiquetaNovias":    "NOVIAS",
+    "descNovias":        "Maquillaje nupcial",
+    "etiquetaCursos":    "COURSES",
+    "descCursos":        "Formación profesional"
+  },
+  "videos": [
+    { "titulo": "DOMA MOOD II",  "categoria": "COMERCIAL", "cliente": "DOMA", "filename": "DOMA_mood 2 v2.mp4"  },
+    { "titulo": "DOMA MOOD IV",  "categoria": "COMERCIAL", "cliente": "DOMA", "filename": "DOMA_mood 4 v2.mp4"  },
+    { "titulo": "DOMA REEL II",  "categoria": "COMERCIAL", "cliente": "DOMA", "filename": "DOMA_reel 2 v2.mp4"  },
+    { "titulo": "DOMA REEL III", "categoria": "COMERCIAL", "cliente": "DOMA", "filename": "DOMA_reel 3 v2.mp4"  },
+    { "titulo": "MOOD I",        "categoria": "EDITORIAL", "cliente": "",     "filename": "MOOD 1.mp4"           },
+    { "titulo": "REEL IV",       "categoria": "EDITORIAL", "cliente": "",     "filename": "REEL 4.mp4"           }
+  ],
+  "seo": {
+    "titulo":      "LU.ROMERO — Makeup Artist & Hair Stylist Barcelona",
+    "descripcion": "Portfolio de Luciana Romero, Makeup Artist & Hair Stylist en Barcelona. Especialista en maquillaje editorial, comercial y nupcial."
+  }
+}

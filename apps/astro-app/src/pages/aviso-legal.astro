@@ -2,8 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import HeroPage from '../components/HeroPage.astro';
 import LegalPage from '../components/LegalPage.astro';
-import legal from '../data/legal.json';
+import { fetchLegal } from '../lib/payload';
 
+const legal = await fetchLegal();
 const { title, updatedAt, sections } = legal.avisoLegal;
 
 const breadcrumb = [

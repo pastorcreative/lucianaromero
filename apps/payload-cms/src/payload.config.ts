@@ -20,6 +20,7 @@ import { PaginaGaleria } from './globals/PaginaGaleria'
 import { PaginaComerical } from './globals/PaginaComerical'
 import { PaginaNovia } from './globals/PaginaNovia'
 import { PaginaContacto } from './globals/PaginaContacto'
+import { PaginaLegal } from './globals/PaginaLegal'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -53,6 +54,7 @@ export default buildConfig({
     PaginaComerical,
     PaginaNovia,
     PaginaContacto,
+    PaginaLegal,
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',

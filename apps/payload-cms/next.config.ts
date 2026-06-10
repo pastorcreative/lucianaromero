@@ -1,10 +1,9 @@
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
-import { fileURLToPath } from 'url'
 
-const __filename = fileURLToPath(import.meta.url)
-const dirname = path.dirname(__filename)
+// Monorepo root (process.cwd() = apps/payload-cms when running next dev/build)
+const monorepoRoot = path.resolve(process.cwd(), '../..')
 
 const nextConfig: NextConfig = {
   images: {
@@ -24,7 +23,7 @@ const nextConfig: NextConfig = {
     return webpackConfig
   },
   turbopack: {
-    root: path.resolve(dirname),
+    root: monorepoRoot,
   },
 }
 
