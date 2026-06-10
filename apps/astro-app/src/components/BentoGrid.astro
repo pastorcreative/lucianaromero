@@ -1,12 +1,18 @@
 ---
-import editorial from '../assets/img/bento/editorial-2.jpg';
-import novias from '../assets/img/bento/novias-1.webp';
-import commercial from '../assets/img/bento/commercial.jpg';
-import courses from '../assets/img/bento/courses.jpg';
+import editorialFallback from '../assets/img/bento/editorial-2.jpg';
+import noviasFallback from '../assets/img/bento/novias-1.webp';
+import commercialFallback from '../assets/img/bento/commercial.jpg';
+import coursesFallback from '../assets/img/bento/courses.jpg';
 import { fetchPaginaInicio } from '../lib/payload';
 
 const inicio = await fetchPaginaInicio();
 const b = inicio.bento;
+
+// Imágenes: usa la de Payload si existe, si no el asset local
+const imgGaleria   = b.imagenGaleria.src   ? b.imagenGaleria   : { src: editorialFallback.src,  width: editorialFallback.width,  height: editorialFallback.height  };
+const imgNovias    = b.imagenNovias.src    ? b.imagenNovias    : { src: noviasFallback.src,      width: noviasFallback.width,      height: noviasFallback.height      };
+const imgComercial = b.imagenComercial.src ? b.imagenComercial : { src: commercialFallback.src,  width: commercialFallback.width,  height: commercialFallback.height  };
+const imgCursos    = b.imagenCursos.src    ? b.imagenCursos    : { src: coursesFallback.src,     width: coursesFallback.width,     height: coursesFallback.height     };
 
 const items = [
     {
@@ -18,7 +24,7 @@ const items = [
         inverted: false,
         spanClass: 'col-span-1 md:col-span-2 lg:col-span-2',
         arrow: true,
-        image: editorial,
+        image: imgGaleria,
         imgRotate: 'rotate-2',
         imgAnchor: 'bottom-img--right bottom-img--gallery',
     },
@@ -31,7 +37,7 @@ const items = [
         inverted: true,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1 md:row-span-2 lg:row-span-2',
         arrow: true,
-        image: novias,
+        image: imgNovias,
         imgRotate: '-rotate-2',
         imgAnchor: 'bottom-img--center',
     },
@@ -44,7 +50,7 @@ const items = [
         inverted: true,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1',
         arrow: false,
-        image: commercial,
+        image: imgComercial,
         imgRotate: 'rotate-1',
         imgAnchor: 'bottom-img--right',
     },
@@ -57,7 +63,7 @@ const items = [
         inverted: false,
         spanClass: 'col-span-1 md:col-span-1 lg:col-span-1',
         arrow: false,
-        image: courses,
+        image: imgCursos,
         imgRotate: '-rotate-1',
         imgAnchor: 'bottom-img--left',
     },
@@ -203,10 +209,15 @@ const items = [
         right: 10%;
     }
 
-    /* Mobile: always visible */
+    /* Mobile: always visible, gallery same size as others */
     .bento-img {
         opacity: 1;
         transform: none;
+    }
+    .bottom-img--gallery {
+        width: 55%;
+        bottom: -12px;
+        right: -12px;
     }
 
     /* Desktop: hidden until hover */

@@ -733,12 +733,16 @@ export interface PaginaInicio {
   bento?: {
     etiquetaGaleria?: string | null;
     descGaleria?: string | null;
+    imagenGaleria?: (number | null) | Media;
     etiquetaComercial?: string | null;
     descComercial?: string | null;
+    imagenComercial?: (number | null) | Media;
     etiquetaNovias?: string | null;
     descNovias?: string | null;
+    imagenNovias?: (number | null) | Media;
     etiquetaCursos?: string | null;
     descCursos?: string | null;
+    imagenCursos?: (number | null) | Media;
   };
   /**
    * Vídeos que aparecen en el reproductor de la página de inicio.
@@ -947,12 +951,16 @@ export interface PaginaInicioSelect<T extends boolean = true> {
     | {
         etiquetaGaleria?: T;
         descGaleria?: T;
+        imagenGaleria?: T;
         etiquetaComercial?: T;
         descComercial?: T;
+        imagenComercial?: T;
         etiquetaNovias?: T;
         descNovias?: T;
+        imagenNovias?: T;
         etiquetaCursos?: T;
         descCursos?: T;
+        imagenCursos?: T;
       };
   videos?:
     | T

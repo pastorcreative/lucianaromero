@@ -340,10 +340,10 @@ export async function fetchBio(): Promise<BioData> {
 export interface PaginaInicioData {
   hero:    { subtitulo: string }
   bento:   {
-    etiquetaGaleria:   string; descGaleria:   string
-    etiquetaComercial: string; descComercial: string
-    etiquetaNovias:    string; descNovias:    string
-    etiquetaCursos:    string; descCursos:    string
+    etiquetaGaleria:   string; descGaleria:   string; imagenGaleria:   ImgProps
+    etiquetaComercial: string; descComercial: string; imagenComercial: ImgProps
+    etiquetaNovias:    string; descNovias:    string; imagenNovias:    ImgProps
+    etiquetaCursos:    string; descCursos:    string; imagenCursos:    ImgProps
   }
   videos:  VideoItem[]
   seo:     { titulo: string; descripcion: string }
@@ -359,12 +359,16 @@ export async function fetchPaginaInicio(): Promise<PaginaInicioData> {
     bento: {
       etiquetaGaleria:   raw?.bento?.etiquetaGaleria   ?? 'GALLERY',
       descGaleria:       raw?.bento?.descGaleria        ?? 'Editoriales & retratos',
+      imagenGaleria:     toImg(raw?.bento?.imagenGaleria),
       etiquetaComercial: raw?.bento?.etiquetaComercial  ?? 'COMERCIAL',
       descComercial:     raw?.bento?.descComercial      ?? 'Campañas & marcas',
+      imagenComercial:   toImg(raw?.bento?.imagenComercial),
       etiquetaNovias:    raw?.bento?.etiquetaNovias     ?? 'NOVIAS',
       descNovias:        raw?.bento?.descNovias         ?? 'Maquillaje nupcial',
+      imagenNovias:      toImg(raw?.bento?.imagenNovias),
       etiquetaCursos:    raw?.bento?.etiquetaCursos     ?? 'COURSES',
       descCursos:        raw?.bento?.descCursos         ?? 'Formación profesional',
+      imagenCursos:      toImg(raw?.bento?.imagenCursos),
     },
     videos: (raw?.videos ?? []).map((v: Record<string, any>) => ({
       titulo:     v.titulo     ?? '',
